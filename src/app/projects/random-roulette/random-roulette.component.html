@@ -1,4 +1,53 @@
 <div class="roulette">
-  <h1 class="roulette__title">In progress...</h1>
-  <p class="roulette__subtitle">Building as soon is posible 🛠️</p>
+  <h2 class="roulette__title">Random Roulette</h2>
+  <p class="roulette__subtitle">Click the wheel to spin</p>
+
+  <div class="roulette__wheel-wrap">
+    <div class="roulette__pointer" aria-hidden="true"></div>
+    <div
+      class="roulette__wheel"
+      [class.roulette__wheel--spinning]="spinning"
+      [style.transform]="'rotate(' + wheelRotation + 'deg)'"
+      (transitionend)="onTransitionEnd()"
+      (click)="spin()"
+      role="button"
+      [attr.aria-label]="spinning ? 'Spinning...' : 'Spin the roulette'"
+      tabindex="0"
+      (keydown.enter)="spin()"
+      (keydown.space)="spin(); $event.preventDefault()"
+    >
+      @for (option of options; track option; let i = $index) {
+        <div
+          class="roulette__segment"
+          [style.background]="getSegmentColor(i)"
+          [style.transform]="'rotate(' + (i * segmentAngle) + 'deg)'"
+          [style.clip-path]="getSegmentClipPath()"
+        ></div>
+      }
+      @for (option of options; track option; let i = $index) {
+        <div
+          class="roulette__segment-label"
+          [style.transform]="'rotate(' + (i * segmentAngle + segmentAngle / 2) + 'deg)'"
+        >
+          <span class="roulette__segment-text">{{ option }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="roulette__options">
+    <p class="roulette__options-title">Options ({{ count }}):</p>
+    <ul class="roulette__options-list">
+      @for (option of options; track option) {
+        <li class="roulette__options-item">{{ option }}</li>
+      }
+    </ul>
+  </div>
+
+  @if (winner !== null) {
+    <div class="roulette__winner" role="status">
+      <span class="roulette__winner-label">Winner:</span>
+      <strong class="roulette__winner-name">{{ winner }}</strong>
+    </div>
+  }
 </div>

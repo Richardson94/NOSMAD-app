@@ -1,5 +1,16 @@
 <aside class="sidebar-menu" aria-label="Menú de proyectos">
   <div class="sidebar-menu__header">
+    <button
+      type="button"
+      class="sidebar-menu__hamburger"
+      aria-label="Abrir o cerrar menú"
+      [attr.aria-expanded]="menuOpen"
+      (click)="toggleMenu()"
+    >
+      <span class="sidebar-menu__hamburger-bar"></span>
+      <span class="sidebar-menu__hamburger-bar"></span>
+      <span class="sidebar-menu__hamburger-bar"></span>
+    </button>
     <h2 class="sidebar-menu__title">Projects</h2>
     <div class="sidebar-menu__actions">
       @if (showBackButton) {
@@ -7,8 +18,8 @@
       }
     </div>
   </div>
-  <nav class="sidebar-menu__nav">
-    <a routerLink="/random-roulette" routerLinkActive="sidebar-menu__nav-item--active" class="sidebar-menu__nav-item">
+  <nav class="sidebar-menu__nav" [class.sidebar-menu__nav--open]="menuOpen">
+    <a routerLink="/random-roulette" routerLinkActive="sidebar-menu__nav-item--active" class="sidebar-menu__nav-item" (click)="closeMenu()">
       <span class="sidebar-menu__nav-icon" aria-hidden="true">🎡</span>
       <span>Random Roulette</span>
     </a>

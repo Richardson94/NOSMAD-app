@@ -9,7 +9,17 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './sidebar-menu.component.scss',
 })
 export class SidebarMenuComponent {
+  menuOpen = false;
+
   constructor(private router: Router) {}
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
 
   get showBackButton(): boolean {
     const tree = this.router.createUrlTree(['/welcome']);
