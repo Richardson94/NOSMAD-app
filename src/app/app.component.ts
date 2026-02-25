@@ -8,7 +8,7 @@ import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.com
   standalone: true,
   imports: [RouterOutlet, SidebarMenuComponent, FooterComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'NOSMAD-app';

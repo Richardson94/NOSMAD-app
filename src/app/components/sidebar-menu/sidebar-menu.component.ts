@@ -6,7 +6,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar-menu.component.html',
-  styleUrl: './sidebar-menu.component.css',
+  styleUrl: './sidebar-menu.component.scss',
 })
 export class SidebarMenuComponent {
   constructor(private router: Router) {}

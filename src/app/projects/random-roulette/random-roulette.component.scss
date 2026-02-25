@@ -1,0 +1,28 @@
+.roulette {
+  padding: 1.5rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 600;
+    color: var(--dashboard-text, #1a1a2e);
+  }
+
+  &__subtitle {
+    margin-top: 0.5rem;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    color: var(--dashboard-muted, #64748b);
+  }
+}
+
+@media (max-width: 768px) {
+  .roulette {
+    padding: 1rem;
+  }
+}

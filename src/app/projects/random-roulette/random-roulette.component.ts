@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './random-roulette.component.html',
-  styleUrl: './random-roulette.component.css',
+  styleUrl: './random-roulette.component.scss',
 })
 export class RandomRouletteComponent {}
