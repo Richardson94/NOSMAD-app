@@ -1,0 +1,129 @@
+:host {
+  --dashboard-bg: #0f0f14;
+  --dashboard-content-bg: #16161d;
+  --dashboard-sidebar-bg: #1c1c26;
+  --dashboard-border: rgba(255, 255, 255, 0.06);
+  --dashboard-text: #e4e4e7;
+  --dashboard-muted: #71717a;
+  --dashboard-accent: #a78bfa;
+  --dashboard-accent-hover: #c4b5fd;
+  --sidebar-width: 20%;
+  --content-width: 80%;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--dashboard-bg);
+  color: var(--dashboard-text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  box-sizing: border-box;
+}
+
+.dashboard-content {
+  flex: 1 1 var(--content-width);
+  min-width: 0;
+  min-height: 100vh;
+  background: var(--dashboard-content-bg);
+  overflow: auto;
+}
+
+.dashboard-sidebar {
+  flex: 0 0 var(--sidebar-width);
+  max-width: 280px;
+  min-height: 100vh;
+  background: var(--dashboard-sidebar-bg);
+  border-left: 1px solid var(--dashboard-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--dashboard-border);
+}
+
+.sidebar-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--dashboard-muted);
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 0.75rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--dashboard-text);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--dashboard-accent-hover);
+}
+
+.nav-item.active {
+  background: rgba(167, 139, 250, 0.12);
+  color: var(--dashboard-accent);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Responsive: móvil primero para celular */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column-reverse;
+  }
+
+  .dashboard-sidebar {
+    flex: 0 0 auto;
+    max-width: 100%;
+    min-height: auto;
+    border-left: none;
+    border-top: 1px solid var(--dashboard-border);
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .nav-item {
+    flex: 1 1 auto;
+    min-width: 140px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-header {
+    padding: 1rem;
+  }
+
+  .nav-item span:not(.nav-icon) {
+    font-size: 0.875rem;
+  }
+}
