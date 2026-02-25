@@ -1,0 +1,16 @@
+<aside class="sidebar-menu" aria-label="Menú de proyectos">
+  <div class="sidebar-header">
+    <h2 class="sidebar-title">Projects</h2>
+    <div class="header-actions">
+      @if (showBackButton) {
+        <a routerLink="/welcome" class="back-btn" aria-label="Volver a Welcome">Back</a>
+      }
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <a routerLink="/random-roulette" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon" aria-hidden="true">🎡</span>
+      <span>Random Roulette</span>
+    </a>
+  </nav>
+</aside>

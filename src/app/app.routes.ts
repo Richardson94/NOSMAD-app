@@ -3,15 +3,22 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'projects/random-roulette',
+    redirectTo: 'welcome',
     pathMatch: 'full',
   },
   {
-    path: 'projects/random-roulette',
+    path: 'welcome',
+    loadComponent: () =>
+      import('./components/welcome/welcome.component').then(
+        (m) => m.WelcomeComponent
+      ),
+  },
+  {
+    path: 'random-roulette',
     loadComponent: () =>
       import('./projects/random-roulette/random-roulette.component').then(
         (m) => m.RandomRouletteComponent
       ),
   },
-  { path: '**', redirectTo: 'projects/random-roulette' },
+  { path: '**', redirectTo: 'welcome' },
 ];

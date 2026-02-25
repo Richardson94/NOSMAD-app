@@ -1,21 +1,11 @@
 <div class="dashboard">
-  <main class="dashboard-content" role="main">
-    <router-outlet />
-  </main>
-  <aside class="dashboard-sidebar" aria-label="Menú de proyectos">
-    <div class="sidebar-header">
-      <h2 class="sidebar-title">Projects</h2>
+  <div class="dashboard-body">
+    <main class="dashboard-content" role="main">
+      <router-outlet />
+    </main>
+    <div class="dashboard-sidebar">
+      <app-sidebar-menu />
     </div>
-    <nav class="sidebar-nav">
-      <a
-        routerLink="/projects/random-roulette"
-        routerLinkActive="active"
-        class="nav-item"
-      >
-        <span class="nav-icon" aria-hidden="true">🎡</span>
-        <span>Random Roulette</span>
-      </a>
-      <!-- Aquí agregarás más proyectos con routerLink a sus rutas -->
-    </nav>
-  </aside>
+  </div>
+  <app-footer />
 </div>
