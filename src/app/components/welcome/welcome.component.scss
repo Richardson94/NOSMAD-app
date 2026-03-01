@@ -89,9 +89,22 @@
     }
 
     &--about,
-    &--hobbies {
+    &--hobbies,
+    &--why {
       // Modifiers if needed
     }
+  }
+
+  &__mission {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--dashboard-text);
+  }
+
+  &__mission-highlight {
+    color: var(--dashboard-accent);
+    font-weight: 600;
   }
 
   &__about-list {
