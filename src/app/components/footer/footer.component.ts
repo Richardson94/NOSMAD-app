@@ -8,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
-  year = new Date().getFullYear();
+  public year = new Date().getFullYear();
+  public version: string;
+
+  private readonly _deploy:number;
+  private readonly _features:number;
+  constructor() {
+    this._deploy = 8;
+    this._features = 1
+    this.version = `0.${this._features}.${this._deploy}`;
+  }
+
 }
