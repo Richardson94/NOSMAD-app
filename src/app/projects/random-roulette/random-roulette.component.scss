@@ -63,14 +63,12 @@ $wheel-size: min(280px, 80vmin);
   }
 }
 
-/* Cuña sólida por segmento (color entero, sin degradado) */
-.roulette__segment {
+/* Fondo circular: porciones sólidas con conic-gradient (círculo perfecto para 1, 2, 3, N opciones) */
+.roulette__wheel-bg {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 50%;
-  height: 50%;
-  transform-origin: 0 0;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -84,6 +82,7 @@ $wheel-size: min(280px, 80vmin);
   align-items: center;
   padding-left: 8%;
   pointer-events: none;
+  z-index: 1;
 }
 
 .roulette__segment-text {
@@ -119,7 +118,19 @@ $wheel-size: min(280px, 80vmin);
 }
 
 .roulette__options-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 0.25rem;
+}
+
+.roulette__options-swatch {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.2rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .roulette__winner {

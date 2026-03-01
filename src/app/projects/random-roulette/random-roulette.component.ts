@@ -8,15 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './random-roulette.component.scss',
 })
 export class RandomRouletteComponent {
-  /** Array de opciones: puede tener N elementos. */
-  options: string[] = [
-    'A',
-    'B',
-    'C',
-    'D'    
-  ];
+  public options: string[] = ['A',"B","C", "D"];
 
-  /** Paleta de colores sólidos (se repite si hay más opciones que colores). */
   readonly segmentColors = [
     '#a78bfa',
     '#34d399',
@@ -30,32 +23,38 @@ export class RandomRouletteComponent {
     '#14b8a6',
   ];
 
-  spinning = false;
-  winner: string | null = null;
-  currentRotation = 0;
-  wheelRotation = 0;
+  public spinning = false;
+  public winner: string | null = null;
+  public currentRotation = 0;
+  public wheelRotation = 0;
 
-  get count(): number {
+  public get count(): number {
     return Math.max(1, this.options.length);
   }
 
-  get segmentAngle(): number {
+  public get segmentAngle(): number {
     return 360 / this.count;
   }
 
-  getSegmentColor(index: number): string {
+  public getSegmentColor(index: number): string {
     return this.segmentColors[index % this.segmentColors.length];
   }
 
-  /** clip-path para un segmento en forma de cuña (wedge). */
-  getSegmentClipPath(): string {
-    const rad = (this.segmentAngle * Math.PI) / 180;
-    const x = 100 * Math.cos(rad);
-    const y = 100 * Math.sin(rad);
-    return `polygon(0 0, 100% 0, ${x}% ${y}%)`;
+  /** Fondo circular con porciones sólidas (conic-gradient) para cualquier N. */
+  public get wheelGradient(): string {
+    const n = this.count;
+    const step = 360 / n;
+    const parts: string[] = [];
+    for (let i = 0; i < n; i++) {
+      const start = i * step;
+      const end = (i + 1) * step;
+      const color = this.getSegmentColor(i);
+      parts.push(`${color} ${start}deg ${end}deg`);
+    }
+    return `conic-gradient(from 0deg, ${parts.join(', ')})`;
   }
 
-  spin(): void {
+  public spin(): void {
     if (this.spinning || this.count === 0) return;
     this.spinning = true;
     this.winner = null;
@@ -73,7 +72,6 @@ export class RandomRouletteComponent {
     this.wheelRotation = this.currentRotation;
   }
 
-  /** Índice del segmento que está bajo el puntero (arriba = 270°) según la rotación actual. */
   getWinnerIndexFromRotation(rotationDeg: number): number {
     const r = ((rotationDeg % 360) + 360) % 360;
     const angleInWheelAtPointer = (270 - r + 360) % 360;

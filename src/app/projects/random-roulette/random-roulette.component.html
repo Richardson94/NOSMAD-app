@@ -16,14 +16,7 @@
       (keydown.enter)="spin()"
       (keydown.space)="spin(); $event.preventDefault()"
     >
-      @for (option of options; track option; let i = $index) {
-        <div
-          class="roulette__segment"
-          [style.background]="getSegmentColor(i)"
-          [style.transform]="'rotate(' + (i * segmentAngle) + 'deg)'"
-          [style.clip-path]="getSegmentClipPath()"
-        ></div>
-      }
+      <div class="roulette__wheel-bg" [style.background]="wheelGradient"></div>
       @for (option of options; track option; let i = $index) {
         <div
           class="roulette__segment-label"
@@ -38,8 +31,11 @@
   <div class="roulette__options">
     <p class="roulette__options-title">Options ({{ count }}):</p>
     <ul class="roulette__options-list">
-      @for (option of options; track option) {
-        <li class="roulette__options-item">{{ option }}</li>
+      @for (option of options; track option; let i = $index) {
+        <li class="roulette__options-item">
+          <span class="roulette__options-swatch" [style.background-color]="getSegmentColor(i)" aria-hidden="true"></span>
+          {{ option }}
+        </li>
       }
     </ul>
   </div>
