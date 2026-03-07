@@ -69,6 +69,7 @@ export class RandomRouletteComponent {
       (pointerAngle - segmentCenter);
 
     this.currentRotation = finalRotation;
+    console.log(this.currentRotation);
     this.wheelRotation = this.currentRotation;
   }
 

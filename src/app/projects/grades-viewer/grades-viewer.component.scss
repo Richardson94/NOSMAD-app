@@ -1,0 +1,28 @@
+.grades-viewer {
+  padding: 1.5rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--dashboard-text, #e4e4e7);
+}
+
+.grades-viewer__status {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 600;
+  color: var(--dashboard-accent, #a78bfa);
+  margin-bottom: 0.5rem;
+}
+
+.grades-viewer__message {
+  margin: 0 0 1rem 0;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--dashboard-muted, #71717a);
+}
+
+.grades-viewer__emoji {
+  font-size: 3rem;
+  line-height: 1;
+}

@@ -20,5 +20,12 @@ export const routes: Routes = [
         (m) => m.RandomRouletteComponent
       ),
   },
+  {
+    path: 'grades-viewer',
+    loadComponent: () =>
+      import('./projects/grades-viewer/grades-viewer.component').then(
+        (m) => m.GradesViewerComponent
+      ),
+  },
   { path: '**', redirectTo: 'welcome' },
 ];
