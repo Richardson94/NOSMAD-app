@@ -104,6 +104,7 @@ $bg: var(--dashboard-content-bg, #16161d);
   font-weight: 600;
   line-height: 1.35;
   word-break: break-word;
+  text-align: center;
 }
 
 .sd__meta {
@@ -114,59 +115,177 @@ $bg: var(--dashboard-content-bg, #16161d);
 
 .sd__body { padding: 0; }
 
-.sd__eval-block { margin-bottom: 1.5rem; }
+.sd__tabs-wrap {
+  margin-bottom: 1.5rem;
+  border: 1px solid $border;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
 
-.sd__eval-title {
-  margin: 0 0 0.5rem 0;
+.sd__tabs {
+  display: flex;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  gap: 0.125rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid $border;
+}
+
+.sd__tab {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 0.25rem 0.25rem 0 0;
+  color: $muted;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  &:hover {
+    color: $text;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  &--active {
+    color: $accent;
+    background: $bg;
+    border-color: $border;
+    border-bottom: 1px solid $bg;
+    margin-bottom: -1px;
+    font-weight: 600;
+  }
+}
+
+.sd__tab-panel {
+  padding: 1.25rem;
+  background: $bg;
+}
+
+.sd__tab-content {
+  padding: 0;
+}
+
+.sd__grade-tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.sd__mini-table {
+  border: 1px solid $border;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.sd__mini-table-header {
+  padding: 0.5rem 0.75rem;
   font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: $muted;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid $border;
+  text-align: center;
 }
 
-.sd__grades-grid {
+.sd__mini-table-body {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.5rem 1.25rem;
 }
 
-.sd__grade-row { display: contents; }
+.sd__mini-table--2x2 {
+  grid-template-columns: 1fr 1fr;
+}
 
-.sd__grade-label { font-size: 0.9375rem; color: $text; }
+.sd__mini-table--1col {
+  grid-template-columns: 1fr;
+}
 
-.sd__grade-value { font-size: 0.9375rem; font-weight: 600; color: $accent; text-align: right; }
+.sd__mini-table-row {
+  display: contents;
+}
+
+.sd__mini-table-row > .sd__mini-table-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $accent;
+}
+
+.sd__mini-table-cell--head {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $muted;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid $border;
+}
+
+.sd__mini-table--2x2 .sd__mini-table-cell:nth-child(-n+2) {
+  border-bottom: 1px solid $border;
+}
+
+.sd__mini-table--2x2 .sd__mini-table-cell:nth-child(odd) {
+  border-right: 1px solid $border;
+}
+
+.sd__mini-table--1col .sd__mini-table-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $accent;
+}
 
 .sd__final-grade {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  margin-top: 1.25rem;
+  margin: 1rem 0 1.25rem 0;
   background: rgba(167, 139, 250, 0.1);
   border: 1px solid rgba(167, 139, 250, 0.25);
   border-radius: 0.5rem;
+
+  &--top {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
 }
 
 .sd__final-label { font-weight: 600; color: $text; }
 
 .sd__final-value { font-size: 1.25rem; font-weight: 700; color: $accent; }
 
-.sd__comments { margin-top: 1.5rem; }
-
 .sd__comment-btn {
   display: block;
-  width: 100%;
-  padding: 0.875rem 1rem;
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid $border;
+  width: fit-content;
+  margin: 1rem auto 0;
+  padding: 0.75rem 1.5rem;
+  background: rgba(167, 139, 250, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.4);
   border-radius: 0.5rem;
   color: $accent;
   font-size: 1rem;
-  text-align: left;
+  font-weight: 600;
+  text-align: center;
   cursor: pointer;
-  &:hover { background: rgba(167, 139, 250, 0.12); }
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.15);
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  &:hover {
+    background: rgba(167, 139, 250, 0.22);
+    border-color: rgba(167, 139, 250, 0.55);
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.25);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .sd__modal-overlay {

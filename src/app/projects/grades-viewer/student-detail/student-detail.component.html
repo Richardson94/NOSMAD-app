@@ -22,7 +22,7 @@
         ‹
       </button>
       <button type="button" class="sd__back-btn" (click)="goBack()">
-        Volver
+        Course
       </button>
       <button
         type="button"
@@ -42,52 +42,126 @@
         <p class="sd__meta">{{ c.teacher | titlecase }} · {{ c.schedule }} · {{ c.bimester }}</p>
       }
 
+      @if (showTopFinalGrade()) {
+        <div class="sd__final-grade sd__final-grade--top">
+          <span class="sd__final-label">Final grade</span>
+          <span class="sd__final-value">{{ overallFinalGrade() }}</span>
+        </div>
+      }
+
       <div class="sd__body">
-        <div class="sd__eval-block">
-          <h2 class="sd__eval-title">Evaluación 1</h2>
-          <div class="sd__grades-grid">
-            @for (k of getEvalKeys(student()!.eval1); track k) {
-              <div class="sd__grade-row">
-                <span class="sd__grade-label">{{ gradeLabels[k] }}</span>
-                <span class="sd__grade-value">{{ student()!.eval1[k] }}</span>
-              </div>
+        <div class="sd__tabs-wrap">
+          <div class="sd__tabs">
+            <button
+              type="button"
+              class="sd__tab"
+              [class.sd__tab--active]="activeTab() === 1"
+              (click)="activeTab.set(1)"
+            >
+              Evaluación 1
+            </button>
+            <button
+              type="button"
+              class="sd__tab"
+              [class.sd__tab--active]="activeTab() === 2"
+              (click)="activeTab.set(2)"
+            >
+              Evaluación 2
+            </button>
+          </div>
+
+        <div class="sd__tab-panel">
+        @if (activeTab() === 1) {
+          <div class="sd__tab-content">
+            <div class="sd__final-grade">
+              <span class="sd__final-label">grade</span>
+              <span class="sd__final-value">{{ getEvalGrade(student()!.eval1) }}</span>
+            </div>
+            <div class="sd__grade-tables">
+              @for (group of gradeTables; track group.name) {
+                <div class="sd__mini-table">
+                  <div class="sd__mini-table-header">{{ group.name }}</div>
+                  @if (group.cols) {
+                    <div class="sd__mini-table-body sd__mini-table--2x2">
+                      <div class="sd__mini-table-row">
+                        @for (h of group.cols.headers; track h) {
+                          <div class="sd__mini-table-cell sd__mini-table-cell--head">{{ h }}</div>
+                        }
+                      </div>
+                      <div class="sd__mini-table-row">
+                        @for (k of group.cols.keys; track k) {
+                          <div class="sd__mini-table-cell">{{ student()!.eval1[k] }}</div>
+                        }
+                      </div>
+                    </div>
+                  } @else if (group.single) {
+                    <div class="sd__mini-table-body sd__mini-table--1col">
+                      <div class="sd__mini-table-cell">{{ student()!.eval1[group.single.key] }}</div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+            @if (hasComment(student()!, 1)) {
+              <button
+                type="button"
+                class="sd__comment-btn"
+                (click)="openCommentModal(student()!.comm1)"
+              >
+                See Comment
+              </button>
             }
           </div>
-        </div>
-
-        <div class="sd__eval-block">
-          <h2 class="sd__eval-title">Evaluación 2</h2>
-          <div class="sd__grades-grid">
-            @for (k of getEvalKeys(student()!.eval2); track k) {
-              <div class="sd__grade-row">
-                <span class="sd__grade-label">{{ gradeLabels[k] }}</span>
-                <span class="sd__grade-value">{{ student()!.eval2[k] }}</span>
-              </div>
-            }
-          </div>
-        </div>
-
-        <div class="sd__final-grade">
-          <span class="sd__final-label">Nota final</span>
-          <span class="sd__final-value">0</span>
-        </div>
-
-        @if (hasComments(student()!)) {
-          <div class="sd__comments">
-            <h2 class="sd__eval-title">Comentarios</h2>
-            @for (c of getComments(student()!); track c.label) {
-              <button type="button" class="sd__comment-btn" (click)="openCommentModal(c.text)">
-                {{ c.label }}
+        } @else {
+          <div class="sd__tab-content">
+            <div class="sd__final-grade">
+              <span class="sd__final-label">Grade</span>
+              <span class="sd__final-value">{{ getEvalGrade(student()!.eval2) }}</span>
+            </div>
+            <div class="sd__grade-tables">
+              @for (group of gradeTables; track group.name) {
+                <div class="sd__mini-table">
+                  <div class="sd__mini-table-header">{{ group.name }}</div>
+                  @if (group.cols) {
+                    <div class="sd__mini-table-body sd__mini-table--2x2">
+                      <div class="sd__mini-table-row">
+                        @for (h of group.cols.headers; track h) {
+                          <div class="sd__mini-table-cell sd__mini-table-cell--head">{{ h }}</div>
+                        }
+                      </div>
+                      <div class="sd__mini-table-row">
+                        @for (k of group.cols.keys; track k) {
+                          <div class="sd__mini-table-cell">{{ student()!.eval2[k] }}</div>
+                        }
+                      </div>
+                    </div>
+                  } @else if (group.single) {
+                    <div class="sd__mini-table-body sd__mini-table--1col">
+                      <div class="sd__mini-table-cell">{{ student()!.eval2[group.single.key] }}</div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+            @if (hasComment(student()!, 2)) {
+              <button
+                type="button"
+                class="sd__comment-btn"
+                (click)="openCommentModal(student()!.comm2)"
+              >
+                See Comment
               </button>
             }
           </div>
         }
+        </div>
+        </div>
       </div>
     </main>
   } @else {
     <div class="sd__error">
       <p>Estudiante no encontrado</p>
-      <a routerLink="/grades-viewer" class="sd__back-link">Volver</a>
+      <a routerLink="/grades-viewer" class="sd__back-link">Course</a>
     </div>
   }
 </div>
@@ -96,7 +170,7 @@
   <div class="sd__modal-overlay" (click)="closeCommentModal()">
     <div class="sd__modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
       <header class="sd__modal-header">
-        <h3 class="sd__modal-title">Comentario</h3>
+        <h3 class="sd__modal-title">Comment</h3>
         <button type="button" class="sd__close-btn" aria-label="Cerrar" (click)="closeCommentModal()">✕</button>
       </header>
       <div class="sd__modal-body">

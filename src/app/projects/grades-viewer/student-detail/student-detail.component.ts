@@ -2,7 +2,23 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { GradesDataService } from '../services/grades-data.service';
-import { Student, EvalItem, GRADE_LABELS } from '../models/grades.model';
+import { Student, EvalItem } from '../models/grades.model';
+
+interface GradeTableGroup {
+  name: string;
+  cols?: { headers: string[]; keys: (keyof EvalItem)[] };
+  single?: { key: keyof EvalItem };
+}
+
+const GRADE_TABLES: GradeTableGroup[] = [
+  { name: 'Listening', cols: { headers: ['Ov', 'Te'], keys: ['L_ov', 'L_te'] } },
+  { name: 'Grammar', cols: { headers: ['Ov', 'Te'], keys: ['G_ov', 'G_te'] } },
+  { name: 'Vocabulary', cols: { headers: ['Ov', 'Te'], keys: ['V_ov', 'V_te'] } },
+  { name: 'Reading', cols: { headers: ['Ov', 'Te'], keys: ['R_ov', 'R_te'] } },
+  { name: 'Writing', cols: { headers: ['Ov', 'Te'], keys: ['W_ov', 'W_te'] } },
+  { name: 'Speaking', single: { key: 'k1' } },
+  { name: 'Absences', single: { key: 'abs' } },
+];
 
 @Component({
   selector: 'app-student-detail',
@@ -13,7 +29,7 @@ import { Student, EvalItem, GRADE_LABELS } from '../models/grades.model';
 })
 export class StudentDetailComponent implements OnInit {
   readonly modalComment = signal<string | null>(null);
-  readonly gradeLabels = GRADE_LABELS;
+  readonly gradeTables = GRADE_TABLES;
 
   readonly courseKey = signal('');
   readonly studentId = signal(0);
@@ -36,6 +52,24 @@ export class StudentDetailComponent implements OnInit {
     !!this.gradesService.getNextStudent(this.courseKey(), this.studentId())
   );
 
+  readonly activeTab = signal<1 | 2>(1);
+
+  readonly showTopFinalGrade = computed(() => {
+    const s = this.student();
+    if (!s) return false;
+    const g1 = this.getEvalGrade(s.eval1);
+    const g2 = this.getEvalGrade(s.eval2);
+    return g1 > 0 && g2 > 0;
+  });
+
+  readonly overallFinalGrade = computed(() => {
+    const s = this.student();
+    if (!s || !this.showTopFinalGrade()) return 0;
+    const g1 = this.getEvalGrade(s.eval1);
+    const g2 = this.getEvalGrade(s.eval2);
+    return Math.round((g1 + g2) / 2);
+  });
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -48,6 +82,7 @@ export class StudentDetailComponent implements OnInit {
       const id = params.get('studentId');
       this.courseKey.set(key ?? '');
       this.studentId.set(id ? parseFloat(id) : 0);
+      this.activeTab.set(1);
     });
   }
 
@@ -73,19 +108,21 @@ export class StudentDetailComponent implements OnInit {
     this.router.navigate(['/grades-viewer', 'student', this.courseKey(), id.toString()]);
   }
 
-  getEvalKeys(evalObj: EvalItem): (keyof EvalItem)[] {
-    return Object.keys(evalObj) as (keyof EvalItem)[];
+  hasComment(student: Student, evalNum: 1 | 2): boolean {
+    const comm = evalNum === 1 ? student.comm1 : student.comm2;
+    return !!comm?.trim();
   }
 
-  hasComments(student: Student): boolean {
-    return !!(student.comm1?.trim() || student.comm2?.trim());
-  }
-
-  getComments(student: Student): { label: string; text: string }[] {
-    const comments: { label: string; text: string }[] = [];
-    if (student.comm1?.trim()) comments.push({ label: 'Comentario 1', text: student.comm1 });
-    if (student.comm2?.trim()) comments.push({ label: 'Comentario 2', text: student.comm2 });
-    return comments;
+  /** Calcula la nota final de una evaluación (0-100) a partir de Ov/Te (0-20 c/u) y k1 (0-100). */
+  getEvalGrade(evalItem: EvalItem): number {
+    const ovTeKeys: (keyof EvalItem)[] = ['L_ov', 'L_te', 'G_ov', 'G_te', 'V_ov', 'V_te', 'R_ov', 'R_te', 'W_ov', 'W_te'];
+    const ovTeSum = ovTeKeys.reduce((s, k) => s + (evalItem[k] ?? 0), 0);
+    const k1 = evalItem.k1 ?? 0;
+    const maxOvTe = 200;
+    const maxK1 = 100;
+    const total = ovTeSum + k1;
+    const maxTotal = maxOvTe + maxK1;
+    return maxTotal > 0 ? Math.round((total / maxTotal) * 100) : 0;
   }
 
   openCommentModal(text: string): void {

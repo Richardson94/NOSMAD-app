@@ -18,18 +18,14 @@ export class GradesDataService {
   });
 
   constructor(private http: HttpClient) {
-    console.log('🚀 Rc_logger 🚀 | GradesDataService constructor - HTTP request starting');
     this.http
       .get<GradesData>('/projects/grades-viewer/data/information.json')
       .subscribe({
         next: (d) => {
-          const keys = d ? Object.keys(d.courses) : [];
-          console.log('🚀 Rc_logger 🚀 | GradesDataService - data loaded OK, courses:', keys.length, keys);
           this.data.set(d);
           this.loading.set(false);
         },
-        error: (err) => {
-          console.log('🚀 Rc_logger 🚀 | Grades data load error', err);
+        error: () => {
           this.error.set('No se pudo cargar la información de notas.');
           this.loading.set(false);
         },
