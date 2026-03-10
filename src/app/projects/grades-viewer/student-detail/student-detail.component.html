@@ -1,0 +1,107 @@
+<div class="sd">
+  @if (gradesService.isLoading()) {
+    <div class="sd__loading">
+      <span class="sd__spinner" aria-hidden="true"></span>
+      <p>Cargando...</p>
+    </div>
+  } @else if (gradesService.loadError()) {
+    <div class="sd__error">
+      <span aria-hidden="true">⚠️</span>
+      <p>{{ gradesService.loadError() }}</p>
+      <a routerLink="/grades-viewer" class="sd__back-link">Curso</a>
+    </div>
+  } @else if (student()) {
+    <header class="sd__header">
+      <button
+        type="button"
+        class="sd__nav-btn"
+        [disabled]="!hasPrev()"
+        (click)="goPrev()"
+        aria-label="Estudiante anterior"
+      >
+        ‹
+      </button>
+      <button type="button" class="sd__back-btn" (click)="goBack()">
+        Volver
+      </button>
+      <button
+        type="button"
+        class="sd__nav-btn"
+        [disabled]="!hasNext()"
+        (click)="goNext()"
+        aria-label="Siguiente estudiante"
+      >
+        ›
+      </button>
+    </header>
+
+    <main class="sd__main">
+      <h1 class="sd__title">{{ student()!.name | titlecase }}</h1>
+
+      @if (course(); as c) {
+        <p class="sd__meta">{{ c.teacher | titlecase }} · {{ c.schedule }} · {{ c.bimester }}</p>
+      }
+
+      <div class="sd__body">
+        <div class="sd__eval-block">
+          <h2 class="sd__eval-title">Evaluación 1</h2>
+          <div class="sd__grades-grid">
+            @for (k of getEvalKeys(student()!.eval1); track k) {
+              <div class="sd__grade-row">
+                <span class="sd__grade-label">{{ gradeLabels[k] }}</span>
+                <span class="sd__grade-value">{{ student()!.eval1[k] }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="sd__eval-block">
+          <h2 class="sd__eval-title">Evaluación 2</h2>
+          <div class="sd__grades-grid">
+            @for (k of getEvalKeys(student()!.eval2); track k) {
+              <div class="sd__grade-row">
+                <span class="sd__grade-label">{{ gradeLabels[k] }}</span>
+                <span class="sd__grade-value">{{ student()!.eval2[k] }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="sd__final-grade">
+          <span class="sd__final-label">Nota final</span>
+          <span class="sd__final-value">0</span>
+        </div>
+
+        @if (hasComments(student()!)) {
+          <div class="sd__comments">
+            <h2 class="sd__eval-title">Comentarios</h2>
+            @for (c of getComments(student()!); track c.label) {
+              <button type="button" class="sd__comment-btn" (click)="openCommentModal(c.text)">
+                {{ c.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </main>
+  } @else {
+    <div class="sd__error">
+      <p>Estudiante no encontrado</p>
+      <a routerLink="/grades-viewer" class="sd__back-link">Volver</a>
+    </div>
+  }
+</div>
+
+@if (modalComment()) {
+  <div class="sd__modal-overlay" (click)="closeCommentModal()">
+    <div class="sd__modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+      <header class="sd__modal-header">
+        <h3 class="sd__modal-title">Comentario</h3>
+        <button type="button" class="sd__close-btn" aria-label="Cerrar" (click)="closeCommentModal()">✕</button>
+      </header>
+      <div class="sd__modal-body">
+        <p class="sd__modal-text">{{ modalComment() }}</p>
+      </div>
+    </div>
+  </div>
+}

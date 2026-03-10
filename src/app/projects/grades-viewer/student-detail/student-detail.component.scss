@@ -1,0 +1,221 @@
+$accent: var(--dashboard-accent, #a78bfa);
+$text: var(--dashboard-text, #e4e4e7);
+$muted: var(--dashboard-muted, #71717a);
+$border: var(--dashboard-border, rgba(255, 255, 255, 0.06));
+$bg: var(--dashboard-content-bg, #16161d);
+
+.sd {
+  min-height: 100%;
+  padding: 1rem 1.25rem 1.5rem;
+  color: $text;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sd__loading, .sd__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 0.75rem;
+  text-align: center;
+  color: $muted;
+}
+
+.sd__spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid $border;
+  border-top-color: $accent;
+  border-radius: 50%;
+  animation: sd-spin 0.8s linear infinite;
+}
+
+@keyframes sd-spin {
+  to { transform: rotate(360deg); }
+}
+
+.sd__back-link {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: $accent;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 0.5rem;
+  &:hover { background: rgba(167, 139, 250, 0.1); }
+}
+
+.sd__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid $border;
+}
+
+.sd__nav-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $border;
+  border-radius: 0.5rem;
+  color: $text;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  &:hover:not(:disabled) {
+    background: rgba(167, 139, 250, 0.15);
+    border-color: rgba(167, 139, 250, 0.35);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.sd__back-btn {
+  padding: 0.5rem 1.25rem;
+  background: rgba(167, 139, 250, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  border-radius: 0.5rem;
+  color: $accent;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover { background: rgba(167, 139, 250, 0.25); }
+}
+
+.sd__main {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.sd__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.sd__meta {
+  margin: 0 0 1.5rem 0;
+  font-size: 0.875rem;
+  color: $muted;
+}
+
+.sd__body { padding: 0; }
+
+.sd__eval-block { margin-bottom: 1.5rem; }
+
+.sd__eval-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $muted;
+}
+
+.sd__grades-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1.25rem;
+}
+
+.sd__grade-row { display: contents; }
+
+.sd__grade-label { font-size: 0.9375rem; color: $text; }
+
+.sd__grade-value { font-size: 0.9375rem; font-weight: 600; color: $accent; text-align: right; }
+
+.sd__final-grade {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 0.5rem;
+}
+
+.sd__final-label { font-weight: 600; color: $text; }
+
+.sd__final-value { font-size: 1.25rem; font-weight: 700; color: $accent; }
+
+.sd__comments { margin-top: 1.5rem; }
+
+.sd__comment-btn {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  margin-top: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $border;
+  border-radius: 0.5rem;
+  color: $accent;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  &:hover { background: rgba(167, 139, 250, 0.12); }
+}
+
+.sd__modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.sd__modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.sd__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid $border;
+}
+
+.sd__modal-title { margin: 0; font-size: 1rem; font-weight: 600; }
+
+.sd__close-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: $muted;
+  font-size: 1.25rem;
+  cursor: pointer;
+  &:hover { color: $text; }
+}
+
+.sd__modal-body { padding: 1rem; overflow-y: auto; }
+
+.sd__modal-text { margin: 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; }

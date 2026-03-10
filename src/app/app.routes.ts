@@ -23,9 +23,25 @@ export const routes: Routes = [
   {
     path: 'grades-viewer',
     loadComponent: () =>
-      import('./projects/grades-viewer/grades-viewer.component').then(
-        (m) => m.GradesViewerComponent
+      import('./projects/grades-viewer/grades-viewer-shell.component').then(
+        (m) => m.GradesViewerShellComponent
       ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./projects/grades-viewer/grades-viewer.component').then(
+            (m) => m.GradesViewerComponent
+          ),
+      },
+      {
+        path: 'student/:courseKey/:studentId',
+        loadComponent: () =>
+          import('./projects/grades-viewer/student-detail/student-detail.component').then(
+            (m) => m.StudentDetailComponent
+          ),
+      },
+    ],
   },
   { path: '**', redirectTo: 'welcome' },
 ];

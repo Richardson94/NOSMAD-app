@@ -10,7 +10,6 @@
       <p>{{ error() }}</p>
     </div>
   } @else {
-    <!-- Course selector -->
     <section class="gv__section">
       <h2 class="gv__section-title">Curso</h2>
       <select
@@ -29,7 +28,6 @@
     </section>
 
     @if (selectedCourse(); as course) {
-      <!-- Student selector -->
       <section class="gv__section">
         <div class="gv__section-header">
           <h2 class="gv__section-title">Estudiante</h2>
@@ -62,7 +60,6 @@
               <button
                 type="button"
                 class="gv__student-btn"
-                [class.gv__student-btn--active]="selectedStudent()?.id === student.id"
                 (click)="selectStudent(student)"
               >
                 <span class="gv__student-name-top">{{ splitName(student.name)[0] | titlecase }}</span>
@@ -76,102 +73,6 @@
           <p class="gv__no-results">No se ha encontrado resultados con esa busqueda</p>
         }
       </section>
-
-      <!-- Full-screen student grades view -->
-      @if (selectedStudent(); as student) {
-        <div class="gv__overlay" (click)="closeStudentView()">
-          <article
-            class="gv__student-card"
-            role="dialog"
-            aria-labelledby="gv-student-title"
-            (click)="$event.stopPropagation()"
-          >
-            <header class="gv__card-header">
-              <h3 id="gv-student-title" class="gv__card-title">{{ student.name | titlecase }}</h3>
-              <button
-                type="button"
-                class="gv__close-btn"
-                aria-label="Cerrar"
-                (click)="closeStudentView()"
-              >
-                ✕
-              </button>
-            </header>
-
-            <div class="gv__card-body">
-              <!-- Eval 1 -->
-              <div class="gv__eval-block">
-                <h4 class="gv__eval-title">Evaluación 1</h4>
-                <div class="gv__grades-grid">
-                  @for (k of getEvalKeys(student.eval1); track k) {
-                    <div class="gv__grade-row">
-                      <span class="gv__grade-label">{{ gradeLabels[k] }}</span>
-                      <span class="gv__grade-value">{{ student.eval1[k] }}</span>
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <!-- Eval 2 -->
-              <div class="gv__eval-block">
-                <h4 class="gv__eval-title">Evaluación 2</h4>
-                <div class="gv__grades-grid">
-                  @for (k of getEvalKeys(student.eval2); track k) {
-                    <div class="gv__grade-row">
-                      <span class="gv__grade-label">{{ gradeLabels[k] }}</span>
-                      <span class="gv__grade-value">{{ student.eval2[k] }}</span>
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <!-- Nota final placeholder -->
-              <div class="gv__final-grade">
-                <span class="gv__final-label">Nota final</span>
-                <span class="gv__final-value">0</span>
-              </div>
-
-              <!-- Comments -->
-              @if (hasComments(student)) {
-                <div class="gv__comments">
-                  <h4 class="gv__eval-title">Comentarios</h4>
-                  @for (c of getComments(student); track c.label) {
-                    <button
-                      type="button"
-                      class="gv__comment-btn"
-                      (click)="openCommentModal(c.text)"
-                    >
-                      {{ c.label }}
-                    </button>
-                  }
-                </div>
-              }
-            </div>
-          </article>
-        </div>
-      }
     }
   }
 </div>
-
-<!-- Comments modal -->
-@if (modalComment()) {
-  <div class="gv__modal-overlay" (click)="closeCommentModal()">
-    <div class="gv__modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
-      <header class="gv__modal-header">
-        <h4 class="gv__modal-title">Comentario</h4>
-        <button
-          type="button"
-          class="gv__close-btn"
-          aria-label="Cerrar"
-          (click)="closeCommentModal()"
-        >
-          ✕
-        </button>
-      </header>
-      <div class="gv__modal-body">
-        <p class="gv__modal-text">{{ modalComment() }}</p>
-      </div>
-    </div>
-  </div>
-}
