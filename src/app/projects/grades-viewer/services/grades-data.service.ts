@@ -17,19 +17,25 @@ export class GradesDataService {
     return d ? Object.keys(d.courses) : [];
   });
 
+  private readonly jsonUrl = '/projects/grades-viewer/data/information.json';
+
   constructor(private http: HttpClient) {
-    this.http
-      .get<GradesData>('/projects/grades-viewer/data/information.json')
-      .subscribe({
-        next: (d) => {
-          this.data.set(d);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.error.set('No se pudo cargar la información de notas.');
-          this.loading.set(false);
-        },
-      });
+    this.loadDemo();
+  }
+
+  loadDemo(): void {
+    this.loading.set(true);
+    this.error.set(null);
+    this.http.get<GradesData>(this.jsonUrl).subscribe({
+      next: (d) => {
+        this.data.set(d);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('No se pudo cargar la información de notas.');
+        this.loading.set(false);
+      },
+    });
   }
 
   getCourse(key: string): Course | null {

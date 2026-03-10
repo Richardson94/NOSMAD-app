@@ -113,16 +113,20 @@ export class StudentDetailComponent implements OnInit {
     return !!comm?.trim();
   }
 
-  /** Calcula la nota final de una evaluación (0-100) a partir de Ov/Te (0-20 c/u) y k1 (0-100). */
+  /**
+   * Grade por evaluación (0-100). Fórmula ROMA: (sum Ov + sum Te + k1) / 3.
+   * Ov/Te: L,G,V,R,W (cada skill 0-20). k1 (Speaking): 0-100.
+   */
   getEvalGrade(evalItem: EvalItem): number {
-    const ovTeKeys: (keyof EvalItem)[] = ['L_ov', 'L_te', 'G_ov', 'G_te', 'V_ov', 'V_te', 'R_ov', 'R_te', 'W_ov', 'W_te'];
-    const ovTeSum = ovTeKeys.reduce((s, k) => s + (evalItem[k] ?? 0), 0);
+    const codes = ['L', 'G', 'V', 'R', 'W'] as const;
+    let o = 0;
+    let t = 0;
+    codes.forEach((c) => {
+      o += evalItem[`${c}_ov`] ?? 0;
+      t += evalItem[`${c}_te`] ?? 0;
+    });
     const k1 = evalItem.k1 ?? 0;
-    const maxOvTe = 200;
-    const maxK1 = 100;
-    const total = ovTeSum + k1;
-    const maxTotal = maxOvTe + maxK1;
-    return maxTotal > 0 ? Math.round((total / maxTotal) * 100) : 0;
+    return Math.round((o + t + k1) / 3);
   }
 
   openCommentModal(text: string): void {

@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>SAN CALIXTO - Report Card System V5.1</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <style>
+
+        /* --- ESTILOS GENERALES DEL SISTEMA --- */
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; }
+
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; display: inline-block; font-size: 24px; }
+
+
+
+        /* Controles */
+
+        .controls { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+
+        .course-info { display: flex; flex-direction: row; align-items: center; gap: 15px; padding-right: 15px; border-right: 1px solid #ddd; flex-wrap: wrap; }
+
+        .course-info .field { display: flex; align-items: center; gap: 6px; }
+
+        .course-info .field label { font-size: 12px; color: #555; margin: 0; white-space: nowrap; }
+
+        .course-info select, .course-info input { min-width: 100px; }
+
+        .controls-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+        /* Accordion */
+        .accordion-group { display: flex; gap: 0; flex-wrap: wrap; align-items: flex-start; margin-top: 10px; }
+        .accordion-item { border: 1px solid #b2bec3; border-radius: 6px; overflow: hidden; margin-right: 8px; margin-bottom: 4px; }
+        .accordion-header { padding: 8px 14px; background: #dfe6e9; cursor: pointer; font-weight: bold; font-size: 12px; color: #2c3e50; user-select: none; display: flex; align-items: center; gap: 6px; }
+        .accordion-header:hover { background: #b2bec3; }
+        .accordion-header::before { content: '▶'; font-size: 10px; transition: transform 0.2s; margin-right: 6px; }
+        .accordion-item.open .accordion-header::before { transform: rotate(90deg); }
+        .accordion-content { display: none; padding: 10px 12px; background: #f8f9fa; border-top: 1px solid #ddd; gap: 8px; flex-wrap: wrap; }
+        .accordion-item.open .accordion-content { display: flex; }
+
+        button { padding: 8px 12px; cursor: pointer; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 12px; }
+
+        button.primary { background-color: #3498db; }
+
+        button.success { background-color: #27ae60; }
+
+        button.danger { background-color: #e74c3c; }
+
+        button.dark { background-color: #2c3e50; }
+
+        select, input[type="text"] { padding: 6px; border: 1px solid #ccc; border-radius: 4px; height: 32px; box-sizing: border-box; }
+
+        
+
+        .tabs { display: flex; margin-bottom: 0; }
+
+        .tab-btn { padding: 10px 20px; cursor: pointer; background: #dfe6e9; border: 1px solid #b2bec3; border-bottom: none; border-radius: 8px 8px 0 0; font-weight: bold; margin-right: 5px; color: #636e72; }
+
+        .tab-btn.active { background: white; color: #2980b9; border-top: 3px solid #2980b9; font-weight: 800; }
+
+
+
+        .table-container { background: white; padding: 15px; overflow-x: auto; border-top: 1px solid #b2bec3; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+
+        th, td { border: 1px solid #dcdcdc; padding: 5px; text-align: center; font-size: 13px; }
+
+        th { background-color: #2c3e50; color: white; }
+
+        td input { width: 35px; text-align: center; border: 1px solid transparent; }
+
+        td input:focus { border: 1px solid #3498db; background: #eaf4ff; outline: none; }
+
+        td input[type="number"] { -moz-appearance: textfield; }
+
+        td input[type="number"]::-webkit-outer-spin-button,
+
+        td input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        .avg-col { background-color: #d4edda; font-weight: bold; }
+
+        #tableBody tr:focus-within td { background-color: #e8f4fc; }
+
+        /* --- ESTILOS DE LA BOLETA (REPORT CARD) --- */
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; overflow-y: auto; }
+
+        
+
+        /* Hoja Media Carta Horizontal */
+
+        .sheet { background: white; width: 215mm; height: 140mm; padding: 5mm; box-sizing: border-box; font-family: Arial, sans-serif; position: relative; border: 1px solid #ccc; }
+
+        .main-frame { border: 2px solid #000; height: 100%; display: flex; flex-direction: column; }
+
+        
+
+        .rc-header { display: flex; border-bottom: 1px solid #000; height: 35px; align-items: center; }
+
+        .logo-box { width: 50px; height: 100%; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: #ccc; }
+
+        .title-box { flex-grow: 1; text-align: center; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+
+        
+
+        .info-row { display: flex; border-bottom: 1px solid #000; font-size: 10px; height: 18px; }
+
+        .info-label { font-weight: bold; padding: 2px 5px; border-right: 1px solid #000; width: 60px; display: flex; align-items: center; background: #f0f0f0; }
+
+        .info-val { flex-grow: 1; padding: 2px 5px; display: flex; align-items: center; font-weight: bold; text-transform: uppercase; }
+
+        .info-split { border-left: 1px solid #000; }
+
+        
+
+        .skills-container { display: flex; flex-grow: 0; }
+
+        .skill-col { width: 50%; }
+
+        .skill-col:first-child { border-right: 1px solid #000; }
+
+        
+
+        .skill-box { border-bottom: 1px solid #000; font-size: 9px; }
+
+        .skill-title { background: #e6e6e6; font-weight: bold; padding: 2px 5px; border-bottom: 1px solid #000; }
+
+        .sub-skill-row { display: flex; justify-content: space-between; align-items: center; height: 15px; border-bottom: 1px solid #ccc; }
+
+        .sub-skill-row:last-child { border-bottom: none; }
+
+        .sub-label { padding-left: 5px; }
+
+        .sub-grade { width: 30px; height: 100%; border-left: 1px solid #000; text-align: center; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+
+        
+
+        .comments-section { flex-grow: 1; display: flex; flex-direction: column; border-bottom: 1px solid #000; }
+
+        .comments-label { background: #e6e6e6; font-size: 10px; font-weight: bold; padding: 2px 5px; border-bottom: 1px solid #000; }
+
+        .comments-text { padding: 5px; font-size: 11px; font-family: 'Courier New', Courier, monospace; }
+
+        
+
+        .footer-section { height: 60px; position: relative; }
+
+        .absences-box { position: absolute; right: 0; top: -19px; display: flex; border: 1px solid #000; background: white; height: 18px; align-items: center; }
+
+        .abs-label { font-size: 9px; padding: 0 5px; font-weight: bold; }
+
+        .abs-val { width: 30px; border-left: 1px solid #000; text-align: center; font-weight: bold; font-size: 10px; }
+
+        
+
+        .bottom-grid { display: flex; height: 100%; }
+
+        .ref-box { width: 140px; border-right: 1px solid #000; font-size: 8px; padding: 5px; }
+
+        .sigs-box { flex-grow: 1; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 10px; position: relative; }
+
+        .sig-line { text-align: center; width: 120px; }
+
+        .sig-text { border-top: 1px solid #000; font-size: 9px; padding-top: 2px; color: #555; }
+
+        
+
+        /* Extra Eval 2 Box */
+
+        .extra-eval2 { 
+
+            position: absolute; 
+
+            top: -25px; left: 10px; 
+
+            background: #fff; border: 2px solid #000; 
+
+            padding: 2px 5px; display: flex; gap: 10px;
+
+            font-size: 10px; font-weight: bold;
+
+            z-index: 50;
+
+        }
+
+
+
+        .slogan { text-align: center; font-size: 9px; font-style: italic; margin-top: 2px; font-family: 'Comic Sans MS', cursive, sans-serif; }
+
+
+
+        /* Modal Comentarios */
+        .comment-modal-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
+        .comment-modal-box h3 { margin: 0 0 12px 0; color: #2c3e50; font-size: 16px; }
+        .comment-modal-box textarea { width: 100%; min-height: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 13px; resize: vertical; box-sizing: border-box; }
+        .comment-modal-box textarea:focus { border-color: #3498db; outline: none; }
+        .comment-modal-actions { margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end; }
+        .comment-cell { cursor: pointer; }
+        .comment-cell:hover { background-color: #f8f9fa; }
+
+
+
+        /* IMPRESION */
+
+        @media print {
+
+            @page { size: landscape; margin: 0; }
+
+            body * { visibility: hidden; }
+
+            .sheet, .sheet * { visibility: visible; }
+
+            .batch-print-area { position: absolute; left: 0; top: 0; width: 100%; }
+
+            .sheet { width: 100%; height: 100%; border: none; margin: 0; page-break-after: always; }
+
+            .no-print { display: none !important; }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <h1> FEPPA - SAN CALIXTO    GRADES V5.1-ROMA</h1>
+
+
+
+    <div class="controls">
+
+        <div class="course-info">
+            <div class="field"><label>Curso:</label><select id="courseSelect" onchange="changeCourse()"></select></div>
+            <div class="field"><label>Teacher:</label><input type="text" id="teacherInput" placeholder="Teacher Name..." onchange="updateCourseMeta('teacher')"></div>
+            <div class="field"><label>Schedule:</label><input type="text" id="scheduleInput" placeholder="Schedule..." onchange="updateCourseMeta('schedule')"></div>
+            <div class="field"><label>Bimester:</label><input type="text" id="bimesterInput" placeholder="Bimester..." onchange="updateCourseMeta('bimester')"></div>
+        </div>
+        <div style="flex-basis: 100%; height: 0;"></div>
+        <div class="accordion-group">
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">Respaldar</div>
+                <div class="accordion-content">
+                    <button class="primary" onclick="event.stopPropagation(); document.getElementById('respaldoFileInput').click()">📂 Cargar</button>
+                    <input type="file" id="respaldoFileInput" accept=".txt" style="display:none" onchange="cargarRespaldo(event)">
+                    <button class="success" onclick="event.stopPropagation(); guardarRespaldo()">💾 Guardar</button>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">Imprimir</div>
+                <div class="accordion-content">
+                    <button class="success" onclick="event.stopPropagation(); exportExcel()">📊 Excel</button>
+                    <button class="dark" onclick="event.stopPropagation(); openBoleta()">🖨️ PDF Individual</button>
+                    <button class="dark" onclick="event.stopPropagation(); batchPrintCards()">🖨️ PDF Curso All</button>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">Curso</div>
+                <div class="accordion-content">
+                    <button class="primary" onclick="event.stopPropagation(); createCourse()">➕ Crear Curso</button>
+                    <button class="danger" onclick="event.stopPropagation(); deleteCourse()">🗑️ Borrar Curso</button>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">Alumno</div>
+                <div class="accordion-content">
+                    <button class="primary" onclick="event.stopPropagation(); batchAddStudents()">➕ Añadir varios Alumnos</button>
+                    <button class="primary" onclick="event.stopPropagation(); addStudent()">➕ Añadir 1 Alumno</button>
+                    <button class="danger" onclick="event.stopPropagation(); deleteStudent()">🗑️ Eliminar Alumno</button>
+                </div>
+            </div>
+            
+            <button class="success" onclick="event.stopPropagation(); captureTable()">📷 ScreenShot</button>
+        </div>
+
+    </div>
+
+
+
+    <div class="tabs">
+
+        <div class="tab-btn active" onclick="switchTab('eval1')" id="tab-eval1">1ª Evaluación</div>
+
+        <div class="tab-btn" onclick="switchTab('eval2')" id="tab-eval2">2ª Evaluación</div>
+
+        <div class="tab-btn" onclick="switchTab('final')" id="tab-final">Resumen</div>
+
+    </div>
+
+
+
+    <div id="tableContainer" class="table-container">
+
+        <table id="gradesTable">
+
+            <thead id="tableHead"></thead>
+
+            <tbody id="tableBody"></tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- BOLETA MODAL -->
+
+    <div id="boletaModal" class="modal">
+
+        <div class="no-print" style="position:fixed; top:10px; right:10px; background:white; padding:10px; border-radius:5px; box-shadow:0 0 10px rgba(0,0,0,0.5); display:flex; gap:10px; z-index:2000;">
+
+            <select id="printEvalSelect" onchange="updateBoletaView()"><option value="eval1">1st</option><option value="eval2">2nd</option></select>
+
+            <div id="goesToContainer" style="display:none;"><input type="text" id="goesToInput" placeholder="Goes To..." style="width:100px;"></div>
+
+            <button class="success" onclick="window.print()">IMPRIMIR</button>
+
+            <button class="danger" onclick="document.getElementById('boletaModal').style.display='none'">X</button>
+
+        </div>
+
+        <div id="singleCardWrapper"></div>
+
+    </div>
+
+
+
+    <!-- MODAL COMENTARIOS -->
+    <div id="commentModal" class="modal">
+        <div class="comment-modal-box no-print">
+            <h3 id="commentModalTitle">Comentario</h3>
+            <textarea id="commentModalTextarea" placeholder="Escribe el comentario del alumno..."></textarea>
+            <div class="comment-modal-actions">
+                <button class="primary" onclick="saveCommentModal()">Guardar</button>
+                <button class="dark" onclick="closeCommentModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        // --- BASE DE DATOS ---
+
+        let db = JSON.parse(localStorage.getItem('SanCalixto_V5_1')) || { courses: {}, currentCourse: "" };
+
+        let currentTab = 'eval1';
+
+        let currentStudentId = null;
+
+        let currentCommentField = null;
+
+        const codes = ['L', 'G', 'V', 'R', 'W'];
+
+        function saveDB() { localStorage.setItem('SanCalixto_V5_1', JSON.stringify(db)); }
+
+        function toggleAccordion(el) {
+
+            if(!el.classList.contains('accordion-item')) return;
+
+            const wasOpen = el.classList.contains('open');
+
+            document.querySelectorAll('.accordion-item').forEach(a=>a.classList.remove('open'));
+
+            if(!wasOpen) el.classList.add('open');
+
+        }
+
+        
+
+        // --- LOGICA GENERAL ---
+
+        function init() {
+
+            updateCourseList();
+
+            if(db.currentCourse && db.courses[db.currentCourse]) {
+
+                document.getElementById('courseSelect').value = db.currentCourse;
+
+                loadCourseDetails();
+
+                loadTable();
+
+            }
+
+        }
+
+        function createCourse() {
+
+            let n = prompt("Nombre Curso:");
+
+            if(n) { db.courses[n]={teacher:"", schedule:"", bimester:"", students:[]}; db.currentCourse=n; saveDB(); updateCourseList(); document.getElementById('courseSelect').value=n; loadCourseDetails(); loadTable(); }
+
+        }
+
+        function deleteCourse() {
+
+            if(!db.currentCourse) return;
+
+            if(confirm("¿Eliminar curso "+db.currentCourse+"?")) { delete db.courses[db.currentCourse]; db.currentCourse=Object.keys(db.courses)[0]||""; saveDB(); updateCourseList(); if(db.currentCourse) document.getElementById('courseSelect').value=db.currentCourse; loadCourseDetails(); loadTable(); }
+
+        }
+
+        function changeCourse() {
+
+            db.currentCourse = document.getElementById('courseSelect').value;
+
+            loadCourseDetails();
+
+            saveDB(); loadTable();
+
+        }
+
+        function updateCourseMeta(field) {
+
+            if(!db.currentCourse) return;
+
+            const inputId = field + 'Input';
+
+            db.courses[db.currentCourse][field] = document.getElementById(inputId).value;
+
+            saveDB();
+
+        }
+
+        function loadCourseDetails() {
+
+            const course = db.courses[db.currentCourse];
+
+            document.getElementById('teacherInput').value = course?.teacher || "";
+
+            document.getElementById('scheduleInput').value = course?.schedule || "";
+
+            document.getElementById('bimesterInput').value = course?.bimester || "";
+
+        }
+
+        function updateCourseList() {
+
+            let s = document.getElementById('courseSelect'); s.innerHTML="";
+
+            for(let c in db.courses) { let o=document.createElement('option'); o.value=c; o.text=c; s.add(o); }
+
+        }
+
+        function batchAddStudents() {
+
+            let l = prompt("Nombres de los alumnos:"); if(l&&db.currentCourse) l.split(/[\n,]+/).forEach(n=>{ if(n.trim()) createS(n.trim()) });
+
+        }
+
+        function addStudent() { if(db.currentCourse) createS(prompt("Nombre del alumno:")); }
+
+        function createS(n) {
+
+            if(!n) return;
+
+            if(!db.courses[db.currentCourse]) db.courses[db.currentCourse] = { teacher:"", schedule:"", bimester:"", students:[] };
+
+            db.courses[db.currentCourse].students.push({ id:Date.now()+Math.random(), name:n, eval1:emptyG(), eval2:emptyG(), comm1:"", comm2:"", goesTo:"" });
+
+            saveDB(); loadTable();
+
+        }
+
+        function emptyG() { return { L_ov:0,L_te:0, G_ov:0,G_te:0, V_ov:0,V_te:0, R_ov:0,R_te:0, W_ov:0,W_te:0, k1:0, abs:0 }; }
+
+        function deleteStudent() {
+
+            let sel = document.querySelector('input[name="stuSel"]:checked');
+
+            if(!sel) { alert("Selecciona un alumno para eliminar"); return; }
+
+            const student = db.courses[db.currentCourse].students.find(x=>x.id==sel.value);
+
+            if(student&&confirm("¿Eliminar alumno "+student.name+"?")) { db.courses[db.currentCourse].students = db.courses[db.currentCourse].students.filter(x=>x.id!=sel.value); saveDB(); loadTable(); }
+
+        }
+
+        
+
+        // --- TABLA DE NOTAS ---
+
+        function loadTable() {
+
+            if(!db.currentCourse) { document.getElementById('tableBody').innerHTML=""; return; }
+
+            let tb = document.getElementById('tableBody'); tb.innerHTML="";
+
+            let th = document.getElementById('tableHead');
+
+            let stds = db.courses[db.currentCourse]?.students || [];
+
+            
+
+            if(currentTab=='final'){
+
+                th.innerHTML=`<tr><th>Sel</th><th style="text-align:left">Name</th><th>Avg 1</th><th>Avg 2</th><th class="avg-col">FINAL</th></tr>`;
+
+                stds.forEach(s=>{ let a1=calcAvg(s.eval1), a2=calcAvg(s.eval2), fin=Math.round((a1+a2)/2); tb.innerHTML+=`<tr><td><input type="radio" name="stuSel" value="${s.id}"></td><td style="text-align:left;font-weight:bold">${s.name}</td><td>${a1}</td><td>${a2}</td><td class="avg-col">${fin}</td></tr>`; });
+
+            } else {
+
+                let cf = currentTab=='eval1'?'comm1':'comm2';
+
+                th.innerHTML=`<tr><th rowspan="2">Sel</th><th rowspan="2">Name</th><th colspan="2">Listening</th><th colspan="2">Grammar</th><th colspan="2">Vocabulary</th><th colspan="2">Reading</th><th colspan="2">Writing</th><th rowspan="2">Spk</th><th rowspan="2">Abs</th><th rowspan="2" class="avg-col">Avg</th><th rowspan="2">Comm</th></tr><tr style="font-size:10px">${'<th>Ov</th><th>Te</th>'.repeat(5)}</tr>`;
+
+                stds.forEach(s=>{
+
+                    let g = s[currentTab]; let h = `<tr><td><input type="radio" name="stuSel" value="${s.id}"></td><td><input style="width:100%;text-align:left" value="${s.name}" onchange="upd(1,${s.id},'name',this.value)"></td>`;
+
+                    codes.forEach(c=>{ h+=`<td><input type="number" min="0" max="100" value="${g[c+'_ov']}" onchange="clampGrade(this,0,${s.id},'${c}_ov')"></td><td><input type="number" min="0" max="100" value="${g[c+'_te']}" onchange="clampGrade(this,0,${s.id},'${c}_te')"></td>`});
+
+                    h+=`<td><input type="number" min="0" max="100" value="${g.k1}" onchange="clampGrade(this,0,${s.id},'k1')"></td><td><input type="number" min="0" max="100" value="${g.abs}" onchange="clampGrade(this,0,${s.id},'abs')"></td><td class="avg-col">${calcAvg(g)}</td><td class="comment-cell" onclick="openCommentModal(${s.id},'${cf}')" title="Clic para editar comentario extenso"><input style="width:100px;text-align:left;font-size:10px;cursor:pointer" value="${s[cf]}" onchange="upd(1,${s.id},'${cf}',this.value)"></td></tr>`;
+
+                    tb.innerHTML+=h;
+
+                });
+
+            }
+
+        }
+
+        function switchTab(t){ currentTab=t; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById('tab-'+t).classList.add('active'); loadTable();}
+
+        function clampGrade(inputEl, mode, id, field) {
+
+            let v = parseFloat(inputEl.value);
+
+            if(isNaN(v)) v = 0;
+
+            v = Math.max(0, Math.min(100, v));
+
+            inputEl.value = v;
+
+            upd(mode, id, field, v);
+
+        }
+
+        function upd(mode, id, f, v) {
+
+            let s = db.courses[db.currentCourse].students.find(x=>x.id==id);
+
+            if(!s) return;
+
+            if(mode==0) s[currentTab][f]=parseFloat(v)||0; else s[f]=v;
+
+            saveDB();
+
+            if(mode==0) updateAvgCell(id);
+
+            else if(f==='comm1'||f==='comm2') updateCommentCell(id, v);
+
+        }
+
+        function updateCommentCell(studentId, val) {
+
+            const row = [...document.querySelectorAll('#tableBody tr')].find(tr=>{
+
+                const r = tr.querySelector('input[name="stuSel"]'); return r && r.value==studentId;
+
+            });
+
+            if(!row) return;
+
+            const commInput = row.querySelector('.comment-cell input');
+
+            if(commInput) commInput.value = val;
+
+        }
+
+        function updateAvgCell(studentId) {
+
+            const row = [...document.querySelectorAll('#tableBody tr')].find(tr=>{
+
+                const r = tr.querySelector('input[name="stuSel"]'); return r && r.value==studentId;
+
+            });
+
+            if(!row) return;
+
+            const s = db.courses[db.currentCourse].students.find(x=>x.id==studentId);
+
+            if(!s) return;
+
+            const tds = row.querySelectorAll('td');
+
+            const avgTd = tds[14];
+
+            if(avgTd) avgTd.textContent = calcAvg(s[currentTab]);
+
+        }
+
+        function calcAvg(g){ let o=0,t=0; codes.forEach(c=>{o+=g[c+'_ov']; t+=g[c+'_te']}); return Math.round((o+t+g.k1)/3); }
+
+        
+
+        function openCommentModal(studentId, commField) {
+
+            currentStudentId = studentId;
+
+            currentCommentField = commField;
+
+            const s = db.courses[db.currentCourse].students.find(x=>x.id==studentId);
+
+            if(!s) return;
+
+            const label = commField==='comm1' ? '1ª Evaluación' : '2ª Evaluación';
+
+            document.getElementById('commentModalTitle').textContent = `${s.name} (${label}) - Commentario`;
+
+            document.getElementById('commentModalTextarea').value = s[commField] || '';
+
+            document.getElementById('commentModal').style.display = 'flex';
+
+        }
+
+        function saveCommentModal() {
+
+            if(currentStudentId===null || !currentCommentField) return;
+
+            const text = document.getElementById('commentModalTextarea').value;
+
+            upd(1, currentStudentId, currentCommentField, text);
+
+            closeCommentModal();
+
+        }
+
+        function closeCommentModal() {
+
+            document.getElementById('commentModal').style.display = 'none';
+
+        }
+
+        function guardarRespaldo() {
+
+            saveDB();
+
+            const data = JSON.stringify(db);
+
+            const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+
+            link.href = url;
+
+            const d = new Date();
+
+            const fecha = d.toISOString().slice(0,10);
+
+            const h = d.getHours();
+
+            const h12 = (h % 12) || 12;
+
+            const min = String(d.getMinutes()).padStart(2,'0');
+
+            const seg = String(d.getSeconds()).padStart(2,'0');
+
+            const ampm = h < 12 ? 'am' : 'pm';
+
+            link.download = 'Backup_San_Calixto_' + fecha + '_' + h12 + '-' + min + '-' + seg + ampm + '.txt';
+
+            link.click();
+
+            setTimeout(function(){ URL.revokeObjectURL(url); }, 200);
+
+        }
+
+        function cargarRespaldo(ev) {
+
+            const file = ev.target.files[0];
+
+            if(!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                try {
+
+                    const data = JSON.parse(e.target.result);
+
+                    if(!data.courses || typeof data.courses !== 'object') throw new Error('Formato inválido');
+
+                    localStorage.setItem('SanCalixto_V5_1', JSON.stringify(data));
+
+                    db = data;
+
+                    updateCourseList();
+
+                    db.currentCourse = Object.keys(db.courses)[0] || '';
+
+                    if(db.currentCourse) { document.getElementById('courseSelect').value = db.currentCourse; loadCourseDetails(); }
+
+                    loadTable();
+
+                    alert('Respaldo cargado correctamente');
+
+                } catch(err) { alert('Error: archivo no válido o formato incorrecto'); }
+
+            };
+
+            reader.readAsText(file);
+
+            ev.target.value = '';
+
+        }
+
+        
+
+        function captureTable() {
+
+            if(!db.currentCourse || !db.courses[db.currentCourse]) {
+
+                alert('No hay datos para capturar'); return;
+
+            }
+
+            const students = db.courses[db.currentCourse].students || [];
+
+            if(students.length === 0) {
+
+                alert('No hay datos para capturar'); return;
+
+            }
+
+            const container = document.getElementById('tableContainer');
+
+            if(!container) return;
+
+            const table = document.getElementById('gradesTable');
+
+            if(!table) return;
+
+            const origOverflow = container.style.overflow;
+
+            const origHeight = container.style.height;
+
+            const origMaxHeight = container.style.maxHeight;
+
+            container.style.overflow = 'visible';
+
+            container.style.height = 'auto';
+
+            container.style.maxHeight = 'none';
+
+            html2canvas(container, {
+
+                useCORS: true,
+
+                backgroundColor: '#ffffff',
+
+                scale: 2,
+
+                scrollX: 0,
+
+                scrollY: 0,
+
+                onclone: function(clonedDoc) {
+
+                    const clone = clonedDoc.getElementById('tableContainer');
+
+                    if(clone) {
+
+                        clone.style.overflow = 'visible';
+
+                        clone.style.height = 'auto';
+
+                        clone.style.maxHeight = 'none';
+
+                        clone.style.display = 'inline-block';
+
+                        const inputs = clone.querySelectorAll('input:not([type="radio"])');
+
+                        inputs.forEach(function(inp) {
+
+                            const span = clonedDoc.createElement('span');
+
+                            const isComment = inp.closest('.comment-cell');
+
+                            span.textContent = inp.value || '';
+
+                            span.style.display = 'inline-block';
+
+                            span.style.textAlign = inp.type==='number' ? 'center' : 'left';
+
+                            span.style.padding = '4px 6px';
+
+                            span.style.fontSize = inp.style.fontSize || '13px';
+
+                            span.style.fontFamily = 'inherit';
+
+                            span.style.lineHeight = '1.4';
+
+                            if(isComment) {
+
+                                span.style.width = '100px';
+
+                                span.style.overflow = 'hidden';
+
+                                span.style.textOverflow = 'ellipsis';
+
+                                span.style.whiteSpace = 'nowrap';
+
+                            } else {
+
+                                span.style.minWidth = inp.type==='number' ? '35px' : (inp.style.width || '150px');
+
+                            }
+
+                            inp.parentNode.replaceChild(span, inp);
+
+                        });
+
+                    }
+
+                }
+
+            }).then(function(canvas) {
+
+                container.style.overflow = origOverflow;
+
+                container.style.height = origHeight;
+
+                container.style.maxHeight = origMaxHeight;
+
+                const d = new Date();
+
+                const fecha = d.toISOString().slice(0,10);
+
+                const h = d.getHours();
+
+                const h12 = (h % 12) || 12;
+
+                const min = String(d.getMinutes()).padStart(2,'0');
+
+                const seg = String(d.getSeconds()).padStart(2,'0');
+
+                const ampm = h < 12 ? 'am' : 'pm';
+
+                const name = 'capture_' + fecha + '_' + h12 + '-' + min + '-' + seg + ampm + '.png';
+
+                const link = document.createElement('a');
+
+                link.download = name;
+
+                link.href = canvas.toDataURL('image/png');
+
+                link.click();
+
+            }).catch(function(err) {
+
+                container.style.overflow = origOverflow;
+
+                container.style.height = origHeight;
+
+                container.style.maxHeight = origMaxHeight;
+
+                alert('Error al capturar: ' + err.message);
+
+            });
+
+        }
+
+        function exportExcel() {
+
+            if(!db.currentCourse) return; let csv = "\uFEFFName;Eval1;Comm1;Eval2;Comm2;Final;GoesTo\n";
+
+            db.courses[db.currentCourse].students.forEach(s=>{ let a1=calcAvg(s.eval1), a2=calcAvg(s.eval2), fin=Math.round((a1+a2)/2); csv += `"${s.name}";${a1};"${s.comm1}";${a2};"${s.comm2}";${fin};"${s.goesTo||''}"\n`; });
+
+            let link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})); link.download="Report.csv"; link.click();
+
+        }
+
+
+
+        // --- GENERADOR DE BOLETAS (HTML STRING) ---
+
+        function getCardHTML(student, evalMode) {
+
+            const courseData = db.courses[db.currentCourse];
+
+            const g = student[evalMode];
+
+            const comm = evalMode==='eval1'?student.comm1:student.comm2;
+
+            const teacher = courseData.teacher;
+
+            const totalAbs = (student.eval1.abs || 0) + (student.eval2.abs || 0);
+
+
+
+            // Generar HTML Extra para Eval 2 (Pass/Fail + GoesTo)
+
+            let extraHTML = '';
+
+            if (evalMode === 'eval2') {
+
+                const avg1 = calcAvg(student.eval1);
+
+                const avg2 = calcAvg(student.eval2);
+
+                const final = Math.round((avg1 + avg2) / 2);
+
+                const result = final >= 70 ? "PASS" : "FAIL";
+
+                extraHTML = `
+
+                    <div class="extra-eval2">
+
+                        <div style="margin-right: 15px;">FINAL RESULT: ${result} (${final})</div>
+
+                        <div>GOES TO: ${student.goesTo || '...'}</div>
+
+                    </div>`;
+
+            }
+
+
+
+            // HTML Estructura
+
+            return `
+
+            <div class="sheet">
+
+                <div class="main-frame">
+
+                    <div class="rc-header">
+
+                        <div class="logo-box">SC</div>
+
+                        <div class="title-box">${evalMode==='eval1'?"1ST":"2ND"} REPORT CARD - FEPPA SAN CALIXTO</div>
+
+                    </div>
+
+                    
+
+                    <div class="info-row">
+
+                        <div class="info-label">STUDENT</div><div class="info-val">${student.name}</div><div class="info-split"></div>
+
+                        <div class="info-label">COURSE</div><div class="info-val">${db.currentCourse}</div>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <div class="info-label">TEACHER</div><div class="info-val">${teacher}</div><div class="info-split"></div>
+
+                        <div class="info-label">SCHEDULE</div><div class="info-val">${courseData.schedule}</div><div class="info-split"></div>
+
+                        <div class="info-label" style="width:50px">BIMESTER</div><div class="info-val" style="flex-grow:0.5">${courseData.bimester}</div>
+
+                    </div>
+
+
+
+                    <div class="skills-container">
+
+                        <div class="skill-col">
+
+                            <div class="skill-box"><div class="skill-title">LISTENING (20)</div><div class="sub-skill-row"><span class="sub-label">a) Achievement Test</span><div class="sub-grade">${g.L_te}</div></div><div class="sub-skill-row"><span class="sub-label">b) Academic Performance</span><div class="sub-grade">${g.L_ov}</div></div></div>
+
+                            <div class="skill-box"><div class="skill-title">GRAMMAR (20)</div><div class="sub-skill-row"><span class="sub-label">a) Achievement Test</span><div class="sub-grade">${g.G_te}</div></div><div class="sub-skill-row"><span class="sub-label">b) Academic Performance</span><div class="sub-grade">${g.G_ov}</div></div></div>
+
+                            <div class="skill-box" style="border-bottom:none"><div class="skill-title">READING (20)</div><div class="sub-skill-row"><span class="sub-label">a) Achievement Test</span><div class="sub-grade">${g.R_te}</div></div><div class="sub-skill-row"><span class="sub-label">b) Academic Performance</span><div class="sub-grade">${g.R_ov}</div></div></div>
+
+                        </div>
+
+                        <div class="skill-col">
+
+                            <div class="skill-box"><div class="skill-title">VOCABULARY (20)</div><div class="sub-skill-row"><span class="sub-label">a) Achievement Test</span><div class="sub-grade">${g.V_te}</div></div><div class="sub-skill-row"><span class="sub-label">b) Academic Performance</span><div class="sub-grade">${g.V_ov}</div></div></div>
+
+                            <div class="skill-box"><div class="skill-title">WRITING (20)</div><div class="sub-skill-row"><span class="sub-label">a) Achievement Test</span><div class="sub-grade">${g.W_te}</div></div><div class="sub-skill-row"><span class="sub-label">b) Academic Performance</span><div class="sub-grade">${g.W_ov}</div></div></div>
+
+                            <!-- AQUI ESTA EL CAMBIO DEL SPEAKING -->
+
+                            <div class="skill-box" style="border-bottom:none">
+
+                                <div class="skill-title">SPEAKING (100)</div>
+
+                                <div class="sub-skill-row"><span class="sub-label">Speaking</span><div class="sub-grade">${g.k1}</div></div>
+
+                                <div class="sub-skill-row"><span class="sub-label">OVERALL COMMUNICATIVE COMPETENCE</span><div class="sub-grade">${calcAvg(g)}</div></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div style="border-top:1px solid #000;"></div>
+
+                    <div class="comments-section"><div class="comments-label">COMMENTS</div><div class="comments-text">${comm}</div></div>
+
+                    
+
+                    <div class="footer-section">
+
+                        <div class="absences-box"><div class="abs-label">ABSENCES</div><div class="abs-val">${evalMode==='eval1'?g.abs:totalAbs}</div></div>
+
+                        <div class="bottom-grid">
+
+                            <div class="ref-box"><strong>REFERENCE</strong><br>0-69 FAIL<br>70-80 = PASS<br>81-90 = PASS<br>91-100 = PASS</div>
+
+                            <div class="sigs-box">
+
+                                ${extraHTML}
+
+                                <div class="sig-line"><div style="font-size:9px;margin-bottom:2px;">${teacher}</div><div class="sig-text">TEACHER'S SIGNATURE</div></div>
+
+                                <div class="sig-line"><div class="sig-text">PARENT/LEGAL GUARDIAN</div></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div><div class="slogan">MASTER ENGLISH. UNLOCK OPPORTUNITIES. BUILD YOUR FUTURE.-ROMA-</div>
+
+            </div>`;
+
+        }
+
+
+
+        function openBoleta() {
+
+            let sel = document.querySelector('input[name="stuSel"]:checked');
+
+            if(!sel) return alert("Select student");
+
+            currentStudentId = parseFloat(sel.value);
+
+            document.getElementById('boletaModal').style.display='flex';
+
+            updateBoletaView();
+
+        }
+
+
+
+        function updateBoletaView() {
+
+            const s = db.courses[db.currentCourse].students.find(x=>x.id==currentStudentId);
+
+            const mode = document.getElementById('printEvalSelect').value;
+
+            // Inyectar el HTML generado
+
+            document.getElementById('singleCardWrapper').innerHTML = getCardHTML(s, mode);
+
+
+
+            // Manejo del Input "Goes To" en la interfaz (fuera de la hoja impresa)
+
+            let goesInputContainer = document.getElementById('goesToContainer');
+
+            let goesInput = document.getElementById('goesToInput');
+
+            if (mode === 'eval2') {
+
+                goesInputContainer.style.display = 'block';
+
+                goesInput.value = s.goesTo || "";
+
+                goesInput.onchange = function() {
+
+                    s.goesTo = this.value;
+
+                    saveDB();
+
+                    // Refrescar para que aparezca en el HTML inyectado
+
+                    document.getElementById('singleCardWrapper').innerHTML = getCardHTML(s, mode);
+
+                };
+
+            } else {
+
+                goesInputContainer.style.display = 'none';
+
+            }
+
+        }
+
+
+
+        function batchPrintCards() {
+
+            if(!db.currentCourse) return alert("Select a course");
+
+            const students = db.courses[db.currentCourse].students;
+
+            if (students.length === 0) return alert("No students in this course");
+
+
+
+            // Imprimir todas las boletas (Eval 1 + Eval 2 para cada alumno, o puedes filtrar)
+
+            // Aqui imprimiremos SOLO la evaluación que esté seleccionada en la pestaña principal para no gastar papel?
+
+            // Mejor imprimir AMBAS evaluaciones en páginas separadas para tener el historial completo.
+
+            
+
+            let printWindow = window.open('', '_blank');
+
+            let allCardsHTML = '';
+
+            
+
+            // Generar HTML
+
+            students.forEach(s => {
+
+                // Generar Eval 1
+
+                allCardsHTML += getCardHTML(s, 'eval1');
+
+                // Salto de página
+
+                // Generar Eval 2
+
+                allCardsHTML += getCardHTML(s, 'eval2');
+
+            });
+
+
+
+            printWindow.document.write(`<html><head><title>Batch Report Cards</title><style>${document.querySelector('style').innerHTML}</style></head><body class="batch-print-area">${allCardsHTML}</body></html>`);
+
+            printWindow.document.close();
+
+            printWindow.onload = function() {
+
+                printWindow.print();
+
+            };
+
+        }
+
+        
+
+        init();
+
+    </script>
+
+</body>
+
+</html>

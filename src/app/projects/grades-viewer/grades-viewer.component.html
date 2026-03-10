@@ -11,17 +11,22 @@
     </div>
   } @else {
     <section class="gv__section">
-      <h2 class="gv__section-title">Curso</h2>
-      <select
-        class="gv__course-select"
-        [value]="selectedCourseKey()"
-        (change)="selectCourse($any($event.target).value)"
-        aria-label="Seleccionar curso"
-      >
-        @for (key of courseKeys(); track key) {
-          <option [value]="key" [selected]="selectedCourseKey() === key">{{ key | titlecase }}</option>
-        }
-      </select>
+      <div class="gv__course-row">
+        <select
+          class="gv__course-select"
+          [value]="selectedCourseKey()"
+          (change)="selectCourse($any($event.target).value)"
+          aria-label="Seleccionar curso"
+        >
+          @for (key of courseKeys(); track key) {
+            <option [value]="key" [selected]="selectedCourseKey() === key">{{ key | titlecase }}</option>
+          }
+        </select>
+        <div class="gv__course-btns">
+          <button type="button" class="gv__course-btn gv__course-btn--upload" (click)="onUpload()">📤 Upload</button>
+          <button type="button" class="gv__course-btn gv__course-btn--demo" (click)="onDemo()">▶️ Demo</button>
+        </div>
+      </div>
       @if (selectedCourse(); as course) {
         <p class="gv__course-info">{{ course.teacher | titlecase }} · {{ course.schedule }} · {{ course.bimester }}</p>
       }
@@ -30,7 +35,7 @@
     @if (selectedCourse(); as course) {
       <section class="gv__section">
         <div class="gv__section-header">
-          <h2 class="gv__section-title">Estudiante</h2>
+          <h2 class="gv__section-title">Student List</h2>
           <button
             type="button"
             class="gv__search-toggle"

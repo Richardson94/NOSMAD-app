@@ -39,7 +39,7 @@
       <h1 class="sd__title">{{ student()!.name | titlecase }}</h1>
 
       @if (course(); as c) {
-        <p class="sd__meta">{{ c.teacher | titlecase }} · {{ c.schedule }} · {{ c.bimester }}</p>
+        <p class="sd__meta">{{ courseKey() | titlecase }} · {{ c.schedule }} · {{ c.bimester }}</p>
       }
 
       @if (showTopFinalGrade()) {

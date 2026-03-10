@@ -55,6 +55,15 @@ export class GradesViewerComponent implements OnInit {
     this.searchQuery.set('');
   }
 
+  onUpload(): void {
+    // TODO: implementar carga desde archivo .txt
+  }
+
+  onDemo(): void {
+    this.gradesService.loadDemo();
+    this.selectedCourseKey.set(null);
+  }
+
   selectStudent(student: Student): void {
     const key = this.selectedCourseKey();
     if (key) {
