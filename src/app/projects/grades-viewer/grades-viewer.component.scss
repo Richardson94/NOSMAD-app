@@ -1,28 +1,485 @@
-.grades-viewer {
-  padding: 1.5rem;
+/* Grades Viewer - Mobile-first */
+$gv-accent: var(--dashboard-accent, #a78bfa);
+$gv-text: var(--dashboard-text, #e4e4e7);
+$gv-muted: var(--dashboard-muted, #71717a);
+$gv-border: var(--dashboard-border, rgba(255, 255, 255, 0.06));
+$gv-bg: var(--dashboard-content-bg, #16161d);
+
+.gv {
   min-height: 100%;
+  padding: 1.25rem;
+  color: $gv-text;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Loading & Error */
+.gv__loading,
+.gv__error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 40vh;
+  gap: 0.75rem;
   text-align: center;
-  color: var(--dashboard-text, #e4e4e7);
+  color: $gv-muted;
 }
 
-.grades-viewer__status {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+.gv__spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid $gv-border;
+  border-top-color: $gv-accent;
+  border-radius: 50%;
+  animation: gv-spin 0.8s linear infinite;
+}
+
+@keyframes gv-spin {
+  to { transform: rotate(360deg); }
+}
+
+.gv__error span {
+  font-size: 2rem;
+}
+
+/* Section */
+.gv__section {
+  margin-bottom: 1.75rem;
+}
+
+.gv__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.gv__section-title {
+  margin: 0;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--dashboard-accent, #a78bfa);
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $gv-muted;
+  line-height: 1.4;
+
+  .gv__section > & {
+    margin-bottom: 0.875rem;
+  }
 }
 
-.grades-viewer__message {
-  margin: 0 0 1rem 0;
-  font-size: clamp(0.875rem, 2vw, 1rem);
-  color: var(--dashboard-muted, #71717a);
+.gv__search-toggle {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(167, 139, 250, 0.3);
+  }
+
+  &--active {
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.35);
+  }
 }
 
-.grades-viewer__emoji {
-  font-size: 3rem;
-  line-height: 1;
+/* Course selector */
+.gv__course-select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+  color: $gv-text;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2371717a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: $gv-accent;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+  }
+
+  option {
+    background: $gv-bg;
+    color: $gv-text;
+  }
+}
+
+.gv__course-info {
+  margin: 0.625rem 0 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: $gv-muted;
+}
+
+/* Search */
+.gv__search-wrap {
+  margin-bottom: 0.875rem;
+}
+
+.gv__no-results {
+  margin: 0;
+  padding: 1.25rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: $gv-muted;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+}
+
+.gv__search {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+  color: $gv-text;
+  font-size: 1rem;
+  line-height: 1.4;
+
+  &::placeholder {
+    color: $gv-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $gv-accent;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+  }
+}
+
+/* Student list */
+.gv__student-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
+  max-height: 55vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gv__student-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  aspect-ratio: 1;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+  color: $gv-text;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(167, 139, 250, 0.25);
+  }
+
+  &--active {
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.35);
+    color: $gv-accent;
+
+    .gv__student-name-bottom {
+      color: rgba(167, 139, 250, 0.9);
+    }
+  }
+}
+
+.gv__student-name-top,
+.gv__student-name-bottom {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.gv__student-name-top {
+  font-weight: 600;
+}
+
+.gv__student-name-bottom {
+  font-size: 0.75rem;
+  color: $gv-muted;
+}
+
+/* Full-screen student overlay */
+.gv__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.75);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gv__student-card {
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: $gv-bg;
+  border: 1px solid $gv-border;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.gv__card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid $gv-border;
+  flex-shrink: 0;
+}
+
+.gv__card-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.gv__close-btn {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  color: $gv-muted;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: $gv-text;
+  }
+}
+
+.gv__card-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gv__eval-block {
+  margin-bottom: 1.5rem;
+}
+
+.gv__eval-title {
+  margin: 0 0 0.625rem 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  color: $gv-muted;
+}
+
+.gv__grades-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+}
+
+.gv__grade-row {
+  display: contents;
+}
+
+.gv__grade-label {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: $gv-text;
+}
+
+.gv__grade-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: $gv-accent;
+  text-align: right;
+}
+
+.gv__final-grade {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9375rem 1.25rem;
+  margin-top: 1.25rem;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 0.5rem;
+}
+
+.gv__final-label {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: $gv-text;
+}
+
+.gv__final-value {
+  font-size: 1.3125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: $gv-accent;
+}
+
+.gv__comments {
+  margin-top: 1.5rem;
+}
+
+.gv__comment-btn {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  margin-top: 0.625rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $gv-border;
+  border-radius: 0.5rem;
+  color: $gv-accent;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.3);
+  }
+}
+
+/* Modal */
+.gv__modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  overflow-y: auto;
+}
+
+.gv__modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: $gv-bg;
+  border: 1px solid $gv-border;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.gv__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  border-bottom: 1px solid $gv-border;
+  flex-shrink: 0;
+}
+
+.gv__modal-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: $gv-text;
+}
+
+.gv__modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gv__modal-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: $gv-text;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Tablet and up */
+@media (min-width: 600px) {
+  .gv {
+    padding: 1.75rem;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .gv__student-list {
+    max-height: 58vh;
+  }
+
+  .gv__grades-grid {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .gv__overlay {
+    padding: 2rem;
+  }
+
+  .gv__student-card {
+    max-width: 520px;
+  }
 }

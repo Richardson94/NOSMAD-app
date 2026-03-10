@@ -23,7 +23,12 @@
             "assets": [
               "src/favicon.ico",
               "src/logo.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "input": "src/app/projects/grades-viewer/data",
+                "glob": "**/*",
+                "output": "/projects/grades-viewer/data"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -83,7 +88,12 @@
             "assets": [
               "src/favicon.ico",
               "src/logo.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "input": "src/app/projects/grades-viewer/data",
+                "glob": "**/*",
+                "output": "/projects/grades-viewer/data"
+              }
             ],
             "styles": [
               "src/styles.scss"
