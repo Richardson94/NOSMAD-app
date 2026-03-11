@@ -14,7 +14,7 @@ export class FooterComponent {
   private readonly _deploy:number;
   private readonly _features:number;
   constructor() {
-    this._deploy = 17;
+    this._deploy = 18;
     this._features = 1
     this.version = `0.${this._features}.${this._deploy}`;
   }

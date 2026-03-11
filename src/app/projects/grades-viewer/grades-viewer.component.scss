@@ -281,11 +281,36 @@ $gv-bg: var(--dashboard-content-bg, #16161d);
 @media (min-width: 600px) {
   .gv {
     padding: 1.75rem;
-    max-width: 560px;
+    max-width: 720px;
     margin: 0 auto;
   }
 
   .gv__student-list {
-    max-height: 58vh;
+    grid-template-columns: repeat(3, 1fr);
+    max-height: 60vh;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .gv {
+    max-width: 1040px;
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .gv__section:first-of-type {
+    margin-bottom: 0;
+  }
+
+  .gv__section + .gv__section {
+    margin-bottom: 0;
+  }
+
+  .gv__student-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-height: 70vh;
   }
 }

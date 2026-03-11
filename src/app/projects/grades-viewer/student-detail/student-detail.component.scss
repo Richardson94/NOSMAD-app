@@ -349,3 +349,26 @@ $bg: var(--dashboard-content-bg, #16161d);
 .sd__modal-body { padding: 1rem; overflow-y: auto; }
 
 .sd__modal-text { margin: 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; }
+
+/* Desktop layout */
+@media (min-width: 1024px) {
+  .sd {
+    padding: 2rem 2.5rem 2.5rem;
+  }
+
+  .sd__main {
+    max-width: 960px;
+  }
+
+  .sd__tab-panel {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .sd__grade-tables {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sd__final-grade {
+    margin-top: 0.5rem;
+  }
+}
