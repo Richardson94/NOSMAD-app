@@ -140,6 +140,10 @@ $gv-bg: var(--dashboard-content-bg, #16161d);
   flex-shrink: 0;
 }
 
+.gv__file-input {
+  display: none;
+}
+
 .gv__course-btn {
   flex-shrink: 0;
   padding: 0.5rem 0.875rem;

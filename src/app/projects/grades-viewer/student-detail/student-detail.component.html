@@ -12,31 +12,33 @@
     </div>
   } @else if (student()) {
     <header class="sd__header">
-      <button
-        type="button"
-        class="sd__nav-btn"
-        [disabled]="!hasPrev()"
-        (click)="goPrev()"
-        aria-label="Estudiante anterior"
-      >
-        ‹
-      </button>
       <button type="button" class="sd__back-btn" (click)="goBack()">
-        Course
-      </button>
-      <button
-        type="button"
-        class="sd__nav-btn"
-        [disabled]="!hasNext()"
-        (click)="goNext()"
-        aria-label="Siguiente estudiante"
-      >
-        ›
+        Student List
       </button>
     </header>
 
     <main class="sd__main">
-      <h1 class="sd__title">{{ student()!.name | titlecase }}</h1>
+      <div class="sd__title-row">
+        <button
+          type="button"
+          class="sd__nav-btn"
+          [disabled]="!hasPrev()"
+          (click)="goPrev()"
+          aria-label="Estudiante anterior"
+        >
+          ‹
+        </button>
+        <h1 class="sd__title">{{ student()!.name | titlecase }}</h1>
+        <button
+          type="button"
+          class="sd__nav-btn"
+          [disabled]="!hasNext()"
+          (click)="goNext()"
+          aria-label="Siguiente estudiante"
+        >
+          ›
+        </button>
+      </div>
 
       @if (course(); as c) {
         <p class="sd__meta">{{ courseKey() | titlecase }} · {{ c.schedule }} · {{ c.bimester }}</p>

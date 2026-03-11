@@ -5,7 +5,7 @@ import { GradesData, Student, Course } from '../models/grades.model';
 @Injectable({ providedIn: 'root' })
 export class GradesDataService {
   private readonly data = signal<GradesData | null>(null);
-  private readonly loading = signal(true);
+  private readonly loading = signal(false);
   private readonly error = signal<string | null>(null);
 
   readonly gradesData = this.data.asReadonly();
@@ -17,10 +17,18 @@ export class GradesDataService {
     return d ? Object.keys(d.courses) : [];
   });
 
+  private readonly storageKey = 'nosmad-grades-viewer-data';
   private readonly jsonUrl = '/projects/grades-viewer/data/information.json';
 
   constructor(private http: HttpClient) {
-    this.loadDemo();
+    this.restoreFromStorage();
+  }
+
+  setData(d: GradesData): void {
+    this.data.set(d);
+    this.loading.set(false);
+    this.error.set(null);
+    this.saveToStorage(d);
   }
 
   loadDemo(): void {
@@ -28,14 +36,38 @@ export class GradesDataService {
     this.error.set(null);
     this.http.get<GradesData>(this.jsonUrl).subscribe({
       next: (d) => {
-        this.data.set(d);
-        this.loading.set(false);
+        this.setData(d);
       },
       error: () => {
         this.error.set('No se pudo cargar la información de notas.');
         this.loading.set(false);
       },
     });
+  }
+
+  private saveToStorage(d: GradesData): void {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(this.storageKey, JSON.stringify(d));
+    } catch {
+      // ignore storage errors
+    }
+  }
+
+  private restoreFromStorage(): boolean {
+    if (typeof window === 'undefined') return false;
+    try {
+      const raw = window.localStorage.getItem(this.storageKey);
+      if (!raw) return false;
+      const parsed = JSON.parse(raw) as GradesData;
+      if (!parsed || !parsed.courses) return false;
+      this.data.set(parsed);
+      this.loading.set(false);
+      this.error.set(null);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   getCourse(key: string): Course | null {

@@ -18,12 +18,23 @@
           (change)="selectCourse($any($event.target).value)"
           aria-label="Seleccionar curso"
         >
-          @for (key of courseKeys(); track key) {
-            <option [value]="key" [selected]="selectedCourseKey() === key">{{ key | titlecase }}</option>
+          @if (courseKeys().length === 0) {
+            <option value="" selected disabled>No courses loaded</option>
+          } @else {
+            @for (key of courseKeys(); track key) {
+              <option [value]="key" [selected]="selectedCourseKey() === key">{{ key | titlecase }}</option>
+            }
           }
         </select>
         <div class="gv__course-btns">
-          <button type="button" class="gv__course-btn gv__course-btn--upload" (click)="onUpload()">📤 Upload</button>
+          <input
+            #fileInput
+            type="file"
+            class="gv__file-input"
+            accept=".txt,.json"
+            (change)="onUpload()"
+          />
+          <button type="button" class="gv__course-btn gv__course-btn--upload" (click)="fileInput.click()">📤 Upload</button>
           <button type="button" class="gv__course-btn gv__course-btn--demo" (click)="onDemo()">▶️ Demo</button>
         </div>
       </div>
@@ -77,6 +88,13 @@
         } @else if (searchQuery().trim()) {
           <p class="gv__no-results">No se ha encontrado resultados con esa busqueda</p>
         }
+      </section>
+    } @else if (courseKeys().length === 0) {
+      <section class="gv__section">
+        <div class="gv__section-header">
+          <h2 class="gv__section-title">Student List</h2>
+        </div>
+        <p class="gv__no-results">No students found</p>
       </section>
     }
   }
