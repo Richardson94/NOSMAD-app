@@ -11,7 +11,7 @@
       <span class="sidebar-menu__hamburger-bar"></span>
       <span class="sidebar-menu__hamburger-bar"></span>
     </button>
-    <h2 class="sidebar-menu__title">Projects</h2>
+    <h2 class="sidebar-menu__title">NOSMAD</h2>
     <div class="sidebar-menu__actions">
       @if (showBackButton) {
         <a routerLink="/welcome" class="sidebar-menu__back-btn" aria-label="Volver a Welcome">Back</a>
@@ -30,6 +30,10 @@
     <a routerLink="/parking-status" routerLinkActive="sidebar-menu__nav-item--active" class="sidebar-menu__nav-item" (click)="closeMenu()">
       <span class="sidebar-menu__nav-icon" aria-hidden="true">🅿️</span>
       <span>Parking Status</span>
+    </a>
+    <a routerLink="/emojipedia" routerLinkActive="sidebar-menu__nav-item--active" class="sidebar-menu__nav-item" (click)="closeMenu()">
+      <span class="sidebar-menu__nav-icon" aria-hidden="true">😁</span>
+      <span>Emojipedia</span>
     </a>
   </nav>
 </aside>

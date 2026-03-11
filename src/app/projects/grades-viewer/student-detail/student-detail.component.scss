@@ -112,9 +112,14 @@ $bg: var(--dashboard-content-bg, #16161d);
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.3;
   word-break: break-word;
   text-align: center;
+}
+
+.sd__title-second-line {
+  display: block;
+  margin-top: 0.15rem;
 }
 
 .sd__meta {

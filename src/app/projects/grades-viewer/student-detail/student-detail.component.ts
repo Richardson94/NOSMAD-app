@@ -129,6 +129,15 @@ export class StudentDetailComponent implements OnInit {
     return Math.round((o + t + k1) / 3);
   }
 
+  splitName(name: string): [string, string] {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length <= 1) return [name, ''];
+    const mid = Math.ceil(words.length / 2);
+    const top = words.slice(0, mid).join(' ');
+    const bottom = words.slice(mid).join(' ');
+    return [top, bottom];
+  }
+
   openCommentModal(text: string): void {
     this.modalComment.set(text);
   }

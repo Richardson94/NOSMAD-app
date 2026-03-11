@@ -28,6 +28,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'emojipedia',
+    loadComponent: () =>
+      import('./projects/emojipedia/emojipedia.component').then(
+        (m) => m.EmojipediaComponent
+      ),
+  },
+  {
     path: 'grades-viewer',
     loadComponent: () =>
       import('./projects/grades-viewer/grades-viewer-shell.component').then(

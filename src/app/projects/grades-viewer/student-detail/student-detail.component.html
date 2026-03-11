@@ -28,7 +28,14 @@
         >
           ‹
         </button>
-        <h1 class="sd__title">{{ student()!.name | titlecase }}</h1>
+        <h1 class="sd__title">
+          <span>{{ splitName(student()!.name)[0] | titlecase }}</span>
+          @if (splitName(student()!.name)[1]) {
+            <span class="sd__title-second-line">
+              {{ splitName(student()!.name)[1] | titlecase }}
+            </span>
+          }
+        </h1>
         <button
           type="button"
           class="sd__nav-btn"
@@ -60,7 +67,7 @@
               [class.sd__tab--active]="activeTab() === 1"
               (click)="activeTab.set(1)"
             >
-              Evaluación 1
+              Evaluation 1
             </button>
             <button
               type="button"
@@ -68,7 +75,7 @@
               [class.sd__tab--active]="activeTab() === 2"
               (click)="activeTab.set(2)"
             >
-              Evaluación 2
+              Evaluation 2
             </button>
           </div>
 
@@ -162,7 +169,7 @@
     </main>
   } @else {
     <div class="sd__error">
-      <p>Estudiante no encontrado</p>
+      <p>Student not found</p>
       <a routerLink="/grades-viewer" class="sd__back-link">Course</a>
     </div>
   }
