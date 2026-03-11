@@ -73,6 +73,23 @@
   color: var(--dashboard-muted, #71717a);
 }
 
+.ps__refresh-wrap {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ps__refresh-btn {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  border: 2px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--dashboard-text, #e4e4e7);
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .ps {
     padding: 2rem 2.5rem;
