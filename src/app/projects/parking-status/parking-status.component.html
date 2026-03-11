@@ -1,0 +1,42 @@
+<div class="ps">
+  <h1 class="ps__title">
+    @if (today()) {
+      {{ today()!.relativeLabel }}
+    } @else {
+      Parking Status
+    }
+  </h1>
+
+  @if (loading()) {
+    <div class="ps__loading">Loading schedule...</div>
+  } @else if (error()) {
+    <div class="ps__error">Failed to load schedule.</div>
+  } @else if (today()) {
+    <p class="ps__date">
+      {{ today()!.dayLabel }}
+    </p>
+
+    <div class="ps__grid">
+      <div class="ps__card">
+        <div class="ps__card-title">Parking 317</div>
+        <div class="ps__card-name">{{ today()!.parqueo1 }}</div>
+      </div>
+
+      <div class="ps__card">
+        <div class="ps__card-title">Parking 318</div>
+        <div class="ps__card-name">{{ today()!.parqueo2 }}</div>
+      </div>
+    </div>
+
+    @if (showTesting) {
+      <div>
+        <button type="button" (click)="prevDay()">Previous day</button>
+        <button type="button" (click)="nextDay()">Next day</button>
+        <button type="button" (click)="resetToday()">Today</button>
+      </div>
+    }
+  } @else {
+    <div class="ps__error">No schedule data available.</div>
+  }
+</div>
+

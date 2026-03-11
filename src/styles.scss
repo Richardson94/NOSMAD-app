@@ -17,3 +17,28 @@ body {
 body {
   overflow-x: hidden;
 }
+
+/* Desktop scrollbars */
+@media (min-width: 1024px) {
+  /* Grades viewer list & detail modal */
+  .gv__student-list::-webkit-scrollbar,
+  .sd__modal-body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .gv__student-list::-webkit-scrollbar-track,
+  .sd__modal-body::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.85);
+  }
+
+  .gv__student-list::-webkit-scrollbar-thumb,
+  .sd__modal-body::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.7);
+    border-radius: 999px;
+  }
+
+  .gv__student-list::-webkit-scrollbar-thumb:hover,
+  .sd__modal-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(129, 140, 248, 0.9);
+  }
+}

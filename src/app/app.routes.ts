@@ -21,6 +21,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'parking-status',
+    loadComponent: () =>
+      import('./projects/parking-status/parking-status.component').then(
+        (m) => m.ParkingStatusComponent
+      ),
+  },
+  {
     path: 'grades-viewer',
     loadComponent: () =>
       import('./projects/grades-viewer/grades-viewer-shell.component').then(

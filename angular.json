@@ -28,6 +28,11 @@
                 "input": "src/app/projects/grades-viewer/data",
                 "glob": "**/*",
                 "output": "/projects/grades-viewer/data"
+              },
+              {
+                "input": "src/app/projects/parking-status/data",
+                "glob": "**/*",
+                "output": "/projects/parking-status/data"
               }
             ],
             "styles": [
@@ -93,6 +98,11 @@
                 "input": "src/app/projects/grades-viewer/data",
                 "glob": "**/*",
                 "output": "/projects/grades-viewer/data"
+              },
+              {
+                "input": "src/app/projects/parking-status/data",
+                "glob": "**/*",
+                "output": "/projects/parking-status/data"
               }
             ],
             "styles": [
