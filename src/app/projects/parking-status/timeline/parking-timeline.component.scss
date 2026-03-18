@@ -111,6 +111,19 @@
   border-radius: 0.7rem;
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(55, 65, 81, 0.9);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.pt__card--active {
+  background: rgba(6, 95, 70, 0.95);
+  border-color: rgba(34, 197, 94, 0.9);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.75);
+  transform: translateY(-1px);
 }
 
 .pt__card-label {

@@ -30,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'parking-status-timeline',
     loadComponent: () =>
-      import('./projects/parking-status/parking-timeline.component').then(
+      import('./projects/parking-status/timeline/parking-timeline.component').then(
         (m) => m.ParkingTimelineComponent
       ),
   },

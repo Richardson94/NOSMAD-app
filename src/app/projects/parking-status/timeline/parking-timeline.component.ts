@@ -1,8 +1,8 @@
 import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ParkingStatusService } from './parking-status.service';
-import { ParkingDay } from './parking-status.models';
+import { ParkingStatusService } from '../parking-status.service';
+import { ParkingDay } from '../parking-status.models';
 
 @Component({
   selector: 'app-parking-timeline',
@@ -13,6 +13,8 @@ import { ParkingDay } from './parking-status.models';
 })
 export class ParkingTimelineComponent {
   readonly schedule = this.service.schedule;
+
+  selectedName: string | null = null;
 
   readonly upcomingDays = computed<ParkingDay[]>(() => {
     const data = this.schedule();
@@ -31,6 +33,14 @@ export class ParkingTimelineComponent {
       .filter((d) => d.fecha > todayStr)
       .sort((a, b) => a.fecha.localeCompare(b.fecha));
   });
+
+  selectName(name: string): void {
+    this.selectedName = this.selectedName === name ? null : name;
+  }
+
+  isSelected(name: string): boolean {
+    return this.selectedName === name;
+  }
 
   constructor(private service: ParkingStatusService) {}
 }
