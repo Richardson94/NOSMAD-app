@@ -1,0 +1,45 @@
+<div class="pt">
+  <div class="pt__header">
+    <button
+      type="button"
+      class="pt__back-btn"
+      routerLink="/parking-status"
+    >
+      Back
+    </button>
+    <h1 class="pt__title">Upcoming parking schedule</h1>
+  </div>
+
+  @if (upcomingDays().length === 0) {
+    <p class="pt__empty">No upcoming parking assignments.</p>
+  } @else {
+    <div class="pt__timeline">
+      @for (day of upcomingDays(); track day.fecha) {
+        <div class="pt__item">
+          <div class="pt__marker"></div>
+          <div class="pt__content">
+            <div class="pt__date">
+              <span class="pt__date-main">
+                {{ day.fecha | date: 'dd MMM yyyy' }}
+              </span>
+              <span class="pt__date-sub">
+                {{ day.fecha | date: 'EEEE' }}
+              </span>
+            </div>
+            <div class="pt__assignments">
+              <div class="pt__card">
+                <div class="pt__card-label">Parking 317</div>
+                <div class="pt__card-name">{{ day.parqueo1 }}</div>
+              </div>
+              <div class="pt__card">
+                <div class="pt__card-label">Parking 318</div>
+                <div class="pt__card-name">{{ day.parqueo2 }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+

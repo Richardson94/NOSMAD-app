@@ -86,7 +86,9 @@
             }
           </div>
         } @else if (searchQuery().trim()) {
-          <p class="gv__no-results">No se ha encontrado resultados con esa busqueda</p>
+          <p class="gv__no-results">
+            No results found for '{{ searchQuery() }}'
+          </p>
         }
       </section>
     } @else if (courseKeys().length === 0) {

@@ -28,6 +28,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'parking-status-timeline',
+    loadComponent: () =>
+      import('./projects/parking-status/parking-timeline.component').then(
+        (m) => m.ParkingTimelineComponent
+      ),
+  },
+  {
     path: 'emojipedia',
     loadComponent: () =>
       import('./projects/emojipedia/emojipedia.component').then(

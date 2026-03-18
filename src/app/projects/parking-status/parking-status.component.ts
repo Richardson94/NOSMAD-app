@@ -1,10 +1,11 @@
 import { Component, computed } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ParkingStatusService } from './parking-status.service';
 
 @Component({
   selector: 'app-parking-status',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './parking-status.component.html',
   styleUrl: './parking-status.component.scss',
 })
