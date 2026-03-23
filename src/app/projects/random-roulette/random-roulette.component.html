@@ -3,50 +3,111 @@
   <p class="roulette__subtitle">Click the wheel to spin</p>
 
   <div class="roulette__main">
+    <div class="roulette__options">
+      <p class="roulette__options-title">Options ({{ count }}):</p>
+      <ul class="roulette__options-list">
+        @for (option of options; track option.id; let i = $index) {
+          <li class="roulette__options-item">
+            <span class="roulette__options-swatch" [style.background-color]="getSegmentColor(i)" aria-hidden="true"></span>
+            {{ option.value }}
+          </li>
+        }
+      </ul>
+    </div>
+
     <div class="roulette__wheel-wrap">
       <div class="roulette__pointer" aria-hidden="true"></div>
       <div
         class="roulette__wheel"
         [class.roulette__wheel--spinning]="spinning"
+        [class.roulette__wheel--no-transition]="skipWheelTransition"
         [style.transform]="'rotate(' + wheelRotation + 'deg)'"
         (transitionend)="onTransitionEnd()"
         (click)="spin()"
         role="button"
-        [attr.aria-label]="spinning ? 'Spinning...' : 'Spin the roulette'"
+        [attr.aria-label]="count === 0 ? 'Add options first' : (spinning ? 'Spinning...' : 'Spin the roulette')"
         tabindex="0"
         (keydown.enter)="spin()"
         (keydown.space)="spin(); $event.preventDefault()"
       >
         <div class="roulette__wheel-bg" [style.background]="wheelGradient"></div>
-        @for (option of options; track option; let i = $index) {
+        @for (option of options; track option.id; let i = $index) {
           <div
             class="roulette__segment-label"
             [style.transform]="'rotate(' + (i * segmentAngle + segmentAngle / 2) + 'deg)'"
           >
-            <span class="roulette__segment-text">{{ option }}</span>
+            <span class="roulette__segment-text">{{ option.value }}</span>
           </div>
         }
       </div>
     </div>
 
-    @if (winner !== null) {
-      <div class="roulette__result-panel" role="status" aria-live="polite">
+    <div
+      class="roulette__result-panel"
+      [class.roulette__result-panel--visible]="winner !== null"
+      [attr.aria-hidden]="winner === null"
+      role="status"
+      aria-live="polite"
+    >
+      @if (winner !== null) {
         <span class="roulette__winner-label">Winner:</span>
-        <strong class="roulette__winner-name">{{ winner }}</strong>
-      </div>
-    }
+        <strong class="roulette__winner-name">{{ winner.value }}</strong>
+
+        @if (multipleWinners && winners.length > 0) {
+          <ul class="roulette__winners-list">
+            @for (savedWinner of winners; let i = $index; track i) {
+              <li class="roulette__winners-item">
+                Winner {{ i + 1 }}: {{ savedWinner.value }}
+              </li>
+            }
+          </ul>
+        }
+      }
+    </div>
   </div>
 
-  <div class="roulette__options">
-    <p class="roulette__options-title">Options ({{ count }}):</p>
-    <ul class="roulette__options-list">
-      @for (option of options; track option; let i = $index) {
-        <li class="roulette__options-item">
-          <span class="roulette__options-swatch" [style.background-color]="getSegmentColor(i)" aria-hidden="true"></span>
-          {{ option }}
-        </li>
-      }
-    </ul>
+  <div class="roulette__editor">
+    <div class="roulette__editor-options">
+      <label class="roulette__checkbox">
+        <input
+          type="checkbox"
+          [ngModel]="deleteWinnerAfterSpin"
+          (ngModelChange)="onDeleteWinnerAfterSpinChange($event)"
+          [disabled]="spinning || multipleWinners"
+        />
+        <span>Delete winner</span>
+      </label>
+      <label class="roulette__checkbox">
+        <input
+          type="checkbox"
+          [ngModel]="multipleWinners"
+          (ngModelChange)="onMultipleWinnersChange($event)"
+          [disabled]="spinning"
+        />
+        <span>Multiple winners</span>
+      </label>
+    </div>
+    <hr>
+    <label class="roulette__editor-label" for="optionsInput">Options (one per line)</label>
+    <textarea
+      id="optionsInput"
+      class="roulette__editor-input"
+      [ngModel]="optionsInput"
+      (ngModelChange)="optionsInput = $event; onOptionsInputChange()"
+      [disabled]="spinning"
+      rows="6"
+      placeholder="Write one option per line"
+    ></textarea>
+    <div class="roulette__editor-actions">
+      <button
+        type="button"
+        class="roulette__reset-btn"
+        (click)="resetAll()"
+        [disabled]="spinning"
+      >
+        🔄 Reset All
+      </button>
+    </div>
   </div>
 
 </div>

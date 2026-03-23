@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
+import { RandomRouletteEffects, randomRouletteFeature } from './projects/random-roulette/state';
 
 export const routes: Routes = [
   {
@@ -15,6 +18,10 @@ export const routes: Routes = [
   },
   {
     path: 'random-roulette',
+    providers: [
+      provideState(randomRouletteFeature),
+      provideEffects(RandomRouletteEffects),
+    ],
     loadComponent: () =>
       import('./projects/random-roulette/random-roulette.component').then(
         (m) => m.RandomRouletteComponent
