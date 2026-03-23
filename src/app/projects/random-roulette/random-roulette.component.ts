@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './random-roulette.component.scss',
 })
 export class RandomRouletteComponent {
-  public options: string[] = ['A',"B","C", "D"];
+  public options: string[] = ['Richard Test 1',"Richard Test 2","Richard Test 3", "Richard Test 4"];
 
   readonly segmentColors = [
     '#a78bfa',
@@ -27,6 +27,7 @@ export class RandomRouletteComponent {
   public winner: string | null = null;
   public currentRotation = 0;
   public wheelRotation = 0;
+  private pendingWinnerIndex: number | null = null;
 
   public get count(): number {
     return Math.max(1, this.options.length);
@@ -59,31 +60,61 @@ export class RandomRouletteComponent {
     this.spinning = true;
     this.winner = null;
 
-    const winnerIndex = Math.floor(Math.random() * this.count);
-    const fullSpins = 5;
-    const segmentCenter = winnerIndex * this.segmentAngle + this.segmentAngle / 2;
+    const winnerIndex = this.getRandomInt(0, this.count - 1);
+    this.pendingWinnerIndex = winnerIndex;
+
+    // Evita caer siempre al centro del segmento para dar más variación visual
+    const segmentJitter = (Math.random() - 0.5) * this.segmentAngle * 0.8;
+    const fullSpins = this.getRandomInt(5, 8);
+    const segmentCenter = winnerIndex * this.segmentAngle + this.segmentAngle / 2 + segmentJitter;
     const pointerAngle = 270;
+    const currentNormalizedRotation = this.normalizeDegrees(this.currentRotation);
+    const desiredNormalizedRotation = this.normalizeDegrees(pointerAngle - segmentCenter);
+    const deltaToTarget = this.normalizeDegrees(
+      desiredNormalizedRotation - currentNormalizedRotation
+    );
     const finalRotation =
       this.currentRotation +
       fullSpins * 360 +
-      (pointerAngle - segmentCenter);
+      deltaToTarget;
 
     this.currentRotation = finalRotation;
-    console.log(this.currentRotation);
     this.wheelRotation = this.currentRotation;
   }
 
-  getWinnerIndexFromRotation(rotationDeg: number): number {
-    const r = ((rotationDeg % 360) + 360) % 360;
-    const angleInWheelAtPointer = (270 - r + 360) % 360;
-    const index = Math.floor(angleInWheelAtPointer / this.segmentAngle);
-    return Math.min(index, this.count - 1);
+  private getRandomInt(min: number, max: number): number {
+    const lower = Math.ceil(min);
+    const upper = Math.floor(max);
+    const range = upper - lower + 1;
+
+    if (range <= 0) return lower;
+
+    if (globalThis.crypto?.getRandomValues) {
+      const randomBuffer = new Uint32Array(1);
+      const maxUint32 = 0x100000000;
+      const limit = maxUint32 - (maxUint32 % range);
+      let randomValue = 0;
+
+      do {
+        globalThis.crypto.getRandomValues(randomBuffer);
+        randomValue = randomBuffer[0];
+      } while (randomValue >= limit);
+
+      return lower + (randomValue % range);
+    }
+
+    return lower + Math.floor(Math.random() * range);
+  }
+
+  private normalizeDegrees(angle: number): number {
+    return ((angle % 360) + 360) % 360;
   }
 
   onTransitionEnd(): void {
     if (!this.spinning) return;
-    const winnerIndex = this.getWinnerIndexFromRotation(this.wheelRotation);
+    const winnerIndex = this.pendingWinnerIndex ?? 0;
     this.winner = this.options[winnerIndex];
+    this.pendingWinnerIndex = null;
     this.spinning = false;
   }
 }

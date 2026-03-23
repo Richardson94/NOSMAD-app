@@ -16,8 +16,8 @@
     <div class="pt__timeline">
       @for (day of upcomingDays(); track day.fecha) {
         <div class="pt__item">
-          <div class="pt__marker"></div>
-          <div class="pt__content">
+          <div class="pt__marker">
+            <span class="pt__dot"></span>
             <div class="pt__date">
               <span class="pt__date-main">
                 {{ day.fecha | date: 'dd MMM yyyy' }}
@@ -26,6 +26,9 @@
                 {{ day.fecha | date: 'EEEE' }}
               </span>
             </div>
+          </div>
+
+          <div class="pt__content">
             <div class="pt__assignments">
               <div
                 class="pt__card"

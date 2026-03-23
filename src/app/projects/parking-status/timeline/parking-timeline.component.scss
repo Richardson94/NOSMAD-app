@@ -47,7 +47,7 @@
 .pt__timeline::before {
   content: '';
   position: absolute;
-  left: 0.4rem;
+  left: calc(1.25rem + 0.4rem);
   top: 0;
   bottom: 0;
   width: 2px;
@@ -61,19 +61,24 @@
 .pt__item {
   position: relative;
   display: flex;
+  align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
 }
 
 .pt__marker {
-  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.pt__dot {
   width: 0.8rem;
   height: 0.8rem;
   border-radius: 999px;
   background: #10b981;
   box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
-  margin-top: 0.4rem;
-  flex-shrink: 0;
 }
 
 .pt__content {
@@ -82,11 +87,11 @@
   padding: 0.75rem 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(55, 65, 81, 0.9);
-  width: 100%;
+  flex: 1;
 }
 
 .pt__date {
-  margin-bottom: 0.5rem;
+  text-align: right;
 }
 
 .pt__date-main {

@@ -14,7 +14,7 @@
     <h2 class="sidebar-menu__title">NOSMAD</h2>
     <div class="sidebar-menu__actions">
       @if (showBackButton) {
-        <a routerLink="/welcome" class="sidebar-menu__back-btn" aria-label="Volver a Welcome">Back</a>
+        <a routerLink="/welcome" class="sidebar-menu__back-btn" aria-label="Volver a Welcome" (click)="closeMenu()">Back</a>
       }
     </div>
   </div>
