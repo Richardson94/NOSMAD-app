@@ -1,0 +1,19 @@
+@if (emptySearch) {
+  <p class="emoji-catalog__empty" role="status">No emojis match your search. Try another word in English or Spanish.</p>
+} @else {
+  @for (section of sections; track section.id) {
+    <section class="emoji-section" [attr.aria-labelledby]="'sec-' + section.id">
+      <div class="emoji-section__head">
+        <h2 class="emoji-section__title" [id]="'sec-' + section.id">{{ section.titleEn }}</h2>
+        <p class="emoji-section__subtitle">{{ section.titleEs }}</p>
+      </div>
+      <div class="emoji-section__grid" role="list">
+        @for (item of section.items; let i = $index; track i) {
+          <div class="emoji-section__cell" role="listitem">
+            <app-emoji-tile [item]="item" (copied)="onCopied($event)" />
+          </div>
+        }
+      </div>
+    </section>
+  }
+}

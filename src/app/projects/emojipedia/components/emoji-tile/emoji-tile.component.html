@@ -1,0 +1,9 @@
+<button
+  type="button"
+  class="emoji-tile"
+  (click)="copy()"
+  [attr.aria-label]="'Copy ' + item.char + ': ' + item.nameEn + ' / ' + item.nameEs"
+  [title]="item.nameEn + ' · ' + item.nameEs"
+>
+  <span class="emoji-tile__char" aria-hidden="true">{{ item.char }}</span>
+</button>

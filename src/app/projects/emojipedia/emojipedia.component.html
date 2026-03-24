@@ -1,5 +1,22 @@
 <div class="ep">
-  <span class="ep__icon" aria-hidden="true">🔧</span>
-  <h1 class="ep__title">Coming soon</h1>
-  <p class="ep__subtitle">Working harder to deliver soon.</p>
+  <header class="ep__header">
+    <span class="ep__brand" aria-hidden="true">📚</span>
+    <h1 class="ep__title">Emojipedia</h1>
+    <p class="ep__subtitle">
+      Search by name in English or Spanish. Click an emoji to copy it. Empty search shows all sections.
+    </p>
+  </header>
+
+  <app-emoji-search
+    [query]="searchQuery"
+    (queryChange)="searchQuery = $event"
+  />
+
+  <main class="ep__main">
+    <app-emoji-catalog
+      [sections]="filteredSections"
+      [emptySearch]="searchHasNoResults"
+      (emojiCopied)="onEmojiCopied($event)"
+    />
+  </main>
 </div>

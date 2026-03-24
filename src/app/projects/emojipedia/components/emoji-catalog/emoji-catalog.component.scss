@@ -1,0 +1,41 @@
+.emoji-catalog__empty {
+  text-align: center;
+  color: var(--dashboard-muted, #71717a);
+  font-size: 0.9rem;
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.emoji-section {
+  margin-bottom: 1.75rem;
+}
+
+.emoji-section__head {
+  margin-bottom: 0.65rem;
+  text-align: left;
+  padding: 0 0.15rem;
+}
+
+.emoji-section__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dashboard-text, #e4e4e7);
+}
+
+.emoji-section__subtitle {
+  margin: 0.15rem 0 0 0;
+  font-size: 0.8rem;
+  color: var(--dashboard-muted, #71717a);
+}
+
+.emoji-section__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2.65rem, 1fr));
+  gap: 0.45rem;
+}
+
+.emoji-section__cell {
+  display: flex;
+  justify-content: stretch;
+}

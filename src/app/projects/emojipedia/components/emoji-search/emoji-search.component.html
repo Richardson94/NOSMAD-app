@@ -1,0 +1,17 @@
+<div class="emoji-search">
+  <label class="emoji-search__label" for="emojiSearchInput">Search emojis</label>
+  <div class="emoji-search__wrap">
+    <span class="emoji-search__icon" aria-hidden="true">🔎</span>
+    <input
+      id="emojiSearchInput"
+      class="emoji-search__input"
+      type="search"
+      autocomplete="off"
+      spellcheck="false"
+      [ngModel]="query"
+      (ngModelChange)="onInput($event)"
+      placeholder="Name in English or Spanish — e.g. heart, corazón, pizza…"
+    />
+  </div>
+  <p class="emoji-search__hint">Filter by emoji name or keywords in English or Spanish.</p>
+</div>
