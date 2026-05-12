@@ -7,8 +7,6 @@
   --dashboard-muted: #71717a;
   --dashboard-accent: #a78bfa;
   --dashboard-accent-hover: #c4b5fd;
-  --sidebar-width: 20%;
-  --content-width: 80%;
 }
 
 .dashboard {
@@ -30,30 +28,11 @@
   }
 
   &__content {
-    flex: 1 1 var(--content-width);
+    flex: 1 1 100%;
+    width: 100%;
     min-width: 0;
     min-height: 100%;
     background: var(--dashboard-content-bg);
     overflow: auto;
-  }
-
-  &__sidebar {
-    flex: 0 0 var(--sidebar-width);
-    max-width: 280px;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 768px) {
-  .dashboard__body {
-    flex-direction: column-reverse;
-  }
-
-  .dashboard__sidebar {
-    flex: 0 0 auto;
-    max-width: 100%;
-    min-height: auto;
   }
 }

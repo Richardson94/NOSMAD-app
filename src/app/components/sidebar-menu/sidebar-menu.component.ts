@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, HostListener, OnDestroy, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
 
@@ -12,6 +13,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 export class SidebarMenuComponent implements OnDestroy {
   menuOpen = false;
   private readonly destroy$ = new Subject<void>();
+  private readonly document = inject(DOCUMENT);
 
   constructor(private router: Router) {
     this.router.events
@@ -26,18 +28,27 @@ export class SidebarMenuComponent implements OnDestroy {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+    this.syncBodyScrollLock();
   }
 
   closeMenu(): void {
     this.menuOpen = false;
+    this.syncBodyScrollLock();
   }
 
-  get showBackButton(): boolean {
-    const tree = this.router.createUrlTree(['/welcome']);
-    return !this.router.isActive(tree, true);
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.menuOpen) {
+      this.closeMenu();
+    }
+  }
+
+  private syncBodyScrollLock(): void {
+    this.document.body.style.overflow = this.menuOpen ? 'hidden' : '';
   }
 
   ngOnDestroy(): void {
+    this.document.body.style.overflow = '';
     this.destroy$.next();
     this.destroy$.complete();
   }
