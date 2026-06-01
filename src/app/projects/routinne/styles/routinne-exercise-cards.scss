@@ -24,25 +24,24 @@
 }
 
 .routinne-wizard__exercise-card {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  position: relative;
+  display: block;
   width: 100%;
+  margin: 0;
   padding: 0;
-  border: 2px solid var(--dashboard-border, rgba(255, 255, 255, 0.1));
+  border: 2px solid var(--dashboard-border, rgba(255, 255, 255, 0.12));
   border-radius: 0.75rem;
-  background: rgba(0, 0, 0, 0.28);
+  background: transparent;
   cursor: pointer;
   color: var(--dashboard-text, #e4e4e7);
   overflow: hidden;
-  text-align: center;
+  line-height: 0;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   transition:
     border-color 0.28s ease,
     box-shadow 0.28s ease,
-    transform 0.12s ease,
-    background 0.28s ease;
+    transform 0.12s ease;
 
   &:active {
     transform: scale(0.98);
@@ -55,30 +54,19 @@
   }
 
   &--selected {
-    border-color: rgba(167, 139, 250, 0.65);
+    border-color: rgba(167, 139, 250, 0.75);
     box-shadow:
-      0 0 12px rgba(167, 139, 250, 0.35),
-      inset 0 0 0 1px rgba(196, 181, 253, 0.2);
+      0 0 14px rgba(167, 139, 250, 0.4),
+      0 0 0 1px rgba(196, 181, 253, 0.25);
   }
-}
-
-.routinne-wizard__exercise-card-media {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: rgba(255, 255, 255, 0.04);
-  overflow: hidden;
 }
 
 .routinne-wizard__exercise-card-img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
+  height: auto;
   display: block;
-  padding: 0.35rem;
-  box-sizing: border-box;
+  vertical-align: top;
+  border-radius: calc(0.75rem - 2px);
 }
 
 .routinne-wizard__exercise-card-overlay {
@@ -160,49 +148,15 @@
   }
 }
 
-.routinne-wizard__exercise-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.85rem;
-  padding: 0.5rem 0.4rem 0.55rem;
-  background: rgba(0, 0, 0, 0.45);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  transition:
-    background 0.28s ease,
-    border-color 0.28s ease;
-}
-
-.routinne-wizard__exercise-card-name {
-  width: 100%;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: #f4f4f5;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-.routinne-wizard__exercise-card--selected .routinne-wizard__exercise-card-footer {
-  background: rgba(91, 33, 182, 0.35);
-  border-top-color: rgba(167, 139, 250, 0.35);
-}
-
-.routinne-wizard__exercise-card--selected .routinne-wizard__exercise-card-name {
-  color: #ede9fe;
-}
-
 .routinne-wizard__exercise-card-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  min-height: 6rem;
+  aspect-ratio: 4 / 3;
   font-size: 2rem;
+  line-height: 1;
   color: var(--dashboard-muted, #71717a);
+  background: rgba(0, 0, 0, 0.35);
 }
