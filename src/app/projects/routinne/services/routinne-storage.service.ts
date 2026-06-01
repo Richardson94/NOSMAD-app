@@ -170,6 +170,24 @@ export class RoutinneStorageService {
     this.setExerciseDone(date, routineId, exerciseId, !cur);
   }
 
+  /** True if there is at least one pending exercise for any of today's routines. */
+  hasPendingExercisesForToday(): boolean {
+    const date = this.todayKey();
+    const wd = this.todayWeekday();
+    const routines = this.routinesForWeekday(wd);
+    if (routines.length === 0) {
+      return false;
+    }
+    for (const r of routines) {
+      for (const exId of r.exercises) {
+        if (!this.isExerciseDone(date, r.id, exId)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   private pruneDayLogsForRoutine(routineId: string): void {
     const all = this.readAllDayLogs();
     for (const key of Object.keys(all)) {

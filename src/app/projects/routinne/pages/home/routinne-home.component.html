@@ -9,6 +9,9 @@
       <a routerLink="/routinne/today" class="routinne-home__link routinne-home__link--primary">
         <span class="routinne-home__link-icon" aria-hidden="true">📅</span>
         <span class="routinne-home__link-label">Today</span>
+        @if (isTodayFullyDone()) {
+          <span class="routinne-home__today-done" aria-hidden="true">✔✔</span>
+        }
       </a>
     } @else {
       <span

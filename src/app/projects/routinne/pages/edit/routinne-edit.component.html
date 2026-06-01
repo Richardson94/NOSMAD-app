@@ -104,7 +104,33 @@
                       [class.routinne-wizard__exercise-card-overlay--visible]="isExerciseOn(ex.id)"
                       aria-hidden="true"
                     >
-                      <span class="routinne-wizard__exercise-card-check">✔️</span>
+                      <span class="routinne-wizard__exercise-card-check">
+                        <svg
+                          class="routinne-wizard__exercise-card-check-icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="4"
+                            ry="4"
+                            fill="currentColor"
+                            fill-opacity="0"
+                          />
+                          <path
+                            d="M6 12.5 10 16l8-8"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </span>
                   <span class="routinne-wizard__exercise-card-footer">

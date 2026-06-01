@@ -19,4 +19,8 @@ export class RoutinneHomeComponent {
   hasRoutinesForToday(): boolean {
     return this.storage.routinesForWeekday(this.storage.todayWeekday()).length > 0;
   }
+
+  isTodayFullyDone(): boolean {
+    return !this.storage.hasPendingExercisesForToday();
+  }
 }

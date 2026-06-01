@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { afterNextRender, Component, inject, Injector } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   exerciseDisplayName,
   ROUTINNE_EXERCISE_BY_ID,
@@ -28,6 +28,7 @@ export class RoutinneTodayComponent {
   private readonly storage = inject(RoutinneStorageService);
   private readonly document = inject(DOCUMENT);
   private readonly injector = inject(Injector);
+  private readonly router = inject(Router);
 
   todayRoutines(): RoutinneRoutine[] {
     return this.storage.routinesForWeekday(this.storage.todayWeekday());
@@ -83,6 +84,10 @@ export class RoutinneTodayComponent {
       },
       { injector: this.injector }
     );
+
+    if (!this.storage.hasPendingExercisesForToday()) {
+      this.router.navigateByUrl('/routinne');
+    }
   }
 
   progressText(r: RoutinneRoutine): string {

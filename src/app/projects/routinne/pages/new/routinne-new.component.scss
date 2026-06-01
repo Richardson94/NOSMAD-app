@@ -70,6 +70,8 @@
   flex: 1 1 auto;
   min-height: 0;
   gap: 0.85rem;
+  /* Leave room for floating footer actions on step 2 */
+  padding-bottom: 4.25rem;
 }
 
 .routinne-new__catalog {
@@ -87,13 +89,22 @@
 
 .routinne-new__equipment-actions {
   flex-shrink: 0;
-  position: sticky;
+  position: fixed;
+  left: 0;
+  right: 0;
   bottom: 0;
-  z-index: 2;
-  margin-top: auto;
+  z-index: 20;
+  margin-top: 0;
   padding-top: 0.5rem;
-  padding-bottom: max(0.25rem, env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(to top, rgba(9, 9, 11, 0.98) 70%, rgba(9, 9, 11, 0));
+  padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.65rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(0.4rem, env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(
+    to top,
+    rgba(9, 9, 11, 0.98) 65%,
+    rgba(9, 9, 11, 0.7) 90%,
+    rgba(9, 9, 11, 0)
+  );
 }
 
 .routinne-new__equipment-actions .routinne-wizard__btn {

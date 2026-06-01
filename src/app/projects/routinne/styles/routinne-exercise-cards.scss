@@ -101,14 +101,29 @@
 }
 
 .routinne-wizard__exercise-card-check {
-  font-size: clamp(2rem, 10vw, 2.75rem);
-  line-height: 1;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.65));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(2rem, 10vw, 2.4rem);
+  height: clamp(2rem, 10vw, 2.4rem);
+  border-radius: 0.55rem;
+  background: radial-gradient(circle at 30% 20%, #bbf7d0, #22c55e);
+  box-shadow:
+    0 0 12px rgba(34, 197, 94, 0.7),
+    0 0 24px rgba(22, 163, 74, 0.5);
   transform: scale(0.4);
   opacity: 0;
   transition:
     transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1),
     opacity 0.22s ease;
+
+  &-icon {
+    width: 70%;
+    height: 70%;
+    display: block;
+    color: #052e16;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  }
 }
 
 .routinne-wizard__exercise-card-overlay--visible .routinne-wizard__exercise-card-check {
