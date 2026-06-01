@@ -1,0 +1,110 @@
+<div class="routinne-screen" [class.routinne-new--step1]="step() === 1">
+  <a routerLink="/routinne" class="routinne-screen__back" aria-label="Back to Routinne menu">← Back</a>
+  <div class="routinne-screen__content routinne-screen__content--wizard">
+    <section class="routinne-page routinne-page--flush">
+      @if (step() === 1) {
+        <div class="routinne-wizard routinne-new__frequency">
+          <h2 class="routinne-wizard__title">Frequency</h2>
+          <p class="routinne-wizard__hint">
+            Choose the days you will run this routine. Tap a day to turn it on or off.
+          </p>
+          <div class="routinne-new__weekday-block">
+            <span class="routinne-wizard__label">Weekdays</span>
+            <div class="routinne-wizard__weekday-grid routinne-new__weekday-stack">
+              @for (row of frequencyWeekdayRows; track $index) {
+                @if (row.kind === 'pair') {
+                  <button
+                    type="button"
+                    class="routinne-wizard__chip routinne-new__weekday-chip"
+                    [class.routinne-wizard__chip--on]="isWeekdayOn(row.left.value)"
+                    (click)="toggleWeekday(row.left.value)"
+                  >
+                    {{ row.left.label }}
+                  </button>
+                  <button
+                    type="button"
+                    class="routinne-wizard__chip routinne-new__weekday-chip"
+                    [class.routinne-wizard__chip--on]="isWeekdayOn(row.right.value)"
+                    (click)="toggleWeekday(row.right.value)"
+                  >
+                    {{ row.right.label }}
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="routinne-wizard__chip routinne-new__weekday-chip routinne-new__weekday-chip--sun"
+                    [class.routinne-wizard__chip--on]="isWeekdayOn(row.day.value)"
+                    (click)="toggleWeekday(row.day.value)"
+                  >
+                    {{ row.day.label }}
+                  </button>
+                }
+              }
+            </div>
+          </div>
+          <div class="routinne-wizard__actions routinne-wizard__actions--solo">
+            <button type="button" class="routinne-wizard__btn routinne-wizard__btn--primary" [disabled]="!canGoNext()" (click)="goStep2()">
+              Next
+            </button>
+          </div>
+        </div>
+      } @else {
+        <div class="routinne-wizard routinne-new__equipment">
+          <h2 class="routinne-wizard__title">Equipment</h2>
+          <p class="routinne-wizard__hint">Tap a machine to add it. Tap again to remove. Large cards are easier to hit with one hand.</p>
+          <div>
+            <label class="routinne-wizard__label" for="routine-name">Routine name</label>
+            <input
+              id="routine-name"
+              class="routinne-wizard__field"
+              type="text"
+              name="routineName"
+              [(ngModel)]="routineName"
+              maxlength="80"
+              placeholder="e.g. Leg day Monday"
+              autocomplete="off"
+            />
+          </div>
+          <div class="routinne-new__catalog">
+            <div class="routinne-wizard__catalog-head">
+              <span class="routinne-wizard__label">Catalog</span>
+              <span class="routinne-wizard__counter">{{ exerciseCount() }} selected</span>
+            </div>
+            <div class="routinne-wizard__exercise-grid" role="group" aria-label="Exercise catalog">
+              @for (ex of catalog; track ex.id) {
+                <button
+                  type="button"
+                  class="routinne-wizard__exercise-card"
+                  [class.routinne-wizard__exercise-card--selected]="isExerciseOn(ex.id)"
+                  [attr.aria-pressed]="isExerciseOn(ex.id)"
+                  [attr.aria-label]="ex.name + (isExerciseOn(ex.id) ? ', selected' : '')"
+                  (click)="toggleExercise(ex.id)"
+                >
+                  <span class="routinne-wizard__exercise-card-media">
+                    <img class="routinne-wizard__exercise-card-img" [src]="ex.image" alt="" loading="lazy" />
+                    <span
+                      class="routinne-wizard__exercise-card-overlay"
+                      [class.routinne-wizard__exercise-card-overlay--visible]="isExerciseOn(ex.id)"
+                      aria-hidden="true"
+                    >
+                      <span class="routinne-wizard__exercise-card-check">✔️</span>
+                    </span>
+                  </span>
+                  <span class="routinne-wizard__exercise-card-footer">
+                    <span class="routinne-wizard__exercise-card-name">{{ ex.name }}</span>
+                  </span>
+                </button>
+              }
+            </div>
+          </div>
+          <div class="routinne-wizard__actions routinne-new__equipment-actions">
+            <button type="button" class="routinne-wizard__btn" (click)="goStep1()">Back</button>
+            <button type="button" class="routinne-wizard__btn routinne-wizard__btn--primary" [disabled]="!canSave()" (click)="save()">
+              Save routine
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+</div>

@@ -49,6 +49,58 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'routinne',
+    loadComponent: () =>
+      import('./projects/routinne/shell/routinne-outlet.component').then(
+        (m) => m.RoutinneOutletComponent
+      ),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./projects/routinne/pages/home/routinne-home.component').then(
+            (m) => m.RoutinneHomeComponent
+          ),
+      },
+      {
+        path: 'today',
+        loadComponent: () =>
+          import('./projects/routinne/pages/today/routinne-today.component').then(
+            (m) => m.RoutinneTodayComponent
+          ),
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./projects/routinne/pages/new/routinne-new.component').then(
+            (m) => m.RoutinneNewComponent
+          ),
+      },
+      {
+        path: 'edit',
+        loadComponent: () =>
+          import('./projects/routinne/pages/edit/routinne-edit.component').then(
+            (m) => m.RoutinneEditComponent
+          ),
+      },
+      {
+        path: 'edit/:routineId',
+        loadComponent: () =>
+          import('./projects/routinne/pages/edit/routinne-edit.component').then(
+            (m) => m.RoutinneEditComponent
+          ),
+      },
+      {
+        path: 'reports',
+        loadComponent: () =>
+          import('./projects/routinne/pages/reports/routinne-reports.component').then(
+            (m) => m.RoutinneReportsComponent
+          ),
+      },
+    ],
+  },
+  {
     path: 'grades-viewer',
     loadComponent: () =>
       import('./projects/grades-viewer/grades-viewer-shell.component').then(

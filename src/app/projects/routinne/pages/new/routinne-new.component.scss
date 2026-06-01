@@ -1,0 +1,101 @@
+.routinne-screen__content--wizard {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.routinne-page--flush {
+  margin: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Step 1 (frequency): full width; weekdays in 2 cols (Mon–Sat), Sunday full width */
+:host .routinne-screen.routinne-new--step1 {
+  max-width: 100%;
+  width: 100%;
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+}
+
+.routinne-new__frequency {
+  width: 100%;
+}
+
+.routinne-new__weekday-block {
+  width: 100%;
+}
+
+.routinne-new__weekday-stack.routinne-wizard__weekday-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.routinne-new__weekday-chip--sun.routinne-wizard__chip {
+  grid-column: 1 / -1;
+}
+
+.routinne-new__weekday-chip.routinne-wizard__chip {
+  width: 100%;
+  min-height: 3.35rem;
+  font-size: clamp(1.05rem, 4.2vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 0.65rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .routinne-new__weekday-chip.routinne-wizard__chip {
+    min-height: 3.6rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Step 2: scrollable catalog + sticky actions for one-handed use */
+:host .routinne-screen:not(.routinne-new--step1) {
+  max-width: 100%;
+  padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.65rem, env(safe-area-inset-right, 0px));
+}
+
+.routinne-new__equipment {
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0.85rem;
+}
+
+.routinne-new__catalog {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.routinne-new__catalog .routinne-wizard__exercise-grid {
+  flex: 1 1 auto;
+  min-height: 12rem;
+  max-height: none;
+}
+
+.routinne-new__equipment-actions {
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, rgba(9, 9, 11, 0.98) 70%, rgba(9, 9, 11, 0));
+}
+
+.routinne-new__equipment-actions .routinne-wizard__btn {
+  min-height: 3rem;
+}

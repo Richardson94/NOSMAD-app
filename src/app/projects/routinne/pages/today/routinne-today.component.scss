@@ -1,0 +1,150 @@
+.routinne-today__wrap {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+:host .routinne-screen.routinne-today {
+  max-width: 100%;
+  padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.65rem, env(safe-area-inset-right, 0px));
+}
+
+.routinne-today__header {
+  text-align: center;
+  padding: 0 0 0.25rem;
+}
+
+.routinne-today__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.routinne-today__date {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--dashboard-muted, #71717a);
+  text-transform: capitalize;
+}
+
+.routinne-today__empty {
+  text-align: center;
+}
+
+.routinne-today__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.routinne-today__link {
+  padding: 0.5rem 0.85rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: rgba(167, 139, 250, 0.18);
+  color: var(--dashboard-accent, #a78bfa);
+
+  &--muted {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--dashboard-muted, #a1a1aa);
+  }
+}
+
+.routinne-today__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.routinne-today__card {
+  border-radius: 0.75rem;
+  border: 1px solid var(--dashboard-border, rgba(255, 255, 255, 0.1));
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 0.65rem 0.85rem;
+}
+
+.routinne-today__card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--dashboard-border, rgba(255, 255, 255, 0.06));
+}
+
+.routinne-today__card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-width: 0;
+}
+
+.routinne-today__progress {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dashboard-accent, #a78bfa);
+}
+
+.routinne-today__exercises {
+  list-style: none;
+  margin: 0;
+  max-height: none;
+  overflow: visible;
+  position: relative;
+}
+
+.routinne-today__exercise-item {
+  list-style: none;
+  margin: 0;
+  min-width: 0;
+  position: relative;
+  will-change: transform;
+}
+
+.routinne-today__exercise-item--flipping {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.routinne-today__exercise-item--flipping-primary {
+  z-index: 4;
+
+  .routinne-wizard__exercise-card {
+    box-shadow:
+      0 0 20px rgba(167, 139, 250, 0.45),
+      0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routinne-today__exercise-item {
+    will-change: auto;
+  }
+}
+
+.routinne-today__check-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

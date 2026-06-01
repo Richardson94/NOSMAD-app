@@ -1,0 +1,73 @@
+<div class="routinne-screen routinne-today">
+  <a routerLink="/routinne" class="routinne-screen__back" aria-label="Back to Routinne menu">← Back</a>
+  <div class="routinne-screen__content routinne-today__wrap">
+    <header class="routinne-today__header">
+      <h2 class="routinne-today__title">Today</h2>
+      <p class="routinne-today__date">{{ todayLabel() }}</p>
+    </header>
+    @if (todayRoutines().length === 0) {
+      <section class="routinne-page routinne-today__empty">
+        <p class="routinne-page__text">
+          Nothing scheduled for today. Create a routine under “New routine” or adjust days under “Edit”.
+        </p>
+        <div class="routinne-today__links">
+          <a routerLink="/routinne/new" class="routinne-today__link">New routine</a>
+          <a routerLink="/routinne/edit" class="routinne-today__link routinne-today__link--muted">Edit</a>
+        </div>
+      </section>
+    } @else {
+      <div class="routinne-today__list">
+        @for (r of todayRoutines(); track r.id) {
+          <section class="routinne-today__card" [attr.aria-labelledby]="'routine-' + r.id">
+            <div class="routinne-today__card-head">
+              <h3 class="routinne-today__card-title" [id]="'routine-' + r.id">{{ r.name }}</h3>
+              <span class="routinne-today__progress">{{ progressText(r) }}</span>
+            </div>
+            <ul
+              class="routinne-today__exercises routinne-wizard__exercise-grid"
+              [id]="exerciseGridId(r.id)"
+              role="list"
+            >
+              @for (exId of exercisesForTodayDisplay(r); track exId) {
+                <li
+                  class="routinne-today__exercise-item"
+                  role="listitem"
+                  [attr.data-exercise-id]="exId"
+                >
+                  <label
+                    class="routinne-wizard__exercise-card"
+                    [class.routinne-wizard__exercise-card--selected]="isDone(r.id, exId)"
+                  >
+                    <input
+                      type="checkbox"
+                      class="routinne-today__check-input"
+                      [checked]="isDone(r.id, exId)"
+                      (change)="setDone(r.id, exId, $event)"
+                    />
+                    <span class="routinne-wizard__exercise-card-media">
+                      @if (exerciseMeta(exId); as meta) {
+                        <img class="routinne-wizard__exercise-card-img" [src]="meta.image" alt="" loading="lazy" />
+                      } @else {
+                        <span class="routinne-wizard__exercise-card-placeholder" aria-hidden="true">?</span>
+                      }
+                      <span
+                        class="routinne-wizard__exercise-card-overlay"
+                        [class.routinne-wizard__exercise-card-overlay--visible]="isDone(r.id, exId)"
+                        aria-hidden="true"
+                      >
+                        <span class="routinne-wizard__exercise-card-check">✔️</span>
+                      </span>
+                    </span>
+                    <span class="routinne-wizard__exercise-card-footer">
+                      <span class="routinne-wizard__exercise-card-name">{{ exerciseLabel(exId) }}</span>
+                    </span>
+                  </label>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+    }
+  </div>
+</div>

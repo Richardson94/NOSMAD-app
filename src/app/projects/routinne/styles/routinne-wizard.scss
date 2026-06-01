@@ -1,0 +1,156 @@
+.routinne-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.routinne-wizard__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.routinne-wizard__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--dashboard-muted, #71717a);
+}
+
+.routinne-wizard__code {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--dashboard-accent-hover, #c4b5fd);
+  word-break: break-all;
+}
+
+.routinne-wizard__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dashboard-muted, #71717a);
+  margin-bottom: 0.35rem;
+}
+
+.routinne-wizard__field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--dashboard-border, rgba(255, 255, 255, 0.1));
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--dashboard-text, #e4e4e7);
+  font-size: 0.9375rem;
+
+  &:focus {
+    outline: 2px solid var(--dashboard-accent, #a78bfa);
+    outline-offset: 1px;
+  }
+}
+
+.routinne-wizard__weekday-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+@media (min-width: 400px) {
+  .routinne-wizard__weekday-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+.routinne-wizard__chip {
+  min-height: 2.75rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--dashboard-border, rgba(255, 255, 255, 0.1));
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dashboard-muted, #a1a1aa);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: rgba(167, 139, 250, 0.35);
+  }
+
+  &--on {
+    background: rgba(167, 139, 250, 0.2);
+    border-color: rgba(167, 139, 250, 0.45);
+    color: var(--dashboard-accent, #a78bfa);
+  }
+}
+
+@import './routinne-exercise-cards.scss';
+
+.routinne-wizard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.routinne-wizard__btn {
+  flex: 1 1 auto;
+  min-width: 6rem;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--dashboard-border, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--dashboard-text, #e4e4e7);
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &--primary {
+    background: rgba(167, 139, 250, 0.22);
+    border-color: rgba(167, 139, 250, 0.45);
+    color: var(--dashboard-accent-hover, #c4b5fd);
+
+    &:not(:disabled):hover {
+      background: rgba(167, 139, 250, 0.32);
+    }
+  }
+
+  &--danger {
+    border-color: rgba(248, 113, 113, 0.35);
+    color: #fca5a5;
+    background: rgba(248, 113, 113, 0.08);
+
+    &:not(:disabled):hover {
+      background: rgba(248, 113, 113, 0.15);
+    }
+  }
+}
+
+.routinne-wizard__counter {
+  font-size: 0.75rem;
+  color: var(--dashboard-muted, #71717a);
+}
+
+.routinne-wizard__actions--solo {
+  margin-top: 0.5rem;
+
+  .routinne-wizard__btn {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+}

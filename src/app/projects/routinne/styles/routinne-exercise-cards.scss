@@ -1,0 +1,193 @@
+.routinne-wizard__catalog-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  .routinne-wizard__label {
+    margin-bottom: 0;
+  }
+}
+
+.routinne-wizard__exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  max-height: min(62vh, 32rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.15rem 0.1rem 0.35rem;
+  margin: 0 -0.1rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding: 0.5rem;
+}
+
+.routinne-wizard__exercise-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding: 0;
+  border: 2px solid var(--dashboard-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  color: var(--dashboard-text, #e4e4e7);
+  overflow: hidden;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    transform 0.12s ease,
+    background 0.28s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible,
+  &:focus-within {
+    outline: 2px solid var(--dashboard-accent, #a78bfa);
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    border-color: rgba(167, 139, 250, 0.65);
+    box-shadow:
+      0 0 12px rgba(167, 139, 250, 0.35),
+      inset 0 0 0 1px rgba(196, 181, 253, 0.2);
+  }
+}
+
+.routinne-wizard__exercise-card-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.routinne-wizard__exercise-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  padding: 0.35rem;
+  box-sizing: border-box;
+}
+
+.routinne-wizard__exercise-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    background-color 0.28s ease;
+
+  &--visible {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.58);
+  }
+}
+
+.routinne-wizard__exercise-card-check {
+  font-size: clamp(2rem, 10vw, 2.75rem);
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.65));
+  transform: scale(0.4);
+  opacity: 0;
+  transition:
+    transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.22s ease;
+}
+
+.routinne-wizard__exercise-card-overlay--visible .routinne-wizard__exercise-card-check {
+  transform: scale(1);
+  opacity: 1;
+  animation: routinne-exercise-check-in 0.38s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+}
+
+@keyframes routinne-exercise-check-in {
+  0% {
+    transform: scale(0.35);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routinne-wizard__exercise-card-overlay,
+  .routinne-wizard__exercise-card-check {
+    transition-duration: 0.01ms;
+  }
+
+  .routinne-wizard__exercise-card-overlay--visible .routinne-wizard__exercise-card-check {
+    animation: none;
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.routinne-wizard__exercise-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: 0.5rem 0.4rem 0.55rem;
+  background: rgba(0, 0, 0, 0.45);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.routinne-wizard__exercise-card-name {
+  width: 100%;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: #f4f4f5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.routinne-wizard__exercise-card--selected .routinne-wizard__exercise-card-footer {
+  background: rgba(91, 33, 182, 0.35);
+  border-top-color: rgba(167, 139, 250, 0.35);
+}
+
+.routinne-wizard__exercise-card--selected .routinne-wizard__exercise-card-name {
+  color: #ede9fe;
+}
+
+.routinne-wizard__exercise-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+  color: var(--dashboard-muted, #71717a);
+}

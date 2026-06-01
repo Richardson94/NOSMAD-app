@@ -1,0 +1,54 @@
+<div class="routinne-home">
+  <header class="routinne-home__hero">
+    <span class="routinne-home__brand" aria-hidden="true">📋</span>
+    <h1 class="routinne-home__title">Routinne</h1>
+  </header>
+
+  <nav class="routinne-home__nav" aria-label="Routinne menu">
+    @if (hasRoutinesForToday()) {
+      <a routerLink="/routinne/today" class="routinne-home__link routinne-home__link--primary">
+        <span class="routinne-home__link-icon" aria-hidden="true">📅</span>
+        <span class="routinne-home__link-label">Today</span>
+      </a>
+    } @else {
+      <span
+        class="routinne-home__link routinne-home__link--disabled"
+        aria-disabled="true"
+        tabindex="-1"
+        title="No routines scheduled for today"
+      >
+        <span class="routinne-home__link-icon" aria-hidden="true">📅</span>
+        <span class="routinne-home__link-label">Today</span>
+      </span>
+    }
+    @if (hasRoutines()) {
+      <a routerLink="/routinne/edit" class="routinne-home__link">
+        <span class="routinne-home__link-icon" aria-hidden="true">✏️</span>
+        <span class="routinne-home__link-label">Edit</span>
+      </a>
+    } @else {
+      <span
+        class="routinne-home__link routinne-home__link--disabled"
+        aria-disabled="true"
+        tabindex="-1"
+        title="No routines to edit"
+      >
+        <span class="routinne-home__link-icon" aria-hidden="true">✏️</span>
+        <span class="routinne-home__link-label">Edit</span>
+      </span>
+    }
+    <a routerLink="/routinne/new" class="routinne-home__link">
+      <span class="routinne-home__link-icon" aria-hidden="true">➕</span>
+      <span class="routinne-home__link-label">New routine</span>
+    </a>
+    <span
+      class="routinne-home__link routinne-home__link--disabled routinne-home__link--reports"
+      aria-disabled="true"
+      tabindex="-1"
+      title="Coming soon"
+    >
+      <span class="routinne-home__link-icon" aria-hidden="true">📊</span>
+      <span class="routinne-home__link-label">Reports</span>
+    </span>
+  </nav>
+</div>
