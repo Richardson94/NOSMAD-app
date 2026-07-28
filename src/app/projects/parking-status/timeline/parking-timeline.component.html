@@ -1,5 +1,6 @@
 <div class="pt">
   <div class="pt__header">
+    <h1 class="pt__title">Upcoming parking schedule</h1>
     <button
       type="button"
       class="pt__back-btn"
@@ -7,7 +8,6 @@
     >
       Back
     </button>
-    <h1 class="pt__title">Upcoming parking schedule</h1>
   </div>
 
   @if (upcomingDays().length === 0) {
@@ -32,22 +32,32 @@
             <div class="pt__assignments">
               <div
                 class="pt__card"
-                [class.pt__card--active]="isSelected(day.parqueo1)"
-                (click)="selectName(day.parqueo1)"
+                [class.pt__card--active]="isSelected(day.parqueo121)"
+                (click)="selectName(day.parqueo121)"
               >
-                <div class="pt__card-label">Parking 317</div>
+                <div class="pt__card-label">Parking 121</div>
                 <div class="pt__card-name">
-                  {{ day.parqueo1 }}
+                  {{ day.parqueo121 }}
                 </div>
               </div>
               <div
                 class="pt__card"
-                [class.pt__card--active]="isSelected(day.parqueo2)"
-                (click)="selectName(day.parqueo2)"
+                [class.pt__card--active]="isSelected(day.parqueo317)"
+                (click)="selectName(day.parqueo317)"
+              >
+                <div class="pt__card-label">Parking 317</div>
+                <div class="pt__card-name">
+                  {{ day.parqueo317 }}
+                </div>
+              </div>
+              <div
+                class="pt__card"
+                [class.pt__card--active]="isSelected(day.parqueo318)"
+                (click)="selectName(day.parqueo318)"
               >
                 <div class="pt__card-label">Parking 318</div>
                 <div class="pt__card-name">
-                  {{ day.parqueo2 }}
+                  {{ day.parqueo318 }}
                 </div>
               </div>
             </div>
@@ -57,4 +67,3 @@
     </div>
   }
 </div>
-

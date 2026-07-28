@@ -77,8 +77,9 @@ export class ParkingStatusService {
       isToday,
       daysFromToday: diffDays,
       relativeLabel,
-      parqueo1: current.parqueo1,
-      parqueo2: current.parqueo2,
+      parqueo121: current.parqueo121,
+      parqueo317: current.parqueo317,
+      parqueo318: current.parqueo318,
     };
   });
 

@@ -61,9 +61,11 @@
 }
 
 .ps__card-name {
-  font-size: 2.4rem;
+  font-size: clamp(1.15rem, 4.5vw, 1.85rem);
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  word-break: break-word;
 }
 
 .ps__loading,
@@ -111,9 +113,9 @@
   }
 
   .ps__grid {
-    max-width: 640px;
+    max-width: 960px;
     margin: 0 auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

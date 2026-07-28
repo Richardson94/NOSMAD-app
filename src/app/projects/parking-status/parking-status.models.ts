@@ -1,8 +1,12 @@
 export interface ParkingDay {
   fecha: string; // ISO date string YYYY-MM-DD
   dia: string;
-  parqueo1: string;
-  parqueo2: string;
+  /** Parking slot 121 */
+  parqueo121: string;
+  /** Parking slot 317 */
+  parqueo317: string;
+  /** Parking slot 318 */
+  parqueo318: string;
 }
 
 export interface ParkingScheduleData {
@@ -15,7 +19,7 @@ export interface ParkingAssignment {
   isToday: boolean;
   daysFromToday: number;
   relativeLabel: string;
-  parqueo1: string;
-  parqueo2: string;
+  parqueo121: string;
+  parqueo317: string;
+  parqueo318: string;
 }
-
