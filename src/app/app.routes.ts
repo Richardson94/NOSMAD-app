@@ -101,6 +101,11 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'seller',
+    loadComponent: () =>
+      import('./projects/seller/seller.component').then((m) => m.SellerComponent),
+  },
+  {
     path: 'grades-viewer',
     loadComponent: () =>
       import('./projects/grades-viewer/grades-viewer-shell.component').then(

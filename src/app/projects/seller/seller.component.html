@@ -1,0 +1,196 @@
+<div class="seller">
+  <header class="seller__header">
+    <div class="seller__brand-row">
+      <h1 class="seller__title">Seller</h1>
+      <button type="button" class="seller__today-btn" (click)="goToday()">Hoy</button>
+    </div>
+    <p class="seller__subtitle">Agenda de cobros y depósitos</p>
+  </header>
+
+  <section class="seller__calendar" aria-label="Calendario">
+    <div class="seller__month-bar">
+      <button type="button" class="seller__month-nav" (click)="shiftMonth(-1)" aria-label="Mes anterior">
+        ‹
+      </button>
+      <h2 class="seller__month-title">{{ monthTitle() }}</h2>
+      <button type="button" class="seller__month-nav" (click)="shiftMonth(1)" aria-label="Mes siguiente">
+        ›
+      </button>
+    </div>
+
+    <div #dayStrip class="seller__day-strip" role="listbox" aria-label="Días del mes">
+      @for (day of calendarDays(); track trackDay($index, day)) {
+        <button
+          type="button"
+          class="seller-day"
+          role="option"
+          [attr.aria-selected]="selectedDate() === day.key"
+          [class.seller-day--active]="selectedDate() === day.key"
+          [class.seller-day--today]="day.isToday"
+          [class.seller-day--dot]="day.hasEntries"
+          (click)="selectDate(day.key)"
+        >
+          <span class="seller-day__week">{{ day.weekdayShort }}</span>
+          <span class="seller-day__num">{{ day.dayNum }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="seller__day-panel">
+    <div class="seller__day-head">
+      <div>
+        <p class="seller__day-label">{{ selectedLabel() }}</p>
+        <p class="seller__day-count">
+          {{ entries().length === 0 ? 'Sin entradas' : entries().length + ' entrada' + (entries().length === 1 ? '' : 's') }}
+        </p>
+      </div>
+      <button type="button" class="seller__add-btn" (click)="openNewEntry()">+ Nueva</button>
+    </div>
+
+    @if (entries().length === 0) {
+      <div class="seller__empty">
+        <p>Toca <strong>Nueva</strong> para registrar un cobro o depósito en este día.</p>
+      </div>
+    } @else {
+      <ul class="seller__list">
+        @for (entry of entries(); track entry.id) {
+          <li class="seller-card" (click)="openEdit(entry)">
+            <div class="seller-card__main">
+              <div class="seller-card__top">
+                <span class="seller-card__name">{{ entry.name?.trim() || 'Sin nombre' }}</span>
+                <span
+                  class="seller-card__badge"
+                  [class.seller-card__badge--debe]="entry.kind === 'debe'"
+                  [class.seller-card__badge--deposito]="entry.kind === 'deposito'"
+                >
+                  {{ amountLabel(entry.kind) }}
+                </span>
+              </div>
+              <div class="seller-card__phone-row">
+                <span class="seller-card__phone">{{ phoneDisplay(entry.phone) }}</span>
+                @if (hasPhone(entry.phone)) {
+                  <button
+                    type="button"
+                    class="seller-card__wa"
+                    (click)="openWhatsApp(entry.phone, $event)"
+                    aria-label="Abrir WhatsApp"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="seller-card__wa-icon">
+                      <path
+                        fill="currentColor"
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                      />
+                    </svg>
+                  </button>
+                }
+              </div>
+              <div
+                class="seller-card__amount"
+                [class.seller-card__amount--debe]="entry.kind === 'debe'"
+                [class.seller-card__amount--deposito]="entry.kind === 'deposito'"
+              >
+                {{ formatAmount(entry.amount) }}
+              </div>
+            </div>
+            <button
+              type="button"
+              class="seller-card__delete"
+              (click)="deleteEntry(entry, $event)"
+              aria-label="Eliminar entrada"
+            >
+              ×
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  @if (formOpen()) {
+    <div class="seller-sheet" role="dialog" aria-modal="true" aria-labelledby="seller-form-title">
+      <button type="button" class="seller-sheet__backdrop" (click)="closeForm()" aria-label="Cerrar"></button>
+      <div class="seller-sheet__panel">
+        <div class="seller-sheet__grab" aria-hidden="true"></div>
+        <h3 id="seller-form-title" class="seller-sheet__title">
+          {{ editingId() ? 'Editar entrada' : 'Nueva entrada' }}
+        </h3>
+        <p class="seller-sheet__date">{{ selectedDate() | date: 'dd/MM/yyyy' }}</p>
+
+        <label class="seller-field">
+          <span class="seller-field__label">Nombre (opcional)</span>
+          <input
+            class="seller-field__input"
+            type="text"
+            name="sellerName"
+            [(ngModel)]="formName"
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Ej. Juan"
+          />
+        </label>
+
+        <label class="seller-field">
+          <span class="seller-field__label">Celular</span>
+          <div class="seller-field__phone">
+            <span class="seller-field__prefix">+591</span>
+            <input
+              class="seller-field__input seller-field__input--phone"
+              type="tel"
+              name="sellerPhone"
+              [(ngModel)]="formPhone"
+              inputmode="numeric"
+              autocomplete="tel"
+              placeholder="70000000"
+            />
+          </div>
+        </label>
+
+        <label class="seller-field">
+          <span class="seller-field__label">Monto (Bs)</span>
+          <input
+            class="seller-field__input"
+            type="number"
+            name="sellerAmount"
+            [(ngModel)]="formAmount"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </label>
+
+        <div class="seller-kind" role="group" aria-label="Tipo de monto">
+          <button
+            type="button"
+            class="seller-kind__btn"
+            [class.seller-kind__btn--on]="formKind === 'debe'"
+            (click)="formKind = 'debe'"
+          >
+            Debe
+          </button>
+          <button
+            type="button"
+            class="seller-kind__btn"
+            [class.seller-kind__btn--on]="formKind === 'deposito'"
+            (click)="formKind = 'deposito'"
+          >
+            Depósito
+          </button>
+        </div>
+
+        <div class="seller-sheet__actions">
+          <button type="button" class="seller-sheet__cancel" (click)="closeForm()">Cancelar</button>
+          <button
+            type="button"
+            class="seller-sheet__save"
+            [disabled]="!canSave()"
+            (click)="saveEntry()"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
