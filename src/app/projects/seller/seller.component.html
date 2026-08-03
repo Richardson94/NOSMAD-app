@@ -52,11 +52,7 @@
     } @else {
       <ul class="seller__list">
         @for (entry of entries(); track entry.id) {
-          <li
-            class="seller-card"
-            [class.seller-card--no-name]="!entry.name?.trim()"
-            (click)="openEdit(entry)"
-          >
+          <li class="seller-card" (click)="openEdit(entry)">
             <button
               type="button"
               class="seller-card__delete"
@@ -65,17 +61,21 @@
             >
               ×
             </button>
-            <div class="seller-card__body">
-              @if (entry.name?.trim(); as name) {
-                <div class="seller-card__name">{{ name }}</div>
-              }
-              <div class="seller-card__phone-row">
-                <span
+
+            <div class="seller-card__grid">
+              <div class="seller-card__info">
+                @if (entry.name?.trim(); as name) {
+                  <div class="seller-card__name">{{ name }}</div>
+                }
+                <div
                   class="seller-card__phone"
                   [class.seller-card__phone--hero]="!entry.name?.trim()"
                 >
                   {{ phoneDisplay(entry.phone) }}
-                </span>
+                </div>
+              </div>
+
+              <div class="seller-card__wa-wrap">
                 @if (hasPhone(entry.phone)) {
                   <button
                     type="button"
@@ -92,6 +92,7 @@
                   </button>
                 }
               </div>
+
               <div class="seller-card__money">
                 <span
                   class="seller-card__badge"

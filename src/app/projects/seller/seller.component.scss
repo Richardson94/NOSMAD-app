@@ -231,11 +231,11 @@
 }
 
 .seller-card {
-  display: flex;
-  align-items: stretch;
-  gap: 0.35rem;
+  position: relative;
+  display: block;
   padding: 0.85rem 0.7rem;
-  border-radius: 0.85rem;
+  padding-top: 1.15rem;
+  border-radius: 0.9rem;
   background: var(--seller-surface-2);
   border: 1px solid var(--seller-border);
   cursor: pointer;
@@ -246,69 +246,57 @@
   }
 }
 
-.seller-card__main {
-  flex: 1 1 auto;
+.seller-card__grid {
+  display: grid;
+  grid-template-columns: 50% 18% 32%;
+  align-items: center;
+  column-gap: 0.35rem;
+  min-width: 0;
+}
+
+.seller-card__info {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-}
-
-.seller-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.2rem;
+  padding-right: 0.2rem;
 }
 
 .seller-card__name {
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  min-width: 0;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.seller-card__badge {
-  flex-shrink: 0;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.45rem;
-  border-radius: 999px;
-
-  &--debe {
-    color: #ffe4e6;
-    background: rgba(251, 113, 133, 0.2);
-  }
-
-  &--deposito {
-    color: #d1fae5;
-    background: rgba(52, 211, 153, 0.18);
-  }
-}
-
-.seller-card__phone-row {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-
 .seller-card__phone {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
   letter-spacing: 0.02em;
   color: #f8fafc;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &--hero {
+    font-size: 1.35rem;
+  }
+}
+
+.seller-card__wa-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
 }
 
 .seller-card__wa {
-  flex-shrink: 0;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.85rem;
+  height: 2.85rem;
   border-radius: 0.75rem;
   border: none;
   background: rgba(37, 211, 102, 0.16);
@@ -325,15 +313,50 @@
 }
 
 .seller-card__wa-icon {
-  width: 1.45rem;
-  height: 1.45rem;
+  width: 1.55rem;
+  height: 1.55rem;
   display: block;
 }
 
+.seller-card__money {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.15rem;
+  text-align: left;
+  padding-left: 0.15rem;
+  padding-right: 1.1rem;
+}
+
+.seller-card__badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  text-transform: none;
+
+  &--debe {
+    color: #ffe4e6;
+    background: rgba(251, 113, 133, 0.2);
+  }
+
+  &--deposito {
+    color: #d1fae5;
+    background: rgba(52, 211, 153, 0.18);
+  }
+}
+
 .seller-card__amount {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.01em;
+  line-height: 1.15;
+  word-break: break-word;
 
   &--debe {
     color: var(--seller-debe);
@@ -345,17 +368,34 @@
 }
 
 .seller-card__delete {
-  flex-shrink: 0;
-  align-self: flex-start;
-  width: 2rem;
-  height: 2rem;
+  position: absolute;
+  top: 0.15rem;
+  right: 0.3rem;
+  z-index: 2;
+  width: auto;
+  height: auto;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  padding: 0.15rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0;
   background: transparent;
-  color: var(--seller-muted);
-  font-size: 1.25rem;
+  color: #ef4444;
+  font-size: 1.35rem;
+  font-weight: 700;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background: transparent;
+    color: #dc2626;
+    transform: scale(0.94);
+  }
 }
 
 .seller-sheet {
