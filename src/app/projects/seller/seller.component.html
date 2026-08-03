@@ -3,7 +3,7 @@
     <button type="button" class="seller__today-btn" (click)="goToday()">Hoy</button>
     <h1 class="seller__title">Agenda de ventas</h1>
   </header>
-
+<br><hr><br>
   <section class="seller__calendar" aria-label="Calendario">
     <div class="seller__month-bar">
       <button type="button" class="seller__month-nav" (click)="shiftMonth(-1)" aria-label="Mes anterior">
@@ -73,6 +73,19 @@
                 >
                   {{ phoneDisplay(entry.phone) }}
                 </div>
+                @if (entry.envio && entry.departamento) {
+                  <div class="seller-card__envio">
+                    <span class="seller-card__envio-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" class="seller-card__mail-svg">
+                        <path
+                          fill="currentColor"
+                          d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="seller-card__envio-dept">{{ entry.departamento }}</span>
+                  </div>
+                }
               </div>
 
               <div class="seller-card__wa-wrap">
@@ -187,6 +200,32 @@
             Depósito
           </button>
         </div>
+
+        <label class="seller-check">
+          <input
+            type="checkbox"
+            name="sellerEnvio"
+            [(ngModel)]="formEnvio"
+            (ngModelChange)="onEnvioChange()"
+          />
+          <span>Envío</span>
+        </label>
+
+        @if (formEnvio) {
+          <label class="seller-field">
+            <span class="seller-field__label">Departamento</span>
+            <select
+              class="seller-field__input seller-field__select"
+              name="sellerDepartamento"
+              [(ngModel)]="formDepartamento"
+            >
+              <option value="" disabled>Selecciona un departamento</option>
+              @for (dep of departments; track dep) {
+                <option [value]="dep">{{ dep }}</option>
+              }
+            </select>
+          </label>
+        }
 
         <div class="seller-sheet__actions">
           <button type="button" class="seller-sheet__cancel" (click)="closeForm()">Cancelar</button>

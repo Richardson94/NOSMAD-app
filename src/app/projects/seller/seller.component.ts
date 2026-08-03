@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import type { SellerEntry, SellerEntryKind } from './models/seller.models';
+import { BOLIVIA_DEPARTMENTS } from './models/seller.models';
 import {
   boliviaWhatsAppUrl,
   SellerStorageService,
@@ -44,6 +45,10 @@ export class SellerComponent {
   formPhone = '';
   formAmount: number | null = null;
   formKind: SellerEntryKind = 'debe';
+  formEnvio = false;
+  formDepartamento = '';
+
+  readonly departments = BOLIVIA_DEPARTMENTS;
 
   constructor() {
     afterNextRender(
@@ -115,6 +120,8 @@ export class SellerComponent {
     this.formPhone = '';
     this.formAmount = null;
     this.formKind = 'debe';
+    this.formEnvio = false;
+    this.formDepartamento = '';
     this.formOpen.set(true);
   }
 
@@ -124,6 +131,8 @@ export class SellerComponent {
     this.formPhone = entry.phone ?? '';
     this.formAmount = entry.amount ?? null;
     this.formKind = entry.kind;
+    this.formEnvio = !!entry.envio;
+    this.formDepartamento = entry.departamento ?? '';
     this.formOpen.set(true);
   }
 
@@ -136,7 +145,20 @@ export class SellerComponent {
     const hasName = !!this.formName.trim();
     const hasPhone = !!this.formPhone.trim();
     const hasAmount = this.formAmount !== null && this.formAmount !== undefined && `${this.formAmount}` !== '';
-    return hasName || hasPhone || hasAmount;
+    const baseOk = hasName || hasPhone || hasAmount;
+    if (!baseOk) {
+      return false;
+    }
+    if (this.formEnvio && !this.formDepartamento) {
+      return false;
+    }
+    return true;
+  }
+
+  onEnvioChange(): void {
+    if (!this.formEnvio) {
+      this.formDepartamento = '';
+    }
   }
 
   saveEntry(): void {
@@ -150,6 +172,8 @@ export class SellerComponent {
       phone: this.formPhone.trim() || undefined,
       amount: this.formAmount === null || this.formAmount === undefined ? null : Number(this.formAmount),
       kind: this.formKind,
+      envio: this.formEnvio,
+      departamento: this.formEnvio ? this.formDepartamento : undefined,
     });
     this.closeForm();
   }

@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject, signal } from '@angular/core';
 import type { SellerEntry, SellerEntryKind } from '../models/seller.models';
+import { BOLIVIA_DEPARTMENTS } from '../models/seller.models';
 
 const ENTRIES_KEY = 'nosmad_seller_entries_v1';
 
@@ -48,6 +49,12 @@ export class SellerStorageService {
       e.amount === null || e.amount === undefined
         ? null
         : Number(e.amount);
+    const envio = !!e.envio;
+    const dept = (e.departamento ?? '').trim();
+    const departamento =
+      envio && BOLIVIA_DEPARTMENTS.includes(dept as (typeof BOLIVIA_DEPARTMENTS)[number])
+        ? dept
+        : undefined;
     return {
       id: e.id,
       date: e.date,
@@ -55,6 +62,8 @@ export class SellerStorageService {
       phone: (e.phone ?? '').trim() || undefined,
       amount: Number.isFinite(amount as number) ? (amount as number) : null,
       kind,
+      envio: envio && !!departamento,
+      departamento,
       createdAt: e.createdAt || new Date().toISOString(),
       updatedAt: e.updatedAt || e.createdAt || new Date().toISOString(),
     };
@@ -80,6 +89,8 @@ export class SellerStorageService {
     phone?: string;
     amount?: number | null;
     kind: SellerEntryKind;
+    envio?: boolean;
+    departamento?: string;
   }): SellerEntry {
     const now = new Date().toISOString();
     const list = [...this.entriesSignal()];
@@ -94,6 +105,8 @@ export class SellerStorageService {
         phone: input.phone,
         amount: input.amount ?? null,
         kind: input.kind,
+        envio: !!input.envio,
+        departamento: input.departamento,
         updatedAt: now,
       });
       list[existingIdx] = next;
@@ -108,6 +121,8 @@ export class SellerStorageService {
       phone: input.phone,
       amount: input.amount ?? null,
       kind: input.kind,
+      envio: !!input.envio,
+      departamento: input.departamento,
       createdAt: now,
       updatedAt: now,
     });
