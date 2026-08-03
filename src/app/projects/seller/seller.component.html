@@ -1,10 +1,7 @@
 <div class="seller">
   <header class="seller__header">
-    <div class="seller__brand-row">
-      <h1 class="seller__title">Seller</h1>
-      <button type="button" class="seller__today-btn" (click)="goToday()">Hoy</button>
-    </div>
-    <p class="seller__subtitle">Agenda de cobros y depósitos</p>
+    <button type="button" class="seller__today-btn" (click)="goToday()">Hoy</button>
+    <h1 class="seller__title">Agenda de ventas</h1>
   </header>
 
   <section class="seller__calendar" aria-label="Calendario">
@@ -55,20 +52,30 @@
     } @else {
       <ul class="seller__list">
         @for (entry of entries(); track entry.id) {
-          <li class="seller-card" (click)="openEdit(entry)">
-            <div class="seller-card__main">
-              <div class="seller-card__top">
-                <span class="seller-card__name">{{ entry.name?.trim() || 'Sin nombre' }}</span>
-                <span
-                  class="seller-card__badge"
-                  [class.seller-card__badge--debe]="entry.kind === 'debe'"
-                  [class.seller-card__badge--deposito]="entry.kind === 'deposito'"
-                >
-                  {{ amountLabel(entry.kind) }}
-                </span>
-              </div>
+          <li
+            class="seller-card"
+            [class.seller-card--no-name]="!entry.name?.trim()"
+            (click)="openEdit(entry)"
+          >
+            <button
+              type="button"
+              class="seller-card__delete"
+              (click)="deleteEntry(entry, $event)"
+              aria-label="Eliminar entrada"
+            >
+              ×
+            </button>
+            <div class="seller-card__body">
+              @if (entry.name?.trim(); as name) {
+                <div class="seller-card__name">{{ name }}</div>
+              }
               <div class="seller-card__phone-row">
-                <span class="seller-card__phone">{{ phoneDisplay(entry.phone) }}</span>
+                <span
+                  class="seller-card__phone"
+                  [class.seller-card__phone--hero]="!entry.name?.trim()"
+                >
+                  {{ phoneDisplay(entry.phone) }}
+                </span>
                 @if (hasPhone(entry.phone)) {
                   <button
                     type="button"
@@ -85,22 +92,23 @@
                   </button>
                 }
               </div>
-              <div
-                class="seller-card__amount"
-                [class.seller-card__amount--debe]="entry.kind === 'debe'"
-                [class.seller-card__amount--deposito]="entry.kind === 'deposito'"
-              >
-                {{ formatAmount(entry.amount) }}
+              <div class="seller-card__money">
+                <span
+                  class="seller-card__badge"
+                  [class.seller-card__badge--debe]="entry.kind === 'debe'"
+                  [class.seller-card__badge--deposito]="entry.kind === 'deposito'"
+                >
+                  {{ amountLabel(entry.kind) }}
+                </span>
+                <span
+                  class="seller-card__amount"
+                  [class.seller-card__amount--debe]="entry.kind === 'debe'"
+                  [class.seller-card__amount--deposito]="entry.kind === 'deposito'"
+                >
+                  {{ formatAmount(entry.amount) }}
+                </span>
               </div>
             </div>
-            <button
-              type="button"
-              class="seller-card__delete"
-              (click)="deleteEntry(entry, $event)"
-              aria-label="Eliminar entrada"
-            >
-              ×
-            </button>
           </li>
         }
       </ul>

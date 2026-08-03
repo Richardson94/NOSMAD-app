@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import type { SellerEntry, SellerEntryKind } from './models/seller.models';
 import {
   boliviaWhatsAppUrl,
-  formatBoliviaPhoneDisplay,
   SellerStorageService,
 } from './services/seller-storage.service';
 
@@ -186,7 +185,11 @@ export class SellerComponent {
     if (!phone?.trim()) {
       return 'Sin celular';
     }
-    return formatBoliviaPhoneDisplay(phone);
+    let digits = phone.replace(/\D/g, '');
+    if (digits.startsWith('591')) {
+      digits = digits.slice(3);
+    }
+    return digits || phone.trim();
   }
 
   amountLabel(kind: SellerEntryKind): string {
@@ -197,11 +200,11 @@ export class SellerComponent {
     if (amount === null || amount === undefined || !Number.isFinite(amount)) {
       return '—';
     }
-    return new Intl.NumberFormat('es-BO', {
-      style: 'currency',
-      currency: 'BOB',
+    const n = new Intl.NumberFormat('es-BO', {
+      minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     }).format(amount);
+    return `Bs ${n}`;
   }
 
   trackDay(_: number, day: CalendarDay): string {
