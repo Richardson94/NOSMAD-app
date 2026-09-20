@@ -1,0 +1,110 @@
+<div class="quest-dev-quiz">
+  @if (category) {
+    <header class="quest-dev-quiz__header">
+      <a routerLink="/quest-dev" class="quest-dev-quiz__back">← {{ t(ui.back) }}</a>
+      <span class="quest-dev-quiz__category">
+        <span aria-hidden="true">{{ category.icon }}</span>
+        {{ t(category.label) }}
+      </span>
+    </header>
+  }
+
+  @if (!total) {
+    <p class="quest-dev-quiz__empty">{{ t(ui.emptyBank) }}</p>
+  } @else if (finished) {
+    <section class="quest-dev-quiz__result">
+      <h1 class="quest-dev-quiz__result-title">{{ t(ui.results) }}</h1>
+      <p class="quest-dev-quiz__result-score">{{ correctCount }} / {{ total }}</p>
+      <p class="quest-dev-quiz__result-percent">{{ scorePercent }}%</p>
+      <p class="quest-dev-quiz__result-message">{{ t(feedbackMessage) }}</p>
+      <dl class="quest-dev-quiz__result-stats">
+        <div class="quest-dev-quiz__result-stat quest-dev-quiz__result-stat--hits">
+          <dt>{{ t(ui.hits) }}</dt>
+          <dd>{{ correctCount }}</dd>
+        </div>
+        <div class="quest-dev-quiz__result-stat quest-dev-quiz__result-stat--misses">
+          <dt>{{ t(ui.misses) }}</dt>
+          <dd>{{ total - correctCount }}</dd>
+        </div>
+      </dl>
+      <div class="quest-dev-quiz__result-actions">
+        <button type="button" class="quest-dev-quiz__button" (click)="restart()">
+          {{ t(ui.retry) }}
+        </button>
+        <a routerLink="/quest-dev" class="quest-dev-quiz__button quest-dev-quiz__button--ghost">
+          {{ t(ui.backToMenu) }}
+        </a>
+      </div>
+    </section>
+  } @else if (currentQuestion) {
+    <section class="quest-dev-quiz__body">
+      <div class="quest-dev-quiz__progress">
+        <div class="quest-dev-quiz__progress-meta">
+          <span>{{ t(ui.question) }} {{ index + 1 }} {{ t(ui.of) }} {{ total }}</span>
+          <span>{{ progressPercent }}%</span>
+        </div>
+        <div
+          class="quest-dev-quiz__progress-track"
+          role="progressbar"
+          [attr.aria-valuenow]="progressPercent"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <div class="quest-dev-quiz__progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+      </div>
+
+      <p class="quest-dev-quiz__topic">{{ currentQuestion.topic }}</p>
+      <h1 class="quest-dev-quiz__prompt">{{ t(currentQuestion.prompt) }}</h1>
+
+      <ul class="quest-dev-quiz__options">
+        @for (option of currentQuestion.options; track option.id) {
+          <li>
+            <button
+              type="button"
+              class="quest-dev-quiz__option"
+              [class.quest-dev-quiz__option--correct]="optionState(option) === 'correct'"
+              [class.quest-dev-quiz__option--wrong]="optionState(option) === 'wrong'"
+              [class.quest-dev-quiz__option--locked]="answered"
+              [disabled]="answered"
+              (click)="selectOption(option)"
+            >
+              <span class="quest-dev-quiz__option-text">{{ t(option.text) }}</span>
+              @if (optionState(option) === 'correct') {
+                <span class="quest-dev-quiz__option-mark" aria-hidden="true">✓</span>
+              } @else if (optionState(option) === 'wrong') {
+                <span class="quest-dev-quiz__option-mark" aria-hidden="true">✕</span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+
+      @if (answered) {
+        <div
+          class="quest-dev-quiz__feedback"
+          [class.quest-dev-quiz__feedback--ok]="answeredCorrectly"
+          [class.quest-dev-quiz__feedback--ko]="!answeredCorrectly"
+          role="status"
+        >
+          <p class="quest-dev-quiz__feedback-title">
+            {{ answeredCorrectly ? t(ui.correct) : t(ui.incorrect) }}
+          </p>
+          @if (!answeredCorrectly && correctOptionText) {
+            <p class="quest-dev-quiz__feedback-answer">
+              {{ t(ui.correctAnswerIs) }}: <strong>{{ t(correctOptionText) }}</strong>
+            </p>
+          }
+          <p class="quest-dev-quiz__feedback-tip">
+            <span class="quest-dev-quiz__feedback-tip-label">💡 {{ t(ui.tip) }}</span>
+            {{ t(currentQuestion.explanation) }}
+          </p>
+        </div>
+
+        <button type="button" class="quest-dev-quiz__button" (click)="next()">
+          {{ isLastQuestion ? t(ui.finish) : t(ui.next) }}
+        </button>
+      }
+    </section>
+  }
+</div>

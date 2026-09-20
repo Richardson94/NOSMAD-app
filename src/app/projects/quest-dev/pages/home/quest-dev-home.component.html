@@ -1,0 +1,46 @@
+<div class="quest-dev-home">
+  <header class="quest-dev-home__hero">
+    <span class="quest-dev-home__brand" aria-hidden="true">🧭</span>
+    <h1 class="quest-dev-home__title">Quest DEV</h1>
+    <p class="quest-dev-home__tagline">{{ t(ui.tagline) }}</p>
+  </header>
+
+  <div class="quest-dev-home__language">
+    <span class="quest-dev-home__language-label">{{ t(ui.language) }}</span>
+    <button
+      type="button"
+      class="quest-dev-home__switch"
+      [class.quest-dev-home__switch--en]="languageService.isEnglish()"
+      role="switch"
+      [attr.aria-checked]="languageService.isEnglish()"
+      aria-label="Español / English"
+      (click)="languageService.toggleLanguage()"
+    >
+      <span class="quest-dev-home__switch-thumb" aria-hidden="true"></span>
+      <span class="quest-dev-home__switch-option">ES</span>
+      <span class="quest-dev-home__switch-option">EN</span>
+    </button>
+  </div>
+
+  <p class="quest-dev-home__hint">{{ t(ui.chooseArea) }}</p>
+
+  <nav class="quest-dev-home__nav" [attr.aria-label]="t(ui.chooseArea)">
+    @for (category of categories; track category.id) {
+      <a [routerLink]="['/quest-dev', category.id]" class="quest-dev-home__card">
+        <span class="quest-dev-home__card-icon" aria-hidden="true">{{ category.icon }}</span>
+        <span class="quest-dev-home__card-body">
+          <span class="quest-dev-home__card-title">{{ t(category.label) }}</span>
+          <span class="quest-dev-home__card-text">{{ t(category.description) }}</span>
+          <span class="quest-dev-home__card-meta">
+            <span class="quest-dev-home__chip quest-dev-home__chip--round">
+              {{ t(ui.roundLabel) }}: {{ roundSize(category.id) }} {{ t(ui.questions) }}
+            </span>
+            <span class="quest-dev-home__chip">
+              {{ poolSize(category.id) }} {{ t(ui.inBank) }}
+            </span>
+          </span>
+        </span>
+      </a>
+    }
+  </nav>
+</div>

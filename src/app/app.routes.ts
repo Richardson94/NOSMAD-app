@@ -101,6 +101,30 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'quest-dev',
+    loadComponent: () =>
+      import('./projects/quest-dev/shell/quest-dev-outlet.component').then(
+        (m) => m.QuestDevOutletComponent
+      ),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./projects/quest-dev/pages/home/quest-dev-home.component').then(
+            (m) => m.QuestDevHomeComponent
+          ),
+      },
+      {
+        path: ':category',
+        loadComponent: () =>
+          import('./projects/quest-dev/pages/quiz/quest-dev-quiz.component').then(
+            (m) => m.QuestDevQuizComponent
+          ),
+      },
+    ],
+  },
+  {
     path: 'seller',
     loadComponent: () =>
       import('./projects/seller/seller.component').then((m) => m.SellerComponent),

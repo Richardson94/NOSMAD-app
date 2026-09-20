@@ -1,0 +1,223 @@
+:host {
+  --quest-neon: #c4b5fd;
+  --quest-neon-core: #a78bfa;
+  --quest-neon-dim: rgba(167, 139, 250, 0.35);
+  --quest-neon-glow: rgba(167, 139, 250, 0.5);
+}
+
+.quest-dev-home {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem max(1rem, env(safe-area-inset-right, 0px))
+    max(1.5rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+  color: var(--dashboard-text, #e4e4e7);
+}
+
+.quest-dev-home__hero {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.quest-dev-home__brand {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px var(--quest-neon-glow));
+}
+
+.quest-dev-home__title {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.4rem, 5vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-shadow:
+    0 0 12px var(--quest-neon-glow),
+    0 0 24px rgba(167, 139, 250, 0.25);
+}
+
+.quest-dev-home__tagline {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--dashboard-muted, #a1a1aa);
+}
+
+.quest-dev-home__language {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.quest-dev-home__language-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dashboard-muted, #a1a1aa);
+}
+
+.quest-dev-home__switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem 2.5rem;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--quest-neon-dim);
+  background: rgba(15, 15, 20, 0.7);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus-visible {
+    outline: 2px solid var(--quest-neon-core);
+    outline-offset: 3px;
+  }
+}
+
+.quest-dev-home__switch-thumb {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 2.5rem;
+  height: calc(100% - 0.5rem);
+  border-radius: 999px;
+  background: linear-gradient(145deg, rgba(167, 139, 250, 0.9), rgba(109, 40, 217, 0.9));
+  box-shadow: 0 0 12px var(--quest-neon-glow);
+  transition: transform 0.25s ease;
+}
+
+.quest-dev-home__switch--en .quest-dev-home__switch-thumb {
+  transform: translateX(2.5rem);
+}
+
+.quest-dev-home__switch-option {
+  position: relative;
+  z-index: 1;
+  padding: 0.3rem 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--dashboard-muted, #a1a1aa);
+  transition: color 0.2s ease;
+}
+
+.quest-dev-home__switch:not(.quest-dev-home__switch--en) .quest-dev-home__switch-option:first-of-type,
+.quest-dev-home__switch--en .quest-dev-home__switch-option:last-of-type {
+  color: #f5f3ff;
+}
+
+.quest-dev-home__hint {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--quest-neon, #c4b5fd);
+}
+
+.quest-dev-home__nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.quest-dev-home__card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border-radius: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.14), rgba(15, 15, 20, 0.55));
+  border: 1px solid var(--quest-neon-dim);
+  box-shadow:
+    0 0 10px rgba(167, 139, 250, 0.2),
+    inset 0 0 14px rgba(167, 139, 250, 0.05);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    border-color: var(--quest-neon);
+    box-shadow:
+      0 0 16px var(--quest-neon-glow),
+      inset 0 0 20px rgba(167, 139, 250, 0.12);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--quest-neon-core);
+    outline-offset: 3px;
+  }
+}
+
+.quest-dev-home__card-icon {
+  flex-shrink: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  filter: drop-shadow(0 0 6px var(--quest-neon-glow));
+}
+
+.quest-dev-home__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.quest-dev-home__card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ede9fe;
+}
+
+.quest-dev-home__card-text {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--dashboard-muted, #a1a1aa);
+}
+
+.quest-dev-home__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.quest-dev-home__chip {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--dashboard-muted, #a1a1aa);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.quest-dev-home__chip--round {
+  color: var(--quest-neon, #c4b5fd);
+  background: rgba(167, 139, 250, 0.12);
+  border-color: var(--quest-neon-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quest-dev-home__switch-thumb {
+    transition: none;
+  }
+}
