@@ -1,4 +1,8 @@
-import type { QuestDevCategoryMeta, QuestDevText } from '../models/quest-dev.models';
+import type {
+  QuestDevCategoryMeta,
+  QuestDevRoundLength,
+  QuestDevText,
+} from '../models/quest-dev.models';
 
 export const QUEST_DEV_UI = {
   tagline: {
@@ -8,6 +12,30 @@ export const QUEST_DEV_UI = {
   chooseArea: {
     es: 'Elige un área para empezar',
     en: 'Pick an area to start',
+  },
+  chooseLength: {
+    es: 'Elige la duración de la ronda',
+    en: 'Pick the round length',
+  },
+  shortRound: {
+    es: 'Corto',
+    en: 'Short',
+  },
+  longRound: {
+    es: 'Largo',
+    en: 'Long',
+  },
+  xlongRound: {
+    es: 'Muy largo',
+    en: 'Very long',
+  },
+  holdTip: {
+    es: 'Mantén pulsado para ampliar',
+    en: 'Hold to enlarge',
+  },
+  closeTip: {
+    es: 'Cerrar',
+    en: 'Close',
   },
   inBank: {
     es: 'en el banco',
@@ -48,10 +76,6 @@ export const QUEST_DEV_UI = {
   incorrect: {
     es: 'Incorrecto',
     en: 'Incorrect',
-  },
-  correctAnswerIs: {
-    es: 'La respuesta correcta es',
-    en: 'The correct answer is',
   },
   tip: {
     es: 'Tip',
@@ -136,3 +160,9 @@ export const QUEST_DEV_CATEGORIES: QuestDevCategoryMeta[] = [
     },
   },
 ];
+
+export const QUEST_DEV_LENGTH_LABELS: Record<QuestDevRoundLength, QuestDevText> = {
+  short: QUEST_DEV_UI.shortRound,
+  long: QUEST_DEV_UI.longRound,
+  xlong: QUEST_DEV_UI.xlongRound,
+};

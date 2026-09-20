@@ -5,6 +5,9 @@
       <span class="quest-dev-quiz__category">
         <span aria-hidden="true">{{ category.icon }}</span>
         {{ t(category.label) }}
+        @if (length) {
+          <span class="quest-dev-quiz__length">· {{ t(lengthLabels[length]) }}</span>
+        }
       </span>
     </header>
   }
@@ -90,15 +93,21 @@
           <p class="quest-dev-quiz__feedback-title">
             {{ answeredCorrectly ? t(ui.correct) : t(ui.incorrect) }}
           </p>
-          @if (!answeredCorrectly && correctOptionText) {
-            <p class="quest-dev-quiz__feedback-answer">
-              {{ t(ui.correctAnswerIs) }}: <strong>{{ t(correctOptionText) }}</strong>
-            </p>
-          }
-          <p class="quest-dev-quiz__feedback-tip">
+          <button
+            type="button"
+            class="quest-dev-quiz__feedback-tip"
+            [class.quest-dev-quiz__feedback-tip--holding]="tipHolding"
+            [attr.aria-label]="t(ui.holdTip)"
+            (pointerdown)="onTipPointerDown($event)"
+            (pointerup)="onTipPointerUp()"
+            (pointercancel)="onTipPointerUp()"
+            (contextmenu)="onTipContextMenu($event)"
+            (keydown)="onTipKeydown($event)"
+          >
             <span class="quest-dev-quiz__feedback-tip-label">💡 {{ t(ui.tip) }}</span>
-            {{ t(currentQuestion.explanation) }}
-          </p>
+            <span class="quest-dev-quiz__feedback-tip-text">{{ t(currentQuestion.explanation) }}</span>
+            <span class="quest-dev-quiz__feedback-tip-hint">{{ t(ui.holdTip) }}</span>
+          </button>
         </div>
 
         <button type="button" class="quest-dev-quiz__button" (click)="next()">
@@ -106,5 +115,28 @@
         </button>
       }
     </section>
+  }
+
+  @if (tipModalOpen && currentQuestion) {
+    <div class="quest-dev-quiz__modal" role="presentation">
+      <button
+        type="button"
+        class="quest-dev-quiz__modal-backdrop"
+        [attr.aria-label]="t(ui.closeTip)"
+        (pointerup)="onBackdropPointerUp($event)"
+      ></button>
+      <div
+        class="quest-dev-quiz__modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="'quest-dev-tip-title'"
+      >
+        <p id="quest-dev-tip-title" class="quest-dev-quiz__modal-title">💡 {{ t(ui.tip) }}</p>
+        <p class="quest-dev-quiz__modal-text">{{ t(currentQuestion.explanation) }}</p>
+        <button type="button" class="quest-dev-quiz__button" (click)="closeTipModal()">
+          {{ t(ui.closeTip) }}
+        </button>
+      </div>
+    </div>
   }
 </div>

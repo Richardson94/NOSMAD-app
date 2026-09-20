@@ -116,11 +116,16 @@ export const routes: Routes = [
           ),
       },
       {
-        path: ':category',
+        path: ':category/:length',
         loadComponent: () =>
           import('./projects/quest-dev/pages/quiz/quest-dev-quiz.component').then(
             (m) => m.QuestDevQuizComponent
           ),
+      },
+      {
+        path: ':category',
+        redirectTo: '',
+        pathMatch: 'full',
       },
     ],
   },

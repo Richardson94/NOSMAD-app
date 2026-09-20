@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { QUEST_DEV_BANKS, QUEST_DEV_ROUND_SIZE } from '../data';
+import { QUEST_DEV_BANKS, QUEST_DEV_ROUND_LENGTHS } from '../data';
 import type {
   QuestDevCategory,
   QuestDevQuestion,
   QuestDevRound,
+  QuestDevRoundLength,
   QuestDevRoundOption,
   QuestDevRoundQuestion,
 } from '../models/quest-dev.models';
@@ -15,14 +16,18 @@ export class QuestDevQuizService {
     return QUEST_DEV_BANKS[category].length;
   }
 
-  /** Round length, capped while a bank is still smaller than the round size. */
-  roundSize(category: QuestDevCategory): number {
-    return Math.min(QUEST_DEV_ROUND_SIZE, this.poolSize(category));
+  /** Round length, capped while a bank is still smaller than the requested size. */
+  roundSize(category: QuestDevCategory, length: QuestDevRoundLength): number {
+    return Math.min(QUEST_DEV_ROUND_LENGTHS[length], this.poolSize(category));
+  }
+
+  isRoundLength(value: string | null): value is QuestDevRoundLength {
+    return value === 'short' || value === 'long' || value === 'xlong';
   }
 
   /** Random questions with their options shuffled, so answers have no memorable position. */
-  buildRound(category: QuestDevCategory): QuestDevRound {
-    const picked = pickRandom(QUEST_DEV_BANKS[category], this.roundSize(category));
+  buildRound(category: QuestDevCategory, length: QuestDevRoundLength): QuestDevRound {
+    const picked = pickRandom(QUEST_DEV_BANKS[category], this.roundSize(category, length));
     return {
       category,
       questions: picked.map((question) => this.toRoundQuestion(question)),

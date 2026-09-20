@@ -2,6 +2,8 @@ export type QuestDevLanguage = 'es' | 'en';
 
 export type QuestDevCategory = 'theoric' | 'frontend' | 'backend';
 
+export type QuestDevRoundLength = 'short' | 'long' | 'xlong';
+
 /** Any piece of content that must be available in both languages. */
 export interface QuestDevText {
   es: string;
