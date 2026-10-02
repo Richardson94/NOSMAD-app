@@ -15,7 +15,8 @@
   @if (!total) {
     <p class="quest-dev-quiz__empty">{{ t(ui.emptyBank) }}</p>
   } @else if (finished) {
-    <section class="quest-dev-quiz__result">
+    <div class="quest-dev-quiz__pane">
+      <section #resultBody class="quest-dev-quiz__result" (scroll)="syncThumb(resultBody)">
       <h1 class="quest-dev-quiz__result-title">{{ t(ui.results) }}</h1>
       <p class="quest-dev-quiz__result-score">{{ correctCount }} / {{ total }}</p>
       <p class="quest-dev-quiz__result-percent">{{ scorePercent }}%</p>
@@ -38,7 +39,15 @@
           {{ t(ui.backToMenu) }}
         </a>
       </div>
-    </section>
+      </section>
+      <div class="quest-dev-quiz__rail" (pointerdown)="onRailPointerDown($event, resultBody)">
+        <div
+          class="quest-dev-quiz__rail-thumb"
+          [style.height.%]="thumbHeight"
+          [style.top.%]="thumbTop"
+        ></div>
+      </div>
+    </div>
   } @else if (reading && currentQuestion) {
     <div class="quest-dev-quiz__read" (click)="skipReading()">
       <div class="quest-dev-quiz__read-bar" aria-hidden="true">
@@ -61,7 +70,8 @@
       <p class="quest-dev-quiz__read-hint">{{ t(ui.skipReading) }}</p>
     </div>
   } @else if (currentQuestion) {
-    <section class="quest-dev-quiz__body">
+    <div class="quest-dev-quiz__pane">
+      <section #quizBody class="quest-dev-quiz__body" (scroll)="syncThumb(quizBody)">
       <div class="quest-dev-quiz__progress">
         <div class="quest-dev-quiz__progress-meta">
           <span>{{ t(ui.question) }} {{ index + 1 }} {{ t(ui.of) }} {{ total }}</span>
@@ -114,28 +124,38 @@
           <p class="quest-dev-quiz__feedback-title">
             {{ answeredCorrectly ? t(ui.correct) : t(ui.incorrect) }}
           </p>
-          <button
-            type="button"
+          <div
+            role="button"
+            tabindex="0"
             class="quest-dev-quiz__feedback-tip"
             [class.quest-dev-quiz__feedback-tip--holding]="tipHolding"
             [attr.aria-label]="t(ui.holdTip)"
             (pointerdown)="onTipPointerDown($event)"
+            (pointermove)="onTipPointerMove($event)"
             (pointerup)="onTipPointerUp()"
-            (pointercancel)="onTipPointerUp()"
+            (pointercancel)="onTipPointerCancel()"
             (contextmenu)="onTipContextMenu($event)"
             (keydown)="onTipKeydown($event)"
           >
             <span class="quest-dev-quiz__feedback-tip-label">💡 {{ t(ui.tip) }}</span>
             <span class="quest-dev-quiz__feedback-tip-text">{{ t(currentQuestion.explanation) }}</span>
             <span class="quest-dev-quiz__feedback-tip-hint">{{ t(ui.holdTip) }}</span>
-          </button>
+          </div>
         </div>
 
         <button type="button" class="quest-dev-quiz__button" (click)="next()">
           {{ isLastQuestion ? t(ui.finish) : t(ui.next) }}
         </button>
       }
-    </section>
+      </section>
+      <div class="quest-dev-quiz__rail" (pointerdown)="onRailPointerDown($event, quizBody)">
+        <div
+          class="quest-dev-quiz__rail-thumb"
+          [style.height.%]="thumbHeight"
+          [style.top.%]="thumbTop"
+        ></div>
+      </div>
+    </div>
   }
 
   @if (tipModalOpen && currentQuestion) {
@@ -144,7 +164,7 @@
         type="button"
         class="quest-dev-quiz__modal-backdrop"
         [attr.aria-label]="t(ui.closeTip)"
-        (pointerup)="onBackdropPointerUp($event)"
+        (click)="closeTipModal()"
       ></button>
       <div
         class="quest-dev-quiz__modal-dialog"

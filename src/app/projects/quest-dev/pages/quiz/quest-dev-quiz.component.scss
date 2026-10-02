@@ -74,16 +74,28 @@
   color: var(--dashboard-muted, #a1a1aa);
 }
 
+.quest-dev-quiz__pane {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0.9rem;
+  overflow: hidden;
+}
+
 .quest-dev-quiz__body {
   flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding-right: 1rem;
+  touch-action: pan-y;
+  scrollbar-width: none;
   padding-bottom: 0.75rem;
 }
 
@@ -155,6 +167,7 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
+  touch-action: pan-y;
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
@@ -358,6 +371,7 @@
   border: 1px solid rgba(196, 181, 253, 0.6);
   box-shadow: 0 0 14px rgba(139, 92, 246, 0.25);
   cursor: pointer;
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
@@ -379,45 +393,46 @@
 
 .quest-dev-quiz__result {
   flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding-right: 1rem;
+  touch-action: pan-y;
+  scrollbar-width: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
   gap: 0.5rem;
   text-align: center;
 }
 
-.quest-dev-quiz__body,
-.quest-dev-quiz__result {
-  scrollbar-width: auto;
-  scrollbar-color: #e4d5b7 rgba(255, 255, 255, 0.08);
+.quest-dev-quiz__body::-webkit-scrollbar,
+.quest-dev-quiz__result::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
 
-  &::-webkit-scrollbar {
-    width: 22px;
-  }
+.quest-dev-quiz__rail {
+  flex: 0 0 22px;
+  position: relative;
+  align-self: stretch;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  touch-action: none;
+  cursor: grab;
+}
 
-  &::-webkit-scrollbar-track {
-    margin: 6px 2px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    min-height: 3.5rem;
-    border: 2px solid transparent;
-    border-radius: 999px;
-    background: #e4d5b7;
-    background-clip: padding-box;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #f3ead8;
-    background-clip: padding-box;
-  }
+.quest-dev-quiz__rail-thumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 999px;
+  background: #e4d5b7;
+  box-shadow: 0 0 0 1px rgba(20, 19, 26, 0.35);
 }
 
 .quest-dev-quiz__result-title {
