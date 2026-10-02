@@ -15,8 +15,7 @@
   @if (!total) {
     <p class="quest-dev-quiz__empty">{{ t(ui.emptyBank) }}</p>
   } @else if (finished) {
-    <div class="quest-dev-quiz__pane">
-      <section #resultBody class="quest-dev-quiz__result" (scroll)="syncThumb(resultBody)">
+    <section class="quest-dev-quiz__result">
       <h1 class="quest-dev-quiz__result-title">{{ t(ui.results) }}</h1>
       <p class="quest-dev-quiz__result-score">{{ correctCount }} / {{ total }}</p>
       <p class="quest-dev-quiz__result-percent">{{ scorePercent }}%</p>
@@ -39,15 +38,7 @@
           {{ t(ui.backToMenu) }}
         </a>
       </div>
-      </section>
-      <div class="quest-dev-quiz__rail" (pointerdown)="onRailPointerDown($event, resultBody)">
-        <div
-          class="quest-dev-quiz__rail-thumb"
-          [style.height.%]="thumbHeight"
-          [style.top.%]="thumbTop"
-        ></div>
-      </div>
-    </div>
+    </section>
   } @else if (reading && currentQuestion) {
     <div class="quest-dev-quiz__read" (click)="skipReading()">
       <div class="quest-dev-quiz__read-bar" aria-hidden="true">
@@ -70,8 +61,7 @@
       <p class="quest-dev-quiz__read-hint">{{ t(ui.skipReading) }}</p>
     </div>
   } @else if (currentQuestion) {
-    <div class="quest-dev-quiz__pane">
-      <section #quizBody class="quest-dev-quiz__body" (scroll)="syncThumb(quizBody)">
+    <section class="quest-dev-quiz__body">
       <div class="quest-dev-quiz__progress">
         <div class="quest-dev-quiz__progress-meta">
           <span>{{ t(ui.question) }} {{ index + 1 }} {{ t(ui.of) }} {{ total }}</span>
@@ -100,7 +90,7 @@
               [class.quest-dev-quiz__option--correct]="optionState(option) === 'correct'"
               [class.quest-dev-quiz__option--wrong]="optionState(option) === 'wrong'"
               [class.quest-dev-quiz__option--locked]="answered"
-              [disabled]="answered"
+              [attr.aria-disabled]="answered"
               (click)="selectOption(option)"
             >
               <span class="quest-dev-quiz__option-text">{{ t(option.text) }}</span>
@@ -124,9 +114,8 @@
           <p class="quest-dev-quiz__feedback-title">
             {{ answeredCorrectly ? t(ui.correct) : t(ui.incorrect) }}
           </p>
-          <div
-            role="button"
-            tabindex="0"
+          <button
+            type="button"
             class="quest-dev-quiz__feedback-tip"
             [class.quest-dev-quiz__feedback-tip--holding]="tipHolding"
             [attr.aria-label]="t(ui.holdTip)"
@@ -140,22 +129,14 @@
             <span class="quest-dev-quiz__feedback-tip-label">💡 {{ t(ui.tip) }}</span>
             <span class="quest-dev-quiz__feedback-tip-text">{{ t(currentQuestion.explanation) }}</span>
             <span class="quest-dev-quiz__feedback-tip-hint">{{ t(ui.holdTip) }}</span>
-          </div>
+          </button>
         </div>
 
         <button type="button" class="quest-dev-quiz__button" (click)="next()">
           {{ isLastQuestion ? t(ui.finish) : t(ui.next) }}
         </button>
       }
-      </section>
-      <div class="quest-dev-quiz__rail" (pointerdown)="onRailPointerDown($event, quizBody)">
-        <div
-          class="quest-dev-quiz__rail-thumb"
-          [style.height.%]="thumbHeight"
-          [style.top.%]="thumbTop"
-        ></div>
-      </div>
-    </div>
+    </section>
   }
 
   @if (tipModalOpen && currentQuestion) {

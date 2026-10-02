@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { QUEST_DEV_CATEGORIES, QUEST_DEV_LENGTH_LABELS, QUEST_DEV_UI } from '../../i18n/quest-dev.i18n';
 import type {
@@ -14,8 +14,8 @@ import { QuestDevLanguageService } from '../../services/quest-dev-language.servi
 import { QuestDevQuizService } from '../../services/quest-dev-quiz.service';
 
 const TIP_HOLD_MS = 450;
-const READ_MS = 7000;
 const TIP_MOVE_PX = 10;
+const READ_MS = 7000;
 
 @Component({
   selector: 'app-quest-dev-quiz',
@@ -44,11 +44,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   readonly readMs = READ_MS;
   tipModalOpen = false;
   tipHolding = false;
-  thumbHeight = 100;
-  thumbTop = 0;
-
-  @ViewChild('quizBody') quizBody?: ElementRef<HTMLElement>;
-  @ViewChild('resultBody') resultBody?: ElementRef<HTMLElement>;
 
   private holdTimer: ReturnType<typeof setTimeout> | null = null;
   private readTimer: ReturnType<typeof setTimeout> | null = null;
@@ -56,7 +51,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   private tipMoved = false;
   private tipStartX = 0;
   private tipStartY = 0;
-  private railDrag: { el: HTMLElement; pointerId: number; startY: number; startScroll: number } | null = null;
 
   ngOnInit(): void {
     const categoryParam = this.route.snapshot.paramMap.get('category');
@@ -130,7 +124,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     if (option.isCorrect) {
       this.correctCount++;
     }
-    setTimeout(() => this.syncActivePane());
   }
 
   isSelected(option: QuestDevRoundOption): boolean {
@@ -161,7 +154,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     if (this.isLastQuestion) {
       this.finished = true;
       this.clearReading();
-      setTimeout(() => this.syncActivePane());
       return;
     }
     this.index++;
@@ -172,7 +164,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   skipReading(): void {
     this.reading = false;
     this.clearReading();
-    setTimeout(() => this.syncActivePane(true));
   }
 
   restart(): void {
@@ -243,79 +234,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     this.clearHold();
   }
 
-  syncThumb(el: HTMLElement): void {
-    const view = el.clientHeight || 1;
-    const max = el.scrollHeight - el.clientHeight;
-    if (max <= 1) {
-      this.thumbHeight = 100;
-      this.thumbTop = 0;
-      return;
-    }
-    const minRatio = Math.min(56 / view, 0.85);
-    const ratio = Math.min(Math.max(el.clientHeight / el.scrollHeight, minRatio), 1);
-    this.thumbHeight = ratio * 100;
-    const travel = 100 - this.thumbHeight;
-    this.thumbTop = travel <= 0 ? 0 : (el.scrollTop / max) * travel;
-  }
-
-  onRailPointerDown(event: PointerEvent, el: HTMLElement): void {
-    if (event.pointerType === 'mouse' && event.button !== 0) {
-      return;
-    }
-    event.preventDefault();
-    const rail = event.currentTarget as HTMLElement;
-    const rect = rail.getBoundingClientRect();
-    const y = event.clientY - rect.top;
-    const max = Math.max(el.scrollHeight - el.clientHeight, 0);
-    const thumbPx = (this.thumbHeight / 100) * rect.height;
-    const travel = Math.max(rect.height - thumbPx, 1);
-    const thumbTopPx = (this.thumbTop / 100) * rect.height;
-    if (y < thumbTopPx || y > thumbTopPx + thumbPx) {
-      el.scrollTop = Math.min(Math.max(((y - thumbPx / 2) / travel) * max, 0), max);
-    }
-    try {
-      rail.setPointerCapture(event.pointerId);
-    } catch {
-      // Drag still follows document pointer events.
-    }
-    this.railDrag = {
-      el,
-      pointerId: event.pointerId,
-      startY: event.clientY,
-      startScroll: el.scrollTop,
-    };
-  }
-
-  @HostListener('document:pointermove', ['$event'])
-  onDocumentPointerMove(event: PointerEvent): void {
-    if (!this.railDrag || event.pointerId !== this.railDrag.pointerId) {
-      return;
-    }
-    const el = this.railDrag.el;
-    const max = el.scrollHeight - el.clientHeight;
-    const view = el.clientHeight || 1;
-    const thumbPx = (this.thumbHeight / 100) * view;
-    const travel = Math.max(view - thumbPx, 1);
-    const dy = event.clientY - this.railDrag.startY;
-    el.scrollTop = this.railDrag.startScroll + (dy / travel) * max;
-  }
-
-  @HostListener('document:pointerup', ['$event'])
-  @HostListener('document:pointercancel', ['$event'])
-  onDocumentPointerEnd(event: PointerEvent): void {
-    if (this.railDrag?.pointerId === event.pointerId) {
-      this.railDrag = null;
-    }
-  }
-
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    const el = this.quizBody?.nativeElement ?? this.resultBody?.nativeElement;
-    if (el) {
-      this.syncThumb(el);
-    }
-  }
-
   @HostListener('document:keydown', ['$event'])
   onDocumentKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape' && this.tipModalOpen) {
@@ -372,16 +290,5 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
       clearTimeout(this.readTimer);
       this.readTimer = null;
     }
-  }
-
-  private syncActivePane(resetScroll = false): void {
-    const el = this.quizBody?.nativeElement ?? this.resultBody?.nativeElement;
-    if (!el) {
-      return;
-    }
-    if (resetScroll) {
-      el.scrollTop = 0;
-    }
-    this.syncThumb(el);
   }
 }
