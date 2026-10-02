@@ -33,9 +33,9 @@ export const QUEST_DEV_UI = {
     es: 'Expandir',
     en: 'Expand',
   },
-  collapseTip: {
+  closeTip: {
     es: 'Cerrar',
-    en: 'Collapse',
+    en: 'Close',
   },
   roundLabel: {
     es: 'Ronda',

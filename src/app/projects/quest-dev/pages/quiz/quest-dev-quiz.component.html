@@ -115,15 +115,11 @@
             <button
               type="button"
               class="quest-dev-quiz__tip-expand"
-              [attr.aria-expanded]="tipExpanded"
-              (click)="toggleTip()"
+              (click)="openTipModal()"
             >
-              {{ tipExpanded ? t(ui.collapseTip) : t(ui.expandTip) }}
+              {{ t(ui.expandTip) }}
             </button>
           </div>
-          @if (tipExpanded) {
-            <p class="quest-dev-quiz__tip-text">{{ t(currentQuestion.explanation) }}</p>
-          }
         </div>
 
         <button type="button" class="quest-dev-quiz__button" (click)="next()">
@@ -131,5 +127,28 @@
         </button>
       }
     </section>
+  }
+
+  @if (tipModalOpen && currentQuestion) {
+    <div class="quest-dev-quiz__modal" role="presentation">
+      <button
+        type="button"
+        class="quest-dev-quiz__modal-backdrop"
+        [attr.aria-label]="t(ui.closeTip)"
+        (click)="closeTipModal()"
+      ></button>
+      <div
+        class="quest-dev-quiz__modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quest-dev-tip-title"
+      >
+        <p id="quest-dev-tip-title" class="quest-dev-quiz__modal-title">💡 {{ t(ui.tip) }}</p>
+        <p class="quest-dev-quiz__modal-text">{{ t(currentQuestion.explanation) }}</p>
+        <button type="button" class="quest-dev-quiz__button" (click)="closeTipModal()">
+          {{ t(ui.closeTip) }}
+        </button>
+      </div>
+    </div>
   }
 </div>

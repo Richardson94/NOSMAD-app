@@ -40,7 +40,7 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   finished = false;
   reading = false;
   readonly readMs = READ_MS;
-  tipExpanded = false;
+  tipModalOpen = false;
 
   private readTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -141,7 +141,7 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     if (!this.answered) {
       return;
     }
-    this.tipExpanded = false;
+    this.closeTipModal();
     if (this.isLastQuestion) {
       this.finished = true;
       this.clearReading();
@@ -163,12 +163,20 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleTip(): void {
-    this.tipExpanded = !this.tipExpanded;
+  openTipModal(): void {
+    this.tipModalOpen = true;
+  }
+
+  closeTipModal(): void {
+    this.tipModalOpen = false;
   }
 
   @HostListener('document:keydown', ['$event'])
   onDocumentKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.tipModalOpen) {
+      this.closeTipModal();
+      return;
+    }
     if (!this.reading || (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Escape')) {
       return;
     }
@@ -186,7 +194,7 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     this.selectedOptionId = null;
     this.correctCount = 0;
     this.finished = false;
-    this.tipExpanded = false;
+    this.tipModalOpen = false;
     this.beginReading();
   }
 
