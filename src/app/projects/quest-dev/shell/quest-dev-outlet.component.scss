@@ -1,11 +1,27 @@
 :host {
+  --qd-bg: #100e24;
+  --qd-surface: #1c1838;
+  --qd-surface-2: #26224a;
+  --qd-line: rgba(255, 255, 255, 0.08);
+  --qd-text: #f7f8ff;
+  --qd-muted: #9d99b8;
+  --qd-cyan: #3ee0c5;
+  --qd-blue: #5b8def;
+  --qd-violet: #8b7cff;
+  --qd-coral: #ff8b6a;
+  --qd-ok: #3ddc97;
+  --qd-ko: #ff7a6e;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
   font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
-  color: #f4f1ea;
+  color: var(--qd-text);
+  background:
+    radial-gradient(90% 50% at 80% -10%, rgba(91, 141, 239, 0.22), transparent 55%),
+    radial-gradient(70% 40% at 0% 100%, rgba(62, 224, 197, 0.08), transparent 50%),
+    var(--qd-bg);
 }
 
 .quest-dev-outlet__frame {

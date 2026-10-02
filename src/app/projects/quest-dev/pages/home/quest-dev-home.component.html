@@ -55,7 +55,7 @@
             @for (length of lengths; track length) {
               <a
                 [routerLink]="['/quest-dev', category.id, length]"
-                class="quest-dev-home__length"
+                class="quest-dev-home__length quest-dev-home__length--{{ length }}"
               >
                 <span class="quest-dev-home__length-label">{{ t(lengthLabels[length]) }}</span>
               </a>
