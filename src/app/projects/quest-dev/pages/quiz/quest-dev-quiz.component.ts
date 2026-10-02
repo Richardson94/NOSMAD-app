@@ -14,6 +14,7 @@ import { QuestDevLanguageService } from '../../services/quest-dev-language.servi
 import { QuestDevQuizService } from '../../services/quest-dev-quiz.service';
 
 const TIP_HOLD_MS = 450;
+const READ_MS = 7000;
 
 @Component({
   selector: 'app-quest-dev-quiz',
@@ -38,10 +39,13 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   selectedOptionId: string | null = null;
   correctCount = 0;
   finished = false;
+  reading = false;
+  readonly readMs = READ_MS;
   tipModalOpen = false;
   tipHolding = false;
 
   private holdTimer: ReturnType<typeof setTimeout> | null = null;
+  private readTimer: ReturnType<typeof setTimeout> | null = null;
   private openingPointerId: number | null = null;
 
   ngOnInit(): void {
@@ -59,6 +63,7 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearHold();
+    this.clearReading();
   }
 
   t(text: QuestDevText): string {
@@ -144,10 +149,17 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     this.closeTipModal();
     if (this.isLastQuestion) {
       this.finished = true;
+      this.clearReading();
       return;
     }
     this.index++;
     this.selectedOptionId = null;
+    this.beginReading();
+  }
+
+  skipReading(): void {
+    this.reading = false;
+    this.clearReading();
   }
 
   restart(): void {
@@ -206,7 +218,17 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   onDocumentKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape' && this.tipModalOpen) {
       this.closeTipModal();
+      return;
     }
+    if (!this.reading || (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Escape')) {
+      return;
+    }
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('a')) {
+      return;
+    }
+    event.preventDefault();
+    this.skipReading();
   }
 
   private openTipModal(): void {
@@ -230,5 +252,23 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     this.finished = false;
     this.tipModalOpen = false;
     this.clearHold();
+    this.beginReading();
+  }
+
+  private beginReading(): void {
+    this.clearReading();
+    if (!this.round?.questions.length) {
+      this.reading = false;
+      return;
+    }
+    this.reading = true;
+    this.readTimer = setTimeout(() => this.skipReading(), READ_MS);
+  }
+
+  private clearReading(): void {
+    if (this.readTimer) {
+      clearTimeout(this.readTimer);
+      this.readTimer = null;
+    }
   }
 }

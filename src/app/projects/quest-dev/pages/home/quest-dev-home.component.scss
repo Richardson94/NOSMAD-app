@@ -18,7 +18,8 @@
   gap: 1rem;
   padding: 1.25rem max(1rem, env(safe-area-inset-right, 0px))
     max(1.5rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
-  color: var(--dashboard-text, #e4e4e7);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+  color: #f4f1ea;
 }
 
 .quest-dev-home__hero {
@@ -35,19 +36,17 @@
 
 .quest-dev-home__title {
   margin: 0.25rem 0 0;
-  font-size: clamp(1.4rem, 5vw, 1.85rem);
+  font-size: clamp(1.6rem, 5vw, 2rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  text-shadow:
-    0 0 12px var(--quest-neon-glow),
-    0 0 24px rgba(167, 139, 250, 0.25);
+  letter-spacing: 0;
+  color: #faf7f0;
 }
 
 .quest-dev-home__tagline {
   margin: 0.4rem 0 0;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: var(--dashboard-muted, #a1a1aa);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #c9c3b4;
 }
 
 .quest-dev-home__language {
@@ -192,9 +191,9 @@
 }
 
 .quest-dev-home__card-text {
-  font-size: 0.82rem;
-  line-height: 1.45;
-  color: var(--dashboard-muted, #a1a1aa);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #d9d3c6;
 }
 
 .quest-dev-home__card-meta {

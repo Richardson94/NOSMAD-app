@@ -39,6 +39,27 @@
         </a>
       </div>
     </section>
+  } @else if (reading && currentQuestion) {
+    <div class="quest-dev-quiz__read" (click)="skipReading()">
+      <div class="quest-dev-quiz__read-bar" aria-hidden="true">
+        <span class="quest-dev-quiz__read-bar-fill" [style.animation-duration.ms]="readMs"></span>
+      </div>
+      <a
+        routerLink="/quest-dev"
+        class="quest-dev-quiz__read-back"
+        (click)="$event.stopPropagation()"
+      >
+        ← {{ t(ui.back) }}
+      </a>
+      <div class="quest-dev-quiz__read-stage">
+        <p class="quest-dev-quiz__read-meta">
+          {{ t(ui.question) }} {{ index + 1 }} {{ t(ui.of) }} {{ total }}
+        </p>
+        <p class="quest-dev-quiz__read-topic">{{ currentQuestion.topic }}</p>
+        <h1 class="quest-dev-quiz__read-prompt">{{ t(currentQuestion.prompt) }}</h1>
+      </div>
+      <p class="quest-dev-quiz__read-hint">{{ t(ui.skipReading) }}</p>
+    </div>
   } @else if (currentQuestion) {
     <section class="quest-dev-quiz__body">
       <div class="quest-dev-quiz__progress">

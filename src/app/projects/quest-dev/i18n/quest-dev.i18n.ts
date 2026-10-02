@@ -61,6 +61,10 @@ export const QUEST_DEV_UI = {
     es: 'Volver al menú',
     en: 'Back to menu',
   },
+  skipReading: {
+    es: 'Toca para ver las opciones',
+    en: 'Tap to see the options',
+  },
   question: {
     es: 'Pregunta',
     en: 'Question',

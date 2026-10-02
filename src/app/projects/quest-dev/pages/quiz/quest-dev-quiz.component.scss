@@ -19,7 +19,8 @@
   gap: 0.9rem;
   padding: 0.9rem max(1rem, env(safe-area-inset-right, 0px))
     max(1.5rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
-  color: var(--dashboard-text, #e4e4e7);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+  color: #f4f1ea;
 }
 
 .quest-dev-quiz__header {
@@ -61,8 +62,8 @@
 }
 
 .quest-dev-quiz__length {
-  font-weight: 600;
-  color: var(--dashboard-muted, #a1a1aa);
+  font-weight: 400;
+  color: #c9c3b4;
 }
 
 .quest-dev-quiz__empty {
@@ -80,11 +81,11 @@
 .quest-dev-quiz__progress-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--dashboard-muted, #a1a1aa);
-  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #c9c3b4;
+  margin-bottom: 0.4rem;
 }
 
 .quest-dev-quiz__progress-track {
@@ -104,19 +105,20 @@
 
 .quest-dev-quiz__topic {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--quest-neon-core);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #e4d5b7;
 }
 
 .quest-dev-quiz__prompt {
   margin: 0;
-  font-size: clamp(1rem, 3.5vw, 1.2rem);
-  font-weight: 600;
-  line-height: 1.45;
-  color: #ede9fe;
+  font-size: clamp(1.3rem, 4.8vw, 1.55rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: #faf7f0;
 }
 
 .quest-dev-quiz__options {
@@ -133,13 +135,14 @@
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 1rem 1.05rem;
   border-radius: 0.75rem;
   text-align: left;
   font-family: inherit;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: var(--dashboard-text, #e4e4e7);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: #f4f1ea;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
@@ -238,9 +241,9 @@
   background: transparent;
   text-align: left;
   font-family: inherit;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: var(--dashboard-text, #e4e4e7);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #f4f1ea;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
@@ -272,10 +275,10 @@
 }
 
 .quest-dev-quiz__feedback-tip-hint {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--dashboard-muted, #a1a1aa);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #c9c3b4;
 }
 
 .quest-dev-quiz__modal {
@@ -325,9 +328,10 @@
 .quest-dev-quiz__modal-text {
   margin: 0;
   flex: 1 1 auto;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #ede9fe;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #faf7f0;
 }
 
 .quest-dev-quiz__button {
@@ -402,9 +406,10 @@
 .quest-dev-quiz__result-message {
   margin: 0.25rem 0 0;
   max-width: 24rem;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: var(--dashboard-muted, #a1a1aa);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: #d9d3c6;
 }
 
 .quest-dev-quiz__result-stats {
@@ -452,8 +457,127 @@
   margin-top: 1.25rem;
 }
 
+.quest-dev-quiz__read {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: max(0.85rem, env(safe-area-inset-top, 0px))
+    max(1.35rem, env(safe-area-inset-right, 0px)) max(1.15rem, env(safe-area-inset-bottom, 0px))
+    max(1.35rem, env(safe-area-inset-left, 0px));
+  background: #14131a;
+  color: #faf7f0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quest-dev-quiz__read-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.quest-dev-quiz__read-bar-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: #e4d5b7;
+  animation-name: quest-read-bar;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.quest-dev-quiz__read-back {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 1rem;
+  color: #e4d5b7;
+  text-decoration: none;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(228, 213, 183, 0.35);
+
+  &:focus-visible {
+    outline: 2px solid #e4d5b7;
+    outline-offset: 2px;
+  }
+}
+
+.quest-dev-quiz__read-stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: min(100%, 40rem);
+  margin: 0 auto;
+  gap: 0.8rem;
+}
+
+.quest-dev-quiz__read-meta {
+  margin: 0;
+  font-size: 1rem;
+  color: #c9c3b4;
+}
+
+.quest-dev-quiz__read-topic {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e4d5b7;
+}
+
+.quest-dev-quiz__read-prompt {
+  margin: 0;
+  font-size: clamp(1.75rem, 6.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: #faf7f0;
+  animation: quest-read-in 0.45s ease;
+}
+
+.quest-dev-quiz__read-hint {
+  margin: 0 auto 0.35rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #c9c3b4;
+}
+
+@keyframes quest-read-bar {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes quest-read-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .quest-dev-quiz__progress-fill {
+  .quest-dev-quiz__progress-fill,
+  .quest-dev-quiz__read-prompt,
+  .quest-dev-quiz__read-bar-fill {
+    animation: none;
     transition: none;
   }
 }
