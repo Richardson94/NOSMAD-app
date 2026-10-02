@@ -232,15 +232,9 @@
 }
 
 .quest-dev-home__length-label {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-.quest-dev-home__length-size {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--quest-neon, #c4b5fd);
 }
 
 @media (prefers-reduced-motion: reduce) {

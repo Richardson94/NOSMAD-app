@@ -1,14 +1,21 @@
 <div class="quest-dev-quiz">
-  @if (category) {
+  @if (category && !inChoices) {
     <header class="quest-dev-quiz__header">
       <a routerLink="/quest-dev" class="quest-dev-quiz__back">← {{ t(ui.back) }}</a>
       <span class="quest-dev-quiz__category">
         <span aria-hidden="true">{{ category.icon }}</span>
         {{ t(category.label) }}
-        @if (length) {
-          <span class="quest-dev-quiz__length">· {{ t(lengthLabels[length]) }}</span>
-        }
       </span>
+    </header>
+  }
+
+  @if (inChoices && category && currentQuestion) {
+    <header class="quest-dev-quiz__masthead">
+      <div class="quest-dev-quiz__masthead-copy">
+        <p class="quest-dev-quiz__masthead-topic">{{ currentQuestion.topic }}</p>
+        <p class="quest-dev-quiz__masthead-section">({{ t(category.label) }})</p>
+      </div>
+      <a routerLink="/quest-dev" class="quest-dev-quiz__back">{{ t(ui.back) }}</a>
     </header>
   }
 
@@ -78,7 +85,6 @@
         </div>
       </div>
 
-      <p class="quest-dev-quiz__topic">{{ currentQuestion.topic }}</p>
       <h1 class="quest-dev-quiz__prompt">{{ t(currentQuestion.prompt) }}</h1>
 
       <ul class="quest-dev-quiz__options">

@@ -2,13 +2,8 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { QUEST_DEV_ROUND_LENGTH_IDS } from '../../data';
 import { QUEST_DEV_CATEGORIES, QUEST_DEV_LENGTH_LABELS, QUEST_DEV_UI } from '../../i18n/quest-dev.i18n';
-import type {
-  QuestDevCategory,
-  QuestDevRoundLength,
-  QuestDevText,
-} from '../../models/quest-dev.models';
+import type { QuestDevCategory, QuestDevText } from '../../models/quest-dev.models';
 import { QuestDevLanguageService } from '../../services/quest-dev-language.service';
-import { QuestDevQuizService } from '../../services/quest-dev-quiz.service';
 
 @Component({
   selector: 'app-quest-dev-home',
@@ -18,7 +13,6 @@ import { QuestDevQuizService } from '../../services/quest-dev-quiz.service';
   styleUrl: './quest-dev-home.component.scss',
 })
 export class QuestDevHomeComponent {
-  private readonly quizService = inject(QuestDevQuizService);
   readonly languageService = inject(QuestDevLanguageService);
 
   readonly ui = QUEST_DEV_UI;
@@ -30,10 +24,6 @@ export class QuestDevHomeComponent {
 
   t(text: QuestDevText): string {
     return this.languageService.translate(text);
-  }
-
-  roundSize(category: QuestDevCategory, length: QuestDevRoundLength): number {
-    return this.quizService.roundSize(category, length);
   }
 
   toggleCategory(category: QuestDevCategory): void {

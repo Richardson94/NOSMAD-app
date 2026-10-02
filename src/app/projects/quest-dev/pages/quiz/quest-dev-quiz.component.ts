@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { QUEST_DEV_CATEGORIES, QUEST_DEV_LENGTH_LABELS, QUEST_DEV_UI } from '../../i18n/quest-dev.i18n';
+import { QUEST_DEV_CATEGORIES, QUEST_DEV_UI } from '../../i18n/quest-dev.i18n';
 import type {
   QuestDevCategory,
   QuestDevCategoryMeta,
@@ -29,7 +29,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   readonly languageService = inject(QuestDevLanguageService);
 
   readonly ui = QUEST_DEV_UI;
-  readonly lengthLabels = QUEST_DEV_LENGTH_LABELS;
 
   category: QuestDevCategoryMeta | null = null;
   length: QuestDevRoundLength | null = null;
@@ -71,6 +70,11 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
 
   get currentQuestion(): QuestDevRoundQuestion | null {
     return this.round?.questions[this.index] ?? null;
+  }
+
+  /** Multiple-choice screen, after the fullscreen reading step. */
+  get inChoices(): boolean {
+    return this.total > 0 && !this.reading && !this.finished && !!this.currentQuestion;
   }
 
   get answered(): boolean {
