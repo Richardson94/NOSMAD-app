@@ -29,13 +29,13 @@ export const QUEST_DEV_UI = {
     es: 'Muy largo',
     en: 'Very long',
   },
-  holdTip: {
-    es: 'Mantén pulsado para ampliar',
-    en: 'Hold to enlarge',
+  expandTip: {
+    es: 'Expandir',
+    en: 'Expand',
   },
-  closeTip: {
+  collapseTip: {
     es: 'Cerrar',
-    en: 'Close',
+    en: 'Collapse',
   },
   roundLabel: {
     es: 'Ronda',

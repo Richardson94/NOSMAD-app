@@ -13,8 +13,6 @@ import type {
 import { QuestDevLanguageService } from '../../services/quest-dev-language.service';
 import { QuestDevQuizService } from '../../services/quest-dev-quiz.service';
 
-const TIP_HOLD_MS = 450;
-const TIP_MOVE_PX = 10;
 const READ_MS = 7000;
 
 @Component({
@@ -42,15 +40,9 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   finished = false;
   reading = false;
   readonly readMs = READ_MS;
-  tipModalOpen = false;
-  tipHolding = false;
+  tipExpanded = false;
 
-  private holdTimer: ReturnType<typeof setTimeout> | null = null;
   private readTimer: ReturnType<typeof setTimeout> | null = null;
-  private tipHoldReady = false;
-  private tipMoved = false;
-  private tipStartX = 0;
-  private tipStartY = 0;
 
   ngOnInit(): void {
     const categoryParam = this.route.snapshot.paramMap.get('category');
@@ -66,7 +58,6 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.clearHold();
     this.clearReading();
   }
 
@@ -150,7 +141,7 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     if (!this.answered) {
       return;
     }
-    this.closeTipModal();
+    this.tipExpanded = false;
     if (this.isLastQuestion) {
       this.finished = true;
       this.clearReading();
@@ -172,74 +163,12 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTipPointerDown(event: PointerEvent): void {
-    if (event.pointerType === 'mouse' && event.button !== 0) {
-      return;
-    }
-    this.clearHold();
-    this.tipMoved = false;
-    this.tipHoldReady = false;
-    this.tipHolding = true;
-    this.tipStartX = event.clientX;
-    this.tipStartY = event.clientY;
-    this.holdTimer = setTimeout(() => {
-      this.tipHoldReady = true;
-    }, TIP_HOLD_MS);
-  }
-
-  onTipPointerMove(event: PointerEvent): void {
-    if (!this.tipHolding) {
-      return;
-    }
-    const moved =
-      Math.abs(event.clientX - this.tipStartX) > TIP_MOVE_PX ||
-      Math.abs(event.clientY - this.tipStartY) > TIP_MOVE_PX;
-    if (moved) {
-      this.tipMoved = true;
-      this.tipHoldReady = false;
-      this.clearHold();
-    }
-  }
-
-  onTipPointerUp(): void {
-    const shouldOpen = this.tipHoldReady && !this.tipMoved;
-    this.tipHoldReady = false;
-    this.tipMoved = false;
-    this.clearHold();
-    if (shouldOpen) {
-      this.openTipModal();
-    }
-  }
-
-  onTipPointerCancel(): void {
-    this.tipHoldReady = false;
-    this.tipMoved = true;
-    this.clearHold();
-  }
-
-  onTipContextMenu(event: Event): void {
-    event.preventDefault();
-  }
-
-  onTipKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.openTipModal();
-    }
-  }
-
-  closeTipModal(): void {
-    this.tipModalOpen = false;
-    this.tipHoldReady = false;
-    this.clearHold();
+  toggleTip(): void {
+    this.tipExpanded = !this.tipExpanded;
   }
 
   @HostListener('document:keydown', ['$event'])
   onDocumentKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape' && this.tipModalOpen) {
-      this.closeTipModal();
-      return;
-    }
     if (!this.reading || (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Escape')) {
       return;
     }
@@ -251,27 +180,13 @@ export class QuestDevQuizComponent implements OnInit, OnDestroy {
     this.skipReading();
   }
 
-  private openTipModal(): void {
-    this.tipModalOpen = true;
-    this.clearHold();
-  }
-
-  private clearHold(): void {
-    this.tipHolding = false;
-    if (this.holdTimer) {
-      clearTimeout(this.holdTimer);
-      this.holdTimer = null;
-    }
-  }
-
   private startRound(category: QuestDevCategory, length: QuestDevRoundLength): void {
     this.round = this.quizService.buildRound(category, length);
     this.index = 0;
     this.selectedOptionId = null;
     this.correctCount = 0;
     this.finished = false;
-    this.tipModalOpen = false;
-    this.clearHold();
+    this.tipExpanded = false;
     this.beginReading();
   }
 
