@@ -32,10 +32,6 @@ export class QuestDevHomeComponent {
     return this.languageService.translate(text);
   }
 
-  poolSize(category: QuestDevCategory): number {
-    return this.quizService.poolSize(category);
-  }
-
   roundSize(category: QuestDevCategory, length: QuestDevRoundLength): number {
     return this.quizService.roundSize(category, length);
   }

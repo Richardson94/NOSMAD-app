@@ -196,24 +196,6 @@
   color: #d9d3c6;
 }
 
-.quest-dev-home__card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.15rem;
-}
-
-.quest-dev-home__chip {
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--dashboard-muted, #a1a1aa);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
 .quest-dev-home__lengths {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

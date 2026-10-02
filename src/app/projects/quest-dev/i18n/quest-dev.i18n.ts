@@ -37,10 +37,6 @@ export const QUEST_DEV_UI = {
     es: 'Cerrar',
     en: 'Close',
   },
-  inBank: {
-    es: 'en el banco',
-    en: 'in the bank',
-  },
   roundLabel: {
     es: 'Ronda',
     en: 'Round',
