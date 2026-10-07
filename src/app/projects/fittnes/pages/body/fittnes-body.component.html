@@ -1,0 +1,29 @@
+<div class="ft">
+  <a routerLink="/fittnes" class="ft__back">← Inicio</a>
+  <h1 class="ft__title">CUERPO</h1>
+  <p class="ft__hint">Toca una zona del dibujo para medirla con la cinta.</p>
+
+  <div class="ft-map__figure">
+    <app-fittnes-figure [marks]="marks()" [tappable]="true" (pick)="open($event)" />
+  </div>
+
+  <ul class="ft-legend" aria-label="Colores">
+    <li><span class="ft-legend__dot ft-legend__dot--empty"></span>Sin dato</li>
+    <li><span class="ft-legend__dot ft-legend__dot--ok"></span>En rango</li>
+    <li><span class="ft-legend__dot ft-legend__dot--low"></span>Subir</li>
+    <li><span class="ft-legend__dot ft-legend__dot--high"></span>Bajar</li>
+  </ul>
+
+  <section class="ft__card ft-progress">
+    <p class="ft__kicker">Medidas {{ done() }} de {{ total }}</p>
+    <div class="ft-progress__bar">
+      <div class="ft-progress__fill" [style.width.%]="(done() / total) * 100"></div>
+    </div>
+    @if (next(); as part) {
+      <p class="ft__hint">Con las {{ total }} zonas medidas ganas +{{ bodyCoins }} monedas.</p>
+      <a class="ft__btn" [routerLink]="['/fittnes/cuerpo', part.id]">Medir ahora: {{ part.name }}</a>
+    } @else {
+      <p class="ft__hint">Todo medido. Cambia cualquier zona y ganas +{{ bodyCoins }} monedas.</p>
+    }
+  </section>
+</div>

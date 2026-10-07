@@ -1,0 +1,29 @@
+<div class="ft">
+  <a routerLink="/fittnes/cuerpo" class="ft__back">← Cuerpo</a>
+  @if (part(); as part) {
+    <h1 class="ft__title">{{ part.name }}</h1>
+    <div class="ft-map__figure ft-map__figure--zoom">
+      <app-fittnes-figure [active]="part.id" [zoom]="true" />
+    </div>
+    <p class="ft__hint">{{ part.how }}</p>
+    <p class="ft__hint">{{ bandText() }}</p>
+    <label class="ft__label" for="fittnes-mm">Milímetros</label>
+    <input
+      id="fittnes-mm"
+      class="ft__field"
+      type="number"
+      inputmode="numeric"
+      min="80"
+      max="2000"
+      step="1"
+      [value]="value"
+      (input)="value = $any($event.target).value"
+      (keydown.enter)="save()"
+    />
+    <p class="ft__hint">{{ cmHint() }}</p>
+    <button type="button" class="ft__btn" (click)="save()">Guardar medida</button>
+    @if (message) {
+      <p class="ft__note ft__note--win">{{ message }}</p>
+    }
+  }
+</div>

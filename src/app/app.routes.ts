@@ -49,53 +49,46 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'routinne',
+    path: 'fittnes',
     loadComponent: () =>
-      import('./projects/routinne/shell/routinne-outlet.component').then(
-        (m) => m.RoutinneOutletComponent
+      import('./projects/fittnes/shell/fittnes-outlet.component').then(
+        (m) => m.FittnesOutletComponent
       ),
     children: [
       {
         path: '',
         pathMatch: 'full',
         loadComponent: () =>
-          import('./projects/routinne/pages/home/routinne-home.component').then(
-            (m) => m.RoutinneHomeComponent
+          import('./projects/fittnes/pages/home/fittnes-home.component').then(
+            (m) => m.FittnesHomeComponent
           ),
       },
       {
-        path: 'today',
+        path: 'peso',
         loadComponent: () =>
-          import('./projects/routinne/pages/today/routinne-today.component').then(
-            (m) => m.RoutinneTodayComponent
+          import('./projects/fittnes/pages/weight/fittnes-weight.component').then(
+            (m) => m.FittnesWeightComponent
           ),
       },
       {
-        path: 'new',
+        path: 'perfil',
         loadComponent: () =>
-          import('./projects/routinne/pages/new/routinne-new.component').then(
-            (m) => m.RoutinneNewComponent
+          import('./projects/fittnes/pages/profile/fittnes-profile.component').then(
+            (m) => m.FittnesProfileComponent
           ),
       },
       {
-        path: 'edit',
+        path: 'cuerpo',
         loadComponent: () =>
-          import('./projects/routinne/pages/edit/routinne-edit.component').then(
-            (m) => m.RoutinneEditComponent
+          import('./projects/fittnes/pages/body/fittnes-body.component').then(
+            (m) => m.FittnesBodyComponent
           ),
       },
       {
-        path: 'edit/:routineId',
+        path: 'cuerpo/:part',
         loadComponent: () =>
-          import('./projects/routinne/pages/edit/routinne-edit.component').then(
-            (m) => m.RoutinneEditComponent
-          ),
-      },
-      {
-        path: 'reports',
-        loadComponent: () =>
-          import('./projects/routinne/pages/reports/routinne-reports.component').then(
-            (m) => m.RoutinneReportsComponent
+          import('./projects/fittnes/pages/measure/fittnes-measure.component').then(
+            (m) => m.FittnesMeasureComponent
           ),
       },
     ],

@@ -1,0 +1,56 @@
+<div class="ft">
+  <a routerLink="/fittnes" class="ft__back">← Inicio</a>
+  <h1 class="ft__title">TUS DATOS</h1>
+  <p class="ft__hint">El nombre se ve bajo Fittnes. La altura entra en el IMC. El sexo ajusta los rangos. No suman monedas.</p>
+
+  <label class="ft__label" for="fittnes-name">Nombre</label>
+  <input
+    id="fittnes-name"
+    class="ft__field"
+    type="text"
+    maxlength="20"
+    autocomplete="given-name"
+    [value]="name"
+    (input)="name = $any($event.target).value"
+  />
+
+  <label class="ft__label" for="fittnes-age">Edad</label>
+  <input
+    id="fittnes-age"
+    class="ft__field"
+    type="number"
+    inputmode="numeric"
+    min="10"
+    max="100"
+    [value]="age"
+    (input)="age = $any($event.target).value"
+  />
+
+  <label class="ft__label" for="fittnes-height">Altura en centímetros</label>
+  <input
+    id="fittnes-height"
+    class="ft__field"
+    type="number"
+    inputmode="decimal"
+    min="120"
+    max="230"
+    step="1"
+    [value]="height"
+    (input)="height = $any($event.target).value"
+  />
+
+  <p class="ft__label">Sexo</p>
+  <div class="ft__sex">
+    <button type="button" class="ft__btn ft__btn--sex" [class.ft__btn--on]="sex === 'm'" (click)="sex = 'm'">
+      Hombre
+    </button>
+    <button type="button" class="ft__btn ft__btn--sex" [class.ft__btn--on]="sex === 'f'" (click)="sex = 'f'">
+      Mujer
+    </button>
+  </div>
+
+  <button type="button" class="ft__btn" (click)="save()">Guardar</button>
+  @if (message) {
+    <p class="ft__note ft__note--win">{{ message }}</p>
+  }
+</div>

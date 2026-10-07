@@ -1,0 +1,99 @@
+<div class="ft">
+  <h1 class="ft__logo">FITTNES</h1>
+  <a routerLink="/fittnes/perfil" class="ft__sub">
+    <span>Progreso de <span class="ft__name">{{ displayName() }}</span></span>
+    <span class="ft__edit" aria-hidden="true">✎</span>
+    <span class="ft__sr">Editar nombre, edad y altura</span>
+  </a>
+
+  <div class="ft-bank" aria-label="Alcancía">
+    <svg class="ft-bank__svg" viewBox="0 0 1152 864" role="img" [attr.aria-label]="'Alcancía al ' + fillPercent() + ' por ciento'">
+      <defs>
+        <mask id="fittnes-piggy-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1152" height="864">
+          <image href="assets/fittnes/piggy-mask.png" x="0" y="0" width="1152" height="864" />
+        </mask>
+        <linearGradient id="fittnes-gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffe878" />
+          <stop offset="0.5" stop-color="#f8d848" />
+          <stop offset="1" stop-color="#c99a1c" />
+        </linearGradient>
+        <pattern id="fittnes-coins" width="72" height="34" patternUnits="userSpaceOnUse">
+          <ellipse cx="36" cy="17" rx="32" ry="12" fill="none" stroke="#a87d10" stroke-width="4" />
+          <ellipse cx="0" cy="0" rx="32" ry="12" fill="none" stroke="#a87d10" stroke-width="4" />
+          <ellipse cx="72" cy="0" rx="32" ry="12" fill="none" stroke="#a87d10" stroke-width="4" />
+          <ellipse cx="0" cy="34" rx="32" ry="12" fill="none" stroke="#a87d10" stroke-width="4" />
+          <ellipse cx="72" cy="34" rx="32" ry="12" fill="none" stroke="#a87d10" stroke-width="4" />
+        </pattern>
+      </defs>
+      <g mask="url(#fittnes-piggy-mask)">
+        <rect x="0" y="0" width="1152" height="864" fill="#f2a3b5" fill-opacity="0.3" />
+        <g class="ft-bank__level" [style.transform]="'translateY(' + levelOffset() + 'px)'">
+          <rect x="0" [attr.y]="bankTop" width="1152" height="900" fill="url(#fittnes-gold)" />
+          <rect x="0" [attr.y]="bankTop" width="1152" height="900" fill="url(#fittnes-coins)" />
+          @for (x of surfaceCoins; track x) {
+            <ellipse [attr.cx]="x" [attr.cy]="bankTop" rx="34" ry="13" fill="#ffe878" stroke="#a87d10" stroke-width="4" />
+          }
+        </g>
+      </g>
+      <image href="assets/fittnes/piggy-outline.png" x="0" y="0" width="1152" height="864" />
+      <image href="assets/fittnes/piggy-lines.png" x="0" y="0" width="1152" height="864" />
+    </svg>
+    <p class="ft-bank__count">{{ store.coins() }} / {{ goal }}</p>
+  </div>
+
+  <section class="ft__card">
+    <p class="ft__kicker">IMC</p>
+    @if (ruler(); as rule) {
+      <div class="ft-ruler" role="img" [attr.aria-label]="'IMC ' + rule.current + ', ' + rule.currentLabel">
+        <p class="ft-ruler__value" [style.color]="rule.color">{{ rule.current }}</p>
+        <div class="ft-ruler__track">
+          <div class="ft-ruler__bar">
+            @for (segment of rule.segments; track segment.label) {
+              <span class="ft-ruler__seg" [style.width.%]="segment.width" [style.background]="segment.color"></span>
+            }
+          </div>
+          <span class="ft-ruler__you" [style.left.%]="rule.marker">
+            <span class="ft-ruler__you-badge">Tú</span>
+          </span>
+        </div>
+        <p class="ft-ruler__here" [style.color]="rule.color">{{ rule.currentLabel }}</p>
+      </div>
+    } @else {
+      <p>
+        @if (!store.profile().heightCm && !store.latestWeight()) {
+          Registra peso y altura para ver tu IMC en la regla.
+        } @else if (!store.profile().heightCm) {
+          Registra la altura para ver tu IMC en la regla.
+        } @else {
+          Registra el peso para ver tu IMC en la regla.
+        }
+      </p>
+    }
+  </section>
+
+  @if (priorities().length) {
+    <section class="ft__card">
+      <p class="ft__kicker">Enfócate</p>
+      @for (item of priorities(); track item.id) {
+        <p><strong>{{ item.name }}.</strong> {{ item.detail }}</p>
+      }
+    </section>
+  } @else if (!store.parts().wrist || !store.profile().sex) {
+    <section class="ft__card">
+      <p class="ft__kicker">Enfócate</p>
+      <p>
+        @if (!store.profile().sex) {
+          Elige hombre o mujer con el lápiz de arriba.
+        }
+        @if (!store.parts().wrist) {
+          Mide la muñeca. Con eso se calculan los rangos.
+        }
+      </p>
+    </section>
+  }
+
+  <nav class="ft__actions" aria-label="Acciones">
+    <a routerLink="/fittnes/peso" class="ft__btn">Introducir peso</a>
+    <a routerLink="/fittnes/cuerpo" class="ft__btn ft__btn--ghost">Medir el cuerpo</a>
+  </nav>
+</div>

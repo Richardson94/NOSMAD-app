@@ -1,0 +1,465 @@
+.ft {
+  --ft-bg: #0c1020;
+  --ft-panel: #1a2344;
+  --ft-ink: #f4f1e8;
+  --ft-muted: #9aa4c4;
+  --ft-gold: #f8d848;
+  --ft-green: #6ed36e;
+  --ft-red: #e85d5d;
+  --ft-cyan: #5ad0d0;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem max(1rem, env(safe-area-inset-right, 0px))
+    max(1.4rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+  background: var(--ft-bg);
+  color: var(--ft-ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+}
+
+.ft__logo {
+  margin: 0.2rem 0 0;
+  text-align: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ft-gold);
+}
+
+.ft__sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0;
+  color: var(--ft-muted);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.ft__name,
+.ft__edit {
+  color: var(--ft-gold);
+}
+
+.ft__edit {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.ft__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.ft__back {
+  align-self: flex-start;
+  margin-left: 3.1rem;
+  padding: 0.35rem 0.6rem;
+  color: var(--ft-gold);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (min-width: 769px) {
+  .ft__back {
+    margin-left: 0;
+  }
+}
+
+.ft__title {
+  margin: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--ft-gold);
+}
+
+.ft__hint,
+.ft__note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ft-muted);
+}
+
+.ft__note--win {
+  color: var(--ft-gold);
+}
+
+.ft__card,
+.ft__field,
+.ft__btn {
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.ft__card {
+  padding: 0.85rem 0.9rem;
+  border-radius: 0.4rem;
+  background: var(--ft-panel);
+}
+
+.ft__card p {
+  margin: 0.2rem 0;
+}
+
+.ft__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ft-cyan);
+}
+
+.ft__big {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.ft__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.ft__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.3rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.35rem;
+  background: var(--ft-gold);
+  color: #1a1204;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ft__btn--ghost {
+  background: var(--ft-panel);
+  color: var(--ft-ink);
+}
+
+.ft__btn--sex {
+  background: #243056;
+  color: var(--ft-ink);
+}
+
+.ft__btn--on {
+  background: var(--ft-cyan);
+  color: #062020;
+}
+
+.ft__label {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.ft__field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 0.9rem;
+  border-radius: 0.35rem;
+  background: #101628;
+  color: var(--ft-ink);
+  font-family: inherit;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.ft__sex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.ft-bank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ft-bank__svg {
+  width: min(100%, 300px);
+  height: auto;
+}
+
+.ft-bank .ft__hint {
+  text-align: center;
+}
+
+.ft-bank__level {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ft-bank__count {
+  margin: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.72rem;
+  color: var(--ft-gold);
+}
+
+.ft-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ft-map__figure {
+  align-self: center;
+  width: min(100%, 460px);
+}
+
+.ft-map__figure--zoom {
+  width: min(100%, 420px);
+}
+
+.ft-ruler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ft-ruler__value,
+.ft-ruler__here {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.ft-ruler__value {
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.ft-ruler__here {
+  font-size: 1rem;
+}
+
+.ft-ruler__track {
+  position: relative;
+  width: 100%;
+  margin-top: 2.15rem;
+}
+
+.ft-ruler__bar {
+  display: flex;
+  width: 100%;
+  height: 1.15rem;
+  overflow: hidden;
+  border: 3px solid #000;
+  border-radius: 0.3rem;
+}
+
+.ft-ruler__seg {
+  height: 100%;
+}
+
+.ft-ruler__you {
+  position: absolute;
+  top: -1.85rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.ft-ruler__you-badge {
+  position: relative;
+  padding: 0.28rem 0.45rem 0.22rem;
+  background: var(--ft-gold);
+  color: #1a1204;
+  border: 3px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.62rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.ft-ruler__you-badge::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-top: 8px solid #000;
+}
+
+.ft-figure {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px solid #000;
+  border-radius: 0.4rem;
+  box-shadow: 4px 4px 0 #000;
+  background: #010b24;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ft-figure--tap .ft-tape,
+.ft-figure--tap .ft-tag {
+  cursor: pointer;
+}
+
+.ft-tape,
+.ft-tag {
+  --tape: #9aa4c4;
+}
+
+.ft-tape[data-status="ok"],
+.ft-tag[data-status="ok"] {
+  --tape: #6ed36e;
+}
+
+.ft-tape[data-status="low"],
+.ft-tag[data-status="low"] {
+  --tape: #5ad0d0;
+}
+
+.ft-tape[data-status="high"],
+.ft-tag[data-status="high"] {
+  --tape: #e85d5d;
+}
+
+.ft-tape[data-status="active"],
+.ft-tag[data-status="active"] {
+  --tape: #f8d848;
+}
+
+.ft-tape__hit {
+  fill: transparent;
+}
+
+.ft-tape__band {
+  fill: var(--tape);
+  fill-opacity: 0.22;
+  stroke: var(--tape);
+  stroke-width: 5;
+}
+
+.ft-tape[data-status="empty"] .ft-tape__band {
+  fill: none;
+  stroke-dasharray: 9 7;
+  stroke-width: 4;
+}
+
+.ft-tape[data-status="active"] .ft-tape__band {
+  stroke-width: 7;
+  animation: ft-tape-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes ft-tape-pulse {
+  50% {
+    fill-opacity: 0.5;
+    stroke-width: 10;
+  }
+}
+
+.ft-tag__line {
+  stroke: var(--tape);
+  stroke-width: 2;
+  stroke-dasharray: 4 5;
+  opacity: 0.75;
+}
+
+.ft-tag__dot {
+  fill: var(--tape);
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.ft-figure__label {
+  fill: #f4f1e8;
+  font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.ft-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  color: var(--ft-muted);
+}
+
+.ft-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ft-legend__dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+.ft-legend__dot--empty {
+  border: 2px dashed #9aa4c4;
+}
+
+.ft-legend__dot--ok {
+  background: var(--ft-green);
+}
+
+.ft-legend__dot--low {
+  background: var(--ft-cyan);
+}
+
+.ft-legend__dot--high {
+  background: var(--ft-red);
+}
+
+.ft-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ft-progress__bar {
+  height: 0.9rem;
+  border: 3px solid #000;
+  border-radius: 0.3rem;
+  background: #101628;
+  overflow: hidden;
+}
+
+.ft-progress__fill {
+  height: 100%;
+  background: repeating-linear-gradient(90deg, var(--ft-gold) 0 10px, #e0bd2c 10px 14px);
+}

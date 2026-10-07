@@ -1,0 +1,21 @@
+<div class="ft">
+  <a routerLink="/fittnes" class="ft__back">← Inicio</a>
+  <h1 class="ft__title">PESO</h1>
+  <p class="ft__hint">Si no lo cambias, se queda el anterior. Un peso distinto suma 1 moneda.</p>
+  <label class="ft__label" for="fittnes-weight">Kilogramos</label>
+  <input
+    id="fittnes-weight"
+    class="ft__field"
+    type="number"
+    inputmode="decimal"
+    min="30"
+    max="300"
+    step="0.1"
+    [value]="value"
+    (input)="value = $any($event.target).value"
+  />
+  <button type="button" class="ft__btn" (click)="save()">Guardar peso</button>
+  @if (message) {
+    <p class="ft__note ft__note--win">{{ message }}</p>
+  }
+</div>

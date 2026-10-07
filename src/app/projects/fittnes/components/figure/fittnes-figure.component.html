@@ -1,0 +1,41 @@
+<svg
+  class="ft-figure"
+  [class.ft-figure--tap]="tappable"
+  [attr.viewBox]="viewBox()"
+  role="img"
+  aria-label="Dibujo del cuerpo con las zonas de medida"
+>
+  <rect x="-200" y="-200" width="1000" height="1500" fill="#010b24" />
+  <image href="assets/fittnes/body-front.jpg" x="0" y="0" width="576" height="1024" preserveAspectRatio="none" />
+
+  @for (tape of tapes; track $index) {
+    <g class="ft-tape" [attr.data-status]="status(tape.id)" (click)="tap(tape.id)">
+      <rect
+        class="ft-tape__hit"
+        [attr.x]="tape.cx - tape.rx - 10"
+        [attr.y]="tape.cy - 26"
+        [attr.width]="tape.rx * 2 + 20"
+        height="52"
+      />
+      <ellipse class="ft-tape__band" [attr.cx]="tape.cx" [attr.cy]="tape.cy" [attr.rx]="tape.rx" [attr.ry]="ry(tape)" />
+    </g>
+  }
+
+  @if (!zoom) {
+    @for (tag of tags; track tag.id) {
+      <g class="ft-tag" [attr.data-status]="status(tag.id)" (click)="tap(tag.id)">
+        @if (tag.side === 'left') {
+          <rect class="ft-tape__hit" x="-98" [attr.y]="tag.y - 24" width="204" height="48" />
+          <line class="ft-tag__line" [attr.x1]="leftDotX" [attr.y1]="tag.y" [attr.x2]="tag.edge" [attr.y2]="tag.y" />
+          <circle class="ft-tag__dot" [attr.cx]="leftDotX" [attr.cy]="tag.y" r="7" />
+          <text class="ft-figure__label" x="-92" [attr.y]="tag.y + 10">{{ name(tag.id) }}</text>
+        } @else {
+          <rect class="ft-tape__hit" [attr.x]="rightDotX - 10" [attr.y]="tag.y - 24" width="206" height="48" />
+          <line class="ft-tag__line" [attr.x1]="tag.edge" [attr.y1]="tag.y" [attr.x2]="rightDotX" [attr.y2]="tag.y" />
+          <circle class="ft-tag__dot" [attr.cx]="rightDotX" [attr.cy]="tag.y" r="7" />
+          <text class="ft-figure__label" x="668" [attr.y]="tag.y + 10" text-anchor="end">{{ name(tag.id) }}</text>
+        }
+      </g>
+    }
+  }
+</svg>
