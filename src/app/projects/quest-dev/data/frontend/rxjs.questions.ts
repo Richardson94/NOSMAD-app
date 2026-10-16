@@ -3,210 +3,210 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const FRONTEND_RXJS_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'fe-rx-01',
-    topic: 'Operadores de aplanado',
+    topic: 'Observable y Promise',
     prompt: {
-      es: 'En un buscador con autocompletado que dispara una petición por cada tecla, ¿qué operador de aplanado corresponde?',
-      en: 'In a typeahead search that fires a request on every keystroke, which flattening operator fits?',
+      es: '¿Cuál es la diferencia entre un Observable y una Promise?',
+      en: 'What is the difference between an Observable and a Promise?',
     },
     answer: {
-      es: 'switchMap, porque cancela la petición anterior y deja solo el resultado de la última búsqueda.',
-      en: 'switchMap, because it cancels the previous request and keeps only the latest search result.',
+      es: 'Una Promise entrega un solo valor y empieza al crearla. Un Observable puede emitir varios y no hace trabajo hasta que alguien se suscribe.',
+      en: 'A Promise delivers one value and starts when you create it. An Observable can emit many values and does no work until someone subscribes.',
     },
     distractors: [
       {
-        es: 'mergeMap, porque procesa todas las peticiones en paralelo y así el usuario recibe la respuesta más rápida.',
-        en: 'mergeMap, because it processes every request in parallel so the user gets the fastest response.',
+        es: 'Son lo mismo: Observable es solo el nombre que Angular usa para una Promise.',
+        en: 'They are the same: Observable is only the name Angular uses for a Promise.',
       },
       {
-        es: 'concatMap, porque mantiene el orden de las respuestas y evita que una tardía sobrescriba a otra.',
-        en: 'concatMap, because it preserves response order and prevents a late response from overwriting another.',
+        es: 'El Observable arranca al crearlo y la Promise espera a que llames a subscribe.',
+        en: 'The Observable starts when you create it and the Promise waits until you call subscribe.',
       },
     ],
     explanation: {
-      es: 'switchMap es el único que descarta lo obsoleto: al llegar una tecla nueva, aborta la petición en vuelo. mergeMap deja que las respuestas lleguen desordenadas y puede pintar resultados de un texto viejo, y concatMap respeta el orden pero encola todas las peticiones, retrasando la que realmente importa.',
-      en: 'switchMap is the only one that discards stale work: when a new keystroke arrives it aborts the in-flight request. mergeMap lets responses arrive out of order and may render results for old text, and concatMap preserves order but queues every request, delaying the one that actually matters.',
+      es: 'Por eso puedes cortar un Observable al desuscribirte, y una Promise sigue hasta terminar.',
+      en: 'That is why you can stop an Observable by unsubscribing, while a Promise runs until it finishes.',
     },
   },
   {
     id: 'fe-rx-02',
-    topic: 'Subjects',
+    topic: 'Subscribe',
     prompt: {
-      es: '¿Qué diferencia a BehaviorSubject de ReplaySubject(1)?',
-      en: 'What differentiates BehaviorSubject from ReplaySubject(1)?',
+      es: '¿Qué hace subscribe en un Observable?',
+      en: 'What does subscribe do on an Observable?',
     },
     answer: {
-      es: 'BehaviorSubject exige un valor inicial y lo expone de forma sincrónica; ReplaySubject(1) solo repite si ya emitió algo.',
-      en: 'BehaviorSubject requires an initial value and exposes it synchronously; ReplaySubject(1) only replays if it already emitted.',
+      es: 'Pone en marcha el Observable y te avisa de cada valor, del error o del cierre. Sin esa llamada, un http.get no llega a salir.',
+      en: 'It starts the Observable and tells you about each value, the error or the completion. Without that call, an http.get never leaves.',
     },
     distractors: [
       {
-        es: 'BehaviorSubject entrega el último valor solo al primer suscriptor y ReplaySubject(1) lo entrega a todos.',
-        en: 'BehaviorSubject delivers the last value only to the first subscriber while ReplaySubject(1) delivers it to all.',
+        es: 'Solo lee el ultimo valor que ya se emitio, sin volver a ejecutar la fuente.',
+        en: 'It only reads the last value that was already emitted, without running the source again.',
       },
       {
-        es: 'BehaviorSubject descarta el valor almacenado al completar el stream y ReplaySubject(1) lo sigue entregando.',
-        en: 'BehaviorSubject discards the stored value when the stream completes while ReplaySubject(1) keeps delivering it.',
+        es: 'Convierte el Observable en una Promise y espera a que todas las emisiones terminen.',
+        en: 'It turns the Observable into a Promise and waits until every emission finishes.',
       },
     ],
     explanation: {
-      es: 'La diferencia práctica es el estado inicial garantizado y el acceso sincrónico mediante getValue(), útil para modelar estado. Ambos entregan el último valor a cualquier suscriptor nuevo; y tras completar, es ReplaySubject el que sigue repitiendo su búfer, mientras BehaviorSubject solo notifica la finalización.',
-      en: 'The practical difference is the guaranteed initial state plus synchronous access through getValue(), useful to model state. Both deliver the latest value to any new subscriber; and after completion it is ReplaySubject that keeps replaying its buffer, while BehaviorSubject only signals completion.',
+      es: 'En una plantilla suele bastar el async pipe, que llama a subscribe y a unsubscribe por ti.',
+      en: 'In a template the async pipe is usually enough, because it calls subscribe and unsubscribe for you.',
     },
   },
   {
     id: 'fe-rx-03',
-    topic: 'Combinación',
+    topic: 'Async pipe',
     prompt: {
-      es: '¿Qué hace combineLatest cuando uno de sus observables de entrada todavía no ha emitido ningún valor?',
-      en: 'What does combineLatest do when one of its source observables has not emitted any value yet?',
+      es: '¿Cómo se usa el async pipe y que problema evita?',
+      en: 'How do you use the async pipe and what problem does it avoid?',
     },
     answer: {
-      es: 'No emite nada hasta que todas las fuentes hayan emitido al menos una vez.',
-      en: 'It emits nothing until every source has emitted at least once.',
+      es: 'En la plantilla escribes observable | async. Se suscribe, pinta el ultimo valor y se desuscribe al destruir la vista.',
+      en: 'In the template you write observable | async. It subscribes, shows the latest value and unsubscribes when the view is destroyed.',
     },
     distractors: [
       {
-        es: 'Emite de inmediato usando undefined en la posición de la fuente que aún no produjo valor.',
-        en: 'It emits immediately using undefined in the position of the source that has not produced a value yet.',
+        es: 'Solo da formato a fechas y numeros. La suscripcion la sigues haciendo en el componente.',
+        en: 'It only formats dates and numbers. You still subscribe yourself in the component.',
       },
       {
-        es: 'Emite con el valor de las fuentes disponibles y completa cuando la fuente pendiente termina sin emitir.',
-        en: 'It emits with the available sources and completes when the pending source finishes without emitting.',
+        es: 'Mantiene la suscripcion viva despues de destruir el componente para no perder el ultimo dato.',
+        en: 'It keeps the subscription alive after the component is destroyed so the latest data is not lost.',
       },
     ],
     explanation: {
-      es: 'Es el error más común con combineLatest: un stream silencioso bloquea toda la combinación, por eso se suele darle un valor inicial con startWith. Nunca rellena huecos con undefined, y si una fuente completa sin emitir, la combinación completa sin haber emitido jamás.',
-      en: 'This is the most common pitfall with combineLatest: one silent stream blocks the whole combination, which is why you usually seed it with startWith. It never fills gaps with undefined, and if a source completes without emitting, the combination completes having never emitted.',
+      es: 'Asi no guardas la Subscription ni llamas a unsubscribe en ngOnDestroy.',
+      en: 'That way you do not store the Subscription or call unsubscribe in ngOnDestroy.',
     },
   },
   {
     id: 'fe-rx-04',
-    topic: 'Observables fríos y calientes',
+    topic: 'Operador map',
     prompt: {
-      es: 'Dos componentes se suscriben al mismo observable devuelto por http.get. ¿Qué ocurre?',
-      en: 'Two components subscribe to the same observable returned by http.get. What happens?',
+      es: '¿Para qué sirve map y en que se diferencia de switchMap?',
+      en: 'What is map for and how is it different from switchMap?',
     },
     answer: {
-      es: 'Se ejecutan dos peticiones HTTP, porque el observable es frío y cada suscripción lo reinicia.',
-      en: 'Two HTTP requests are executed, because the observable is cold and each subscription restarts it.',
+      es: 'map cambia cada valor por otro, como el map de un array. switchMap ademas se suscribe a un Observable interno, por ejemplo una peticion.',
+      en: 'map turns each value into another one, like array map. switchMap also subscribes to an inner Observable, for example a request.',
     },
     distractors: [
       {
-        es: 'Se ejecuta una sola petición y ambos reciben la respuesta, porque HttpClient cachea la petición en curso.',
-        en: 'A single request runs and both receive the response, because HttpClient caches the in-flight request.',
+        es: 'map cancela la peticion anterior y switchMap solo transforma el valor sin llamar a HTTP.',
+        en: 'map cancels the previous request and switchMap only transforms the value without calling HTTP.',
       },
       {
-        es: 'Se ejecuta una sola petición y el segundo suscriptor no recibe nada, porque el stream ya completó.',
-        en: 'A single request runs and the second subscriber receives nothing, because the stream already completed.',
+        es: 'Son alias: map es el nombre corto de switchMap en RxJS reciente.',
+        en: 'They are aliases: map is the short name of switchMap in recent RxJS.',
       },
     ],
     explanation: {
-      es: 'Cada suscripción a un observable frío crea su propia ejecución del productor, de ahí las peticiones duplicadas; para compartirla se usa shareReplay(1). HttpClient no cachea nada por defecto, y el observable no ha completado para el segundo suscriptor porque ni siquiera había arrancado para él.',
-      en: 'Every subscription to a cold observable creates its own producer execution, hence the duplicated requests; to share it you use shareReplay(1). HttpClient caches nothing by default, and the observable has not completed for the second subscriber because it had not even started for it.',
+      es: 'Si map devuelve un Observable, el stream emite Observables anidados. Para aplanar hace falta switchMap, mergeMap o concatMap.',
+      en: 'If map returns an Observable, the stream emits nested Observables. Flattening needs switchMap, mergeMap or concatMap.',
     },
   },
   {
     id: 'fe-rx-05',
-    topic: 'Manejo de errores',
+    topic: 'Aplanado',
     prompt: {
-      es: '¿Qué ocurre si un error llega a un stream de eventos de UI sin manejarlo dentro del operador?',
-      en: 'What happens if an error reaches a UI event stream without handling it inside the operator?',
+      es: '¿Cuál es la diferencia entre switchMap, mergeMap y concatMap?',
+      en: 'What is the difference between switchMap, mergeMap and concatMap?',
     },
     answer: {
-      es: 'El stream termina y deja de reaccionar a nuevos eventos, aunque el componente siga vivo.',
-      en: 'The stream terminates and stops reacting to new events, even though the component is still alive.',
+      es: 'switchMap se queda con la ultima tarea y cancela la anterior. mergeMap deja varias a la vez. concatMap espera a que una termine antes de lanzar la siguiente.',
+      en: 'switchMap keeps the latest task and cancels the previous one. mergeMap lets several run at once. concatMap waits for one to finish before starting the next.',
     },
     distractors: [
       {
-        es: 'El stream omite esa emisión y continúa procesando los eventos siguientes con normalidad.',
-        en: 'The stream skips that emission and keeps processing the following events normally.',
+        es: 'switchMap encola, mergeMap cancela y concatMap lanza todo en paralelo sin orden.',
+        en: 'switchMap queues, mergeMap cancels and concatMap fires everything in parallel with no order.',
       },
       {
-        es: 'El stream se reinicia automáticamente en la siguiente emisión de la fuente original.',
-        en: 'The stream restarts automatically on the next emission from the original source.',
+        es: 'Los tres hacen lo mismo. Solo cambia el nombre segun la version de RxJS.',
+        en: 'All three do the same thing. Only the name changes with the RxJS version.',
       },
     ],
     explanation: {
-      es: 'Error y complete son notificaciones terminales: el buscador deja de buscar y el botón deja de responder sin ningún síntoma visible. La solución es capturar dentro del switchMap con catchError, devolviendo un observable de reemplazo, para que la fuente externa sobreviva.',
-      en: 'Error and complete are terminal notifications: the search box stops searching and the button stops responding with no visible symptom. The fix is catching inside the switchMap with catchError, returning a replacement observable, so the outer source survives.',
+      es: 'En un buscador usa switchMap. Para guardar cambios en orden usa concatMap. mergeMap vale cuando el orden de las respuestas no importa.',
+      en: 'Use switchMap for a search box. Use concatMap to save edits in order. mergeMap is fine when response order does not matter.',
     },
   },
   {
     id: 'fe-rx-06',
-    topic: 'Operadores de tiempo',
+    topic: 'debounceTime',
     prompt: {
-      es: '¿Cuál es la diferencia entre debounceTime y throttleTime?',
-      en: 'What is the difference between debounceTime and throttleTime?',
+      es: '¿Cómo funciona debounceTime?',
+      en: 'How does debounceTime work?',
     },
     answer: {
-      es: 'debounceTime espera a que haya silencio para emitir el último valor; throttleTime emite y luego ignora las emisiones durante la ventana.',
-      en: 'debounceTime waits for silence to emit the latest value; throttleTime emits and then ignores emissions during the window.',
+      es: 'Espera un silencio y entonces deja pasar el ultimo valor. Cada emision nueva reinicia esa espera.',
+      en: 'It waits for a quiet period and then lets the latest value through. Every new emission restarts that wait.',
     },
     distractors: [
       {
-        es: 'debounceTime descarta los valores intermedios y throttleTime los encola para emitirlos al final de la ventana.',
-        en: 'debounceTime discards intermediate values while throttleTime queues them to emit at the end of the window.',
+        es: 'Deja pasar el primer valor y luego ignora el resto durante una ventana fija.',
+        en: 'It lets the first value through and then ignores the rest for a fixed window.',
       },
       {
-        es: 'debounceTime retrasa cada valor un tiempo fijo y throttleTime solo retrasa el primero de la ráfaga.',
-        en: 'debounceTime delays each value by a fixed amount while throttleTime only delays the first of the burst.',
+        es: 'Guarda todos los valores y los suelta juntos cuando se cumple el tiempo.',
+        en: 'It stores every value and releases them together when the time is up.',
       },
     ],
     explanation: {
-      es: 'debounce reinicia su temporizador con cada emisión, así que en una ráfaga continua no emite nunca hasta que el usuario para (ideal para escritura); throttle garantiza una emisión por ventana (ideal para scroll o clics repetidos). Ninguno encola valores, y retrasar todo por un tiempo fijo es delay.',
-      en: 'debounce resets its timer on every emission, so during a continuous burst it never emits until the user stops (ideal for typing); throttle guarantees one emission per window (ideal for scroll or repeated clicks). Neither queues values, and delaying everything by a fixed amount is delay.',
+      es: 'Por eso encaja en un buscador: no pides al servidor en cada tecla, solo cuando la persona deja de escribir.',
+      en: 'That is why it fits a search box: you do not call the server on every key, only when the person stops typing.',
     },
   },
   {
     id: 'fe-rx-07',
-    topic: 'Compartir streams',
+    topic: 'Desuscripcion',
     prompt: {
-      es: '¿Qué hace shareReplay({ bufferSize: 1, refCount: true }) frente a shareReplay(1)?',
-      en: 'What does shareReplay({ bufferSize: 1, refCount: true }) do compared to shareReplay(1)?',
+      es: '¿Por qué hay que desuscribirse de un Observable?',
+      en: 'Why do you need to unsubscribe from an Observable?',
     },
     answer: {
-      es: 'Cancela la suscripción a la fuente cuando se va el último suscriptor, en lugar de mantenerla viva indefinidamente.',
-      en: 'It unsubscribes from the source when the last subscriber leaves, instead of keeping it alive indefinitely.',
+      es: 'Si la suscripcion sigue viva al destruir la vista, el callback puede retener el componente y seguir trabajando. Eso es una fuga de memoria.',
+      en: 'If the subscription stays alive after the view is destroyed, the callback can keep the component and keep doing work. That is a memory leak.',
     },
     distractors: [
       {
-        es: 'Limpia el búfer en cada nueva suscripción, de modo que el nuevo suscriptor no reciba valores antiguos.',
-        en: 'It clears the buffer on every new subscription, so a new subscriber does not receive stale values.',
+        es: 'Angular desuscribe solo todos los Observables al cambiar de ruta, asi que no hace falta.',
+        en: 'Angular unsubscribes every Observable on its own when the route changes, so you do not need to.',
       },
       {
-        es: 'Convierte el observable en caliente desde el inicio, ejecutando la fuente aunque nadie se haya suscrito.',
-        en: 'It turns the observable hot from the start, running the source even if nobody has subscribed.',
+        es: 'Desuscribirse solo sirve para Promises. Un Observable se cierra solo al terminar el componente.',
+        en: 'Unsubscribing only matters for Promises. An Observable closes itself when the component ends.',
       },
     ],
     explanation: {
-      es: 'Sin refCount, shareReplay deja la suscripción a la fuente abierta para siempre: con un intervalo o un WebSocket eso es una fuga de memoria clásica. Con refCount en true la fuente se cierra al quedar en cero suscriptores y se reinicia en la siguiente suscripción, conservando el búfer mientras haya al menos uno.',
-      en: 'Without refCount, shareReplay keeps the source subscription open forever: with an interval or a WebSocket that is a classic memory leak. With refCount true the source is closed when subscribers drop to zero and restarts on the next subscription, keeping the buffer while at least one remains.',
+      es: 'El async pipe o takeUntilDestroyed lo hacen por ti. Una peticion de HttpClient si se aborta al desuscribirte.',
+      en: 'The async pipe or takeUntilDestroyed does it for you. An HttpClient request is aborted when you unsubscribe.',
     },
   },
   {
     id: 'fe-rx-08',
-    topic: 'Operadores de creación',
+    topic: 'Observable frio',
     prompt: {
-      es: 'Necesitas lanzar tres peticiones en paralelo y continuar cuando todas terminen. ¿Qué operador usas?',
-      en: 'You need to fire three requests in parallel and continue when all of them finish. Which operator do you use?',
+      es: '¿Qué pasa si dos sitios se suscriben al mismo observable de http.get?',
+      en: 'What happens if two places subscribe to the same http.get observable?',
     },
     answer: {
-      es: 'forkJoin, que espera a que todas completen y emite un único valor con el último resultado de cada una.',
-      en: 'forkJoin, which waits for all of them to complete and emits a single value with the last result of each.',
+      es: 'Salen dos peticiones. Es un Observable frio: cada subscribe vuelve a ejecutar la fuente.',
+      en: 'Two requests go out. It is a cold Observable: each subscribe runs the source again.',
     },
     distractors: [
       {
-        es: 'combineLatest, que emite un arreglo con el valor más reciente de cada petición cuando todas respondieron.',
-        en: 'combineLatest, which emits an array with the most recent value of each request once all have responded.',
+        es: 'HttpClient reutiliza la peticion en curso y ambos reciben la misma respuesta.',
+        en: 'HttpClient reuses the in-flight request and both receive the same response.',
       },
       {
-        es: 'zip, que empareja las emisiones por índice y por eso agrupa las tres respuestas en un solo valor.',
-        en: 'zip, which pairs emissions by index and therefore groups the three responses into a single value.',
+        es: 'Solo sale una peticion y el segundo no recibe nada porque el stream ya termino.',
+        en: 'Only one request goes out and the second subscriber gets nothing because the stream already finished.',
       },
     ],
     explanation: {
-      es: 'forkJoin está diseñado para observables que completan, como las peticiones HTTP, y es el equivalente a Promise.all. Las otras dos funcionarían aquí por accidente, pero combineLatest vuelve a emitir con cada nueva emisión y zip se bloquea si un stream emite más veces que otro; ninguna expresa "avísame cuando todo termine".',
-      en: 'forkJoin is designed for observables that complete, such as HTTP requests, and is the equivalent of Promise.all. The other two would work here by accident, but combineLatest re-emits on every new emission and zip stalls if one stream emits more often than another; neither expresses "tell me when everything is done".',
+      es: 'Si quieres compartir esa llamada, encadena shareReplay con un buffer de 1.',
+      en: 'If you want to share that call, chain shareReplay with a buffer of 1.',
     },
   },
 ];

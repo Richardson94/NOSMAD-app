@@ -3,184 +3,184 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const FRONTEND_TYPESCRIPT_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'fe-ts-01',
-    topic: 'Tipos',
+    topic: 'unknown y any',
     prompt: {
       es: '¿Cuál es la diferencia entre unknown y any?',
       en: 'What is the difference between unknown and any?',
     },
     answer: {
-      es: 'unknown obliga a comprobar o acotar el tipo antes de usar el valor; any desactiva por completo la verificación.',
-      en: 'unknown forces you to check or narrow the type before using the value; any disables checking entirely.',
+      es: 'unknown te obliga a comprobar el tipo antes de usar el valor. any apaga la comprobacion y deja pasar cualquier uso.',
+      en: 'unknown forces you to check the type before using the value. any turns checking off and allows any use.',
     },
     distractors: [
       {
-        es: 'unknown solo acepta valores primitivos y any acepta además objetos y funciones.',
-        en: 'unknown only accepts primitive values while any also accepts objects and functions.',
+        es: 'unknown solo acepta numeros y strings. any acepta tambien objetos.',
+        en: 'unknown only accepts numbers and strings. any also accepts objects.',
       },
       {
-        es: 'unknown es un alias de any que el compilador reporta como advertencia en modo estricto.',
-        en: 'unknown is an alias of any that the compiler reports as a warning in strict mode.',
+        es: 'Son alias. En modo strict el compilador avisa igual con los dos.',
+        en: 'They are aliases. In strict mode the compiler warns the same way for both.',
       },
     ],
     explanation: {
-      es: 'Ambos aceptan cualquier valor al asignar, pero se comportan al revés al leer: con unknown no se puede acceder a propiedades ni invocar nada sin una comprobación previa, mientras any permite todo y propaga el agujero de tipos. Por eso unknown es la opción correcta para datos externos como una respuesta HTTP.',
-      en: 'Both accept any value on assignment, but they behave the opposite way on read: with unknown you cannot access properties or call anything without narrowing first, whereas any allows everything and propagates the type hole. That is why unknown is the right choice for external data such as an HTTP response.',
+      es: 'Para una respuesta HTTP o un JSON externo, unknown es la opcion segura. any abre un agujero que se contagia.',
+      en: 'For an HTTP response or external JSON, unknown is the safe choice. any opens a hole that spreads.',
     },
   },
   {
     id: 'fe-ts-02',
-    topic: 'Tipos',
+    topic: 'type e interface',
     prompt: {
-      es: '¿Qué puede hacer una interface que un type alias no puede?',
-      en: 'What can an interface do that a type alias cannot?',
+      es: '¿Cuál es la diferencia entre un type y una interface?',
+      en: 'What is the difference between a type and an interface?',
     },
     answer: {
-      es: 'Fusionarse por declaración: dos declaraciones con el mismo nombre se combinan en una sola.',
-      en: 'Declaration merging: two declarations with the same name are combined into one.',
+      es: 'Las dos pueden describir un objeto. Una interface se puede reabrir y fusionar. Un type tambien puede nombrar uniones, tuplas e intersecciones.',
+      en: 'Both can describe an object. An interface can be reopened and merged. A type can also name unions, tuples and intersections.',
     },
     distractors: [
       {
-        es: 'Extenderse a partir de otro tipo, ya que un type alias solo puede combinarse con intersecciones.',
-        en: 'Extend another type, since a type alias can only be combined with intersections.',
+        es: 'Una clase solo puede implementar una interface. Un type no vale en implements.',
+        en: 'A class can only implement an interface. A type cannot be used in implements.',
       },
       {
-        es: 'Ser implementada por una clase, porque un type alias no puede usarse en una cláusula implements.',
-        en: 'Be implemented by a class, because a type alias cannot be used in an implements clause.',
+        es: 'Un type existe en tiempo de ejecucion y una interface se borra al compilar.',
+        en: 'A type exists at runtime and an interface is erased at compile time.',
       },
     ],
     explanation: {
-      es: 'La fusión de declaraciones es exclusiva de interface y es lo que permite ampliar tipos de librerías externas. En cambio, una clase puede implementar un type alias que describa un objeto, y las intersecciones logran lo mismo que extends para la mayoría de los casos prácticos.',
-      en: 'Declaration merging is exclusive to interface and is what lets you augment types from external libraries. A class, however, can implement a type alias describing an object shape, and intersections achieve the same as extends for most practical cases.',
+      es: 'Para la forma de un objeto, elige la que el equipo ya use. La fusion de declaraciones es lo propio de interface.',
+      en: 'For an object shape, pick whichever the team already uses. Declaration merging belongs to interface.',
     },
   },
   {
     id: 'fe-ts-03',
-    topic: 'Type guards',
+    topic: 'Uniones',
     prompt: {
-      es: '¿Qué aporta declarar el retorno de una función como "value is Product" en lugar de boolean?',
-      en: 'What does declaring a function return type as "value is Product" instead of boolean provide?',
+      es: '¿Qué es un tipo union y como se usa?',
+      en: 'What is a union type and how do you use it?',
     },
     answer: {
-      es: 'El compilador acota el tipo de la variable en la rama donde la función devolvió true.',
-      en: 'The compiler narrows the variable type in the branch where the function returned true.',
+      es: 'Es un valor que puede ser uno de varios tipos, escrito con |. Antes de usar un campo que no comparten, hay que estrechar con un if.',
+      en: 'It is a value that may be one of several types, written with |. Before using a field they do not share, you narrow it with an if.',
     },
     distractors: [
       {
-        es: 'El compilador verifica en tiempo de ejecución que el objeto cumpla la forma de Product.',
-        en: 'The compiler verifies at runtime that the object matches the Product shape.',
+        es: 'Obliga a que el valor cumpla todos los tipos a la vez, igual que un &.',
+        en: 'It requires the value to satisfy every type at once, the same as &.',
       },
       {
-        es: 'Permite usar la función como validador en un cast, evitando el uso de "as" en el resto del código.',
-        en: 'It allows using the function as a validator in a cast, avoiding "as" in the rest of the code.',
+        es: 'El compilador elige solo el miembro correcto en ejecucion, sin que escribas una comprobacion.',
+        en: 'The compiler picks the right member at runtime on its own, with no check written by you.',
       },
     ],
     explanation: {
-      es: 'Es una anotación de análisis de flujo: TypeScript confía en el predicado y trata la variable como Product dentro del if, sin necesidad de aserciones. La comprobación real sigue siendo responsabilidad del cuerpo de la función, porque los tipos desaparecen al compilar; si el predicado miente, el error aparece en ejecución.',
-      en: 'It is a flow-analysis annotation: TypeScript trusts the predicate and treats the variable as Product inside the if, with no assertions needed. The actual check remains the responsibility of the function body, because types vanish at compile time; if the predicate lies, the failure shows up at runtime.',
+      es: 'Un id que es string | number es una union. Tras if (typeof id === "string") ya puedes usar metodos de string.',
+      en: 'An id that is string | number is a union. After if (typeof id === "string") you can use string methods.',
     },
   },
   {
     id: 'fe-ts-04',
-    topic: 'Tipos utilitarios',
+    topic: 'Genericos',
     prompt: {
-      es: '¿Qué produce Partial<Record<"a" | "b", number>>?',
-      en: 'What does Partial<Record<"a" | "b", number>> produce?',
+      es: '¿Para qué sirve un generico?',
+      en: 'What is a generic for?',
     },
     answer: {
-      es: 'Un objeto con las claves "a" y "b" opcionales, ambas de tipo number.',
-      en: 'An object with optional keys "a" and "b", both of type number.',
+      es: 'Para escribir una funcion o un tipo que funcione con varios tipos sin perder cual entra y cual sale, como identity o una lista.',
+      en: 'To write a function or a type that works with several types without losing what goes in and what comes out, such as an identity function or a list.',
     },
     distractors: [
       {
-        es: 'Un objeto con las claves "a" y "b" obligatorias cuyo valor puede ser number o undefined.',
-        en: 'An object with required keys "a" and "b" whose value may be number or undefined.',
+        es: 'Para borrar el tipo y tratar el valor como any dentro de la funcion.',
+        en: 'To erase the type and treat the value as any inside the function.',
       },
       {
-        es: 'Un objeto con claves arbitrarias de tipo string y valores opcionales de tipo number.',
-        en: 'An object with arbitrary string keys and optional number values.',
+        es: 'Para crear una clase nueva en ejecucion por cada tipo que uses.',
+        en: 'To create a new class at runtime for every type you use.',
       },
     ],
     explanation: {
-      es: 'Record construye el tipo con esas dos claves obligatorias y Partial les añade el modificador opcional, así que { a: 1 } es válido. La segunda opción describe el efecto de exactOptionalPropertyTypes mal entendido: una clave obligatoria que acepta undefined sigue exigiendo que esté presente. Para claves arbitrarias haría falta Record<string, number>.',
-      en: 'Record builds the type with those two required keys and Partial adds the optional modifier, so { a: 1 } is valid. The second option describes a misunderstanding of exactOptionalPropertyTypes: a required key accepting undefined still demands that the key be present. Arbitrary keys would need Record<string, number>.',
+      es: 'function primero<T>(items: T[]): T devuelve el mismo tipo que hay en el array, no un any.',
+      en: 'function first<T>(items: T[]): T returns the same type that is in the array, not an any.',
     },
   },
   {
     id: 'fe-ts-05',
-    topic: 'Operadores',
+    topic: 'Enum',
     prompt: {
-      es: '¿Cuándo devuelven resultados distintos value ?? fallback y value || fallback?',
-      en: 'When do value ?? fallback and value || fallback return different results?',
+      es: '¿En qué se diferencia un enum de una union de strings?',
+      en: 'How does an enum differ from a union of strings?',
     },
     answer: {
-      es: 'Cuando value es un valor falsy válido como 0 o cadena vacía: ?? lo conserva y || lo reemplaza.',
-      en: 'When value is a valid falsy value such as 0 or an empty string: ?? keeps it and || replaces it.',
+      es: 'El enum es un objeto que sigue existiendo en el JavaScript emitido. La union de strings solo existe para el compilador y desaparece al construir.',
+      en: 'The enum is an object that still exists in the emitted JavaScript. The string union exists only for the compiler and disappears at build time.',
     },
     distractors: [
       {
-        es: 'Cuando value es undefined: ?? devuelve el fallback y || propaga undefined sin evaluarlo.',
-        en: 'When value is undefined: ?? returns the fallback and || propagates undefined without evaluating it.',
+        es: 'Los dos se borran por completo. Elegir uno u otro es solo estilo.',
+        en: 'Both are erased completely. Choosing one or the other is only style.',
       },
       {
-        es: 'Nunca; ?? es solo la versión con tipado estricto de || que TypeScript recomienda en modo strict.',
-        en: 'Never; ?? is just the strictly typed version of || that TypeScript recommends in strict mode.',
+        es: 'La union de strings crea un objeto con las claves y el enum no deja nada en ejecucion.',
+        en: 'The string union creates an object with the keys and the enum leaves nothing at runtime.',
       },
     ],
     explanation: {
-      es: '?? solo actúa ante null o undefined, mientras || actúa ante cualquier falsy, de ahí el bug clásico de que un contador en 0 o un texto vacío se sustituyen por el valor por defecto. Con undefined ambos devuelven el fallback, así que ahí no hay diferencia.',
-      en: '?? only kicks in for null or undefined, while || kicks in for any falsy value, hence the classic bug where a counter at 0 or an empty text is replaced by the default. With undefined both return the fallback, so there is no difference there.',
+      es: 'Muchos equipos prefieren una union, o un objeto as const, para no meter un objeto extra en el bundle.',
+      en: 'Many teams prefer a union, or an as const object, so they do not add an extra object to the bundle.',
     },
   },
   {
     id: 'fe-ts-06',
-    topic: 'Genéricos',
+    topic: 'Restriccion generica',
     prompt: {
-      es: '¿Qué significa <T extends { id: string }> en la firma de una función genérica?',
-      en: 'What does <T extends { id: string }> mean in a generic function signature?',
+      es: '¿Qué significa T extends { id: string } en una funcion generica?',
+      en: 'What does T extends { id: string } mean on a generic function?',
     },
     answer: {
-      es: 'Que T puede ser cualquier tipo que tenga al menos una propiedad id de tipo string.',
-      en: 'That T can be any type having at least an id property of type string.',
+      es: 'Que T puede ser cualquier tipo que tenga al menos un id string. Puede traer mas campos.',
+      en: 'That T can be any type that has at least a string id. It may bring more fields.',
     },
     distractors: [
       {
-        es: 'Que T debe ser exactamente ese objeto, por lo que pasar un tipo con más propiedades es un error.',
-        en: 'That T must be exactly that object, so passing a type with extra properties is an error.',
+        es: 'Que T tiene que ser exactamente ese objeto. Un campo de mas es un error.',
+        en: 'That T must be exactly that object. An extra field is an error.',
       },
       {
-        es: 'Que T hereda esa propiedad, así que la función puede asignarle un id si el objeto no lo trae.',
-        en: 'That T inherits that property, so the function can assign an id if the object does not have one.',
+        es: 'Que la funcion crea la propiedad id en ejecucion si el objeto no la trae.',
+        en: 'That the function creates the id property at runtime if the object does not have it.',
       },
     ],
     explanation: {
-      es: 'extends en genéricos expresa una restricción de compatibilidad estructural, no igualdad ni herencia: cualquier tipo que cumpla la forma mínima es aceptado, con las propiedades extra intactas y accesibles dentro de T. No agrega nada al valor en ejecución.',
-      en: 'extends in generics expresses a structural compatibility constraint, not equality nor inheritance: any type satisfying the minimal shape is accepted, with extra properties intact and reachable through T. It adds nothing to the value at runtime.',
+      es: 'extends aqui no es herencia de clases. Es el minimo que el tipo tiene que cumplir.',
+      en: 'extends here is not class inheritance. It is the minimum the type must satisfy.',
     },
   },
   {
     id: 'fe-ts-07',
-    topic: 'Configuración',
+    topic: 'Null',
     prompt: {
-      es: '¿Qué comprueba la opción strictNullChecks del compilador?',
-      en: 'What does the strictNullChecks compiler option check?',
+      es: '¿Qué comprueba strictNullChecks?',
+      en: 'What does strictNullChecks check?',
     },
     answer: {
-      es: 'Que null y undefined no sean asignables a otros tipos salvo que se declaren explícitamente en la unión.',
-      en: 'That null and undefined are not assignable to other types unless explicitly declared in the union.',
+      es: 'Que null y undefined no se puedan asignar a un string, un number u otro tipo salvo que los pongas en la union.',
+      en: 'That null and undefined cannot be assigned to a string, a number or another type unless you put them in the union.',
     },
     distractors: [
       {
-        es: 'Que no se acceda a propiedades de un valor que podría ser null, insertando comprobaciones en el código generado.',
-        en: 'That properties are not accessed on a possibly null value, inserting checks into the generated code.',
+        es: 'Inserta ifs en el JavaScript generado para que un null no reviente en el navegador.',
+        en: 'It inserts ifs into the generated JavaScript so a null does not crash in the browser.',
       },
       {
-        es: 'Que toda variable se inicialice antes de usarse, incluidos los campos de clase declarados sin valor.',
-        en: 'That every variable is initialised before use, including class fields declared without a value.',
+        es: 'Obliga a inicializar los campos de clase. No tiene que ver con null en los tipos.',
+        en: 'It forces class fields to be initialised. It has nothing to do with null in the types.',
       },
     ],
     explanation: {
-      es: 'strictNullChecks cambia el sistema de tipos: string ya no incluye null, y por eso el compilador señala los accesos no comprobados. Todo ocurre en compilación, sin generar código de verificación. La inicialización de campos de clase la cubre otra bandera, strictPropertyInitialization.',
-      en: 'strictNullChecks changes the type system: string no longer includes null, which is why the compiler flags unchecked accesses. Everything happens at compile time, with no runtime checks emitted. Class field initialisation is covered by a different flag, strictPropertyInitialization.',
+      es: 'Con esa opcion, user.name falla si user es User | null hasta que compruebes que user existe. No genera codigo de guarda.',
+      en: 'With that option, user.name fails if user is User | null until you check that user exists. It does not emit guard code.',
     },
   },
 ];

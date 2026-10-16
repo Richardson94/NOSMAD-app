@@ -5,156 +5,156 @@ export const THEORIC_OOP_SOLID_QUESTIONS: QuestDevQuestion[] = [
     id: 'th-oop-01',
     topic: 'SOLID',
     prompt: {
-      es: '¿Qué condición debe cumplir un subtipo para respetar el Principio de Sustitución de Liskov?',
-      en: 'What condition must a subtype meet to respect the Liskov Substitution Principle?',
+      es: '¿Qué significa el principio de sustitución de Liskov en la práctica?',
+      en: 'What does the Liskov substitution principle mean in practice?',
     },
     answer: {
-      es: 'Puede debilitar las precondiciones y fortalecer las postcondiciones, nunca al contrario.',
-      en: 'It may weaken preconditions and strengthen postconditions, never the other way around.',
+      es: 'Una subclase debe poder usarse donde se espera la clase base sin sorprender al código que solo conoce la base.',
+      en: 'A subclass must be usable where the base class is expected without surprising code that only knows the base.',
     },
     distractors: [
       {
-        es: 'Puede fortalecer las precondiciones siempre que lo documente en su contrato.',
-        en: 'It may strengthen preconditions as long as it documents the change in its contract.',
+        es: 'La subclase puede exigir más condiciones de entrada si lo documenta en el contrato.',
+        en: 'The subclass may demand stricter inputs if it documents that in the contract.',
       },
       {
-        es: 'Debe conservar exactamente las mismas precondiciones y postcondiciones que la clase base.',
-        en: 'It must keep exactly the same preconditions and postconditions as the base class.',
+        es: 'Basta con que la subclase tenga los mismos métodos, aunque cambie lo que hacen.',
+        en: 'It is enough that the subclass has the same methods, even if what they do changes.',
       },
     ],
     explanation: {
-      es: 'Las precondiciones son contravariantes y las postcondiciones covariantes: el subtipo puede aceptar más entradas y prometer más, pero no exigir más ni prometer menos. Exigir más rompe al cliente que solo conoce la base; conservarlas idénticas es válido pero más restrictivo de lo que pide el principio. El caso típico de violación es una subclase que lanza UnsupportedOperationException en un método heredado.',
-      en: 'Preconditions are contravariant and postconditions covariant: a subtype may accept more inputs and promise more, but never demand more or promise less. Demanding more breaks clients that only know the base type; keeping them identical is valid but stricter than the principle requires. The classic violation is a subclass throwing UnsupportedOperationException on an inherited method.',
+      es: 'El caso típico es una subclase que lanza una excepción en un método que el cliente de la base usa con normalidad.',
+      en: 'The typical case is a subclass that throws on a method the base client uses normally.',
     },
   },
   {
     id: 'th-oop-02',
     topic: 'SOLID',
     prompt: {
-      es: '¿Qué propone el Principio de Segregación de Interfaces (ISP)?',
-      en: 'What does the Interface Segregation Principle (ISP) propose?',
+      es: '¿Qué pide el principio de segregación de interfaces?',
+      en: 'What does the interface segregation principle ask for?',
     },
     answer: {
-      es: 'Partir una interfaz gorda en interfaces por cliente para que nadie dependa de métodos que no usa.',
-      en: 'Split a fat interface into client-specific interfaces so nobody depends on methods it does not use.',
+      es: 'Interfaces pequeñas por cliente, para que nadie dependa de métodos que no usa.',
+      en: 'Small interfaces per client, so nobody depends on methods it does not use.',
     },
     distractors: [
       {
-        es: 'Que cada clase implemente una sola interfaz para no acoplarse a varias jerarquías a la vez.',
-        en: 'That each class implements only one interface to avoid coupling to several hierarchies at once.',
+        es: 'Que cada clase implemente una sola interfaz.',
+        en: 'That each class implements only one interface.',
       },
       {
-        es: 'Que las interfaces expongan solo métodos y deleguen todo el estado compartido a clases abstractas.',
-        en: 'That interfaces expose only methods and delegate all shared state to abstract classes.',
+        es: 'Que las interfaces no tengan métodos y el estado viva en clases abstractas.',
+        en: 'That interfaces have no methods and state lives in abstract classes.',
       },
     ],
     explanation: {
-      es: 'ISP mira el problema desde el consumidor: una interfaz con métodos que un cliente no necesita lo obliga a recompilarse y a implementar vacíos cuando esa parte cambia. La solución es dividirla por rol. Nada en ISP limita cuántas interfaces implementa una clase ni dónde vive el estado.',
-      en: 'ISP looks at the problem from the consumer side: an interface carrying methods a client does not need forces that client to recompile and to write empty implementations whenever that part changes. The fix is to split it by role. Nothing in ISP limits how many interfaces a class implements or where state lives.',
+      es: 'Si una interfaz es gorda, un cambio en un método que no usas te obliga a recompilar o a dejar implementaciones vacías.',
+      en: 'If an interface is fat, a change in a method you do not use forces a recompile or an empty implementation.',
     },
   },
   {
     id: 'th-oop-03',
     topic: 'SOLID',
     prompt: {
-      es: '¿Cuál es la diferencia entre el Principio de Inversión de Dependencias (DIP) y la inyección de dependencias?',
-      en: 'What is the difference between the Dependency Inversion Principle (DIP) and dependency injection?',
+      es: '¿Cuál es la diferencia entre inversión de dependencias e inyección de dependencias?',
+      en: 'What is the difference between dependency inversion and dependency injection?',
     },
     answer: {
-      es: 'DIP es un principio de diseño sobre depender de abstracciones; la inyección es solo una técnica para suministrar colaboradores.',
-      en: 'DIP is a design principle about depending on abstractions; injection is just a technique to supply collaborators.',
+      es: 'La inversión es depender de una abstracción. La inyección es solo la forma de pasar ese colaborador, por constructor o por setter.',
+      en: 'Inversion means depending on an abstraction. Injection is only how you pass that collaborator, by constructor or by setter.',
     },
     distractors: [
       {
-        es: 'Son equivalentes: usar un contenedor de inyección de dependencias garantiza que se cumple DIP.',
-        en: 'They are equivalent: using a dependency injection container guarantees DIP is satisfied.',
+        es: 'Son lo mismo: un contenedor de inyección garantiza que se cumple el principio.',
+        en: 'They are the same: an injection container guarantees the principle is met.',
       },
       {
-        es: 'DIP exige que la abstracción se declare en el módulo de bajo nivel para que el de alto nivel la importe.',
-        en: 'DIP requires the abstraction to be declared in the low-level module so the high-level module can import it.',
+        es: 'La inversión exige que la interfaz viva en el módulo de bajo nivel.',
+        en: 'Inversion requires the interface to live in the low level module.',
       },
     ],
     explanation: {
-      es: 'Se puede inyectar una clase concreta por constructor y seguir violando DIP, porque el módulo de alto nivel continúa acoplado a un detalle. DIP además invierte la propiedad de la abstracción: la interfaz pertenece al módulo de alto nivel (o a su paquete de contratos) y el de bajo nivel la implementa.',
-      en: 'You can inject a concrete class through the constructor and still violate DIP, because the high-level module stays coupled to a detail. DIP also inverts ownership of the abstraction: the interface belongs to the high-level module (or its contract package) and the low-level module implements it.',
+      es: 'Puedes inyectar una clase concreta y seguir acoplado al detalle. La interfaz debe pertenecer a quien la usa.',
+      en: 'You can inject a concrete class and still be coupled to the detail. The interface should belong to the code that uses it.',
     },
   },
   {
     id: 'th-oop-04',
     topic: 'SOLID',
     prompt: {
-      es: 'Según el Principio Abierto/Cerrado, ¿cómo se debería agregar un nuevo tipo de descuento a un módulo de facturación ya en producción?',
-      en: 'According to the Open/Closed Principle, how should a new discount type be added to a billing module already in production?',
+      es: '¿Cómo agregarías un nuevo tipo de descuento sin reabrir el código que ya está en producción?',
+      en: 'How would you add a new discount type without reopening code that is already in production?',
     },
     answer: {
-      es: 'Creando una nueva implementación de la abstracción de descuento, sin tocar el código que la orquesta.',
-      en: 'By creating a new implementation of the discount abstraction, without touching the code that orchestrates it.',
+      es: 'Con una abstracción de descuento y una implementación nueva. El código que calcula la factura no se toca.',
+      en: 'With a discount abstraction and a new implementation. The code that calculates the invoice stays untouched.',
     },
     distractors: [
       {
-        es: 'Agregando una rama al switch existente y cubriéndola con pruebas de regresión antes de desplegar.',
-        en: 'By adding a branch to the existing switch and covering it with regression tests before deploying.',
+        es: 'Añadiendo un caso más al switch y cubriéndolo con pruebas.',
+        en: 'By adding one more case to the switch and covering it with tests.',
       },
       {
-        es: 'Heredando de la clase de facturación y sobrescribiendo el método de cálculo completo en la subclase.',
-        en: 'By inheriting from the billing class and overriding the whole calculation method in the subclass.',
+        es: 'Heredando de la clase de facturación y reescribiendo todo el cálculo.',
+        en: 'By inheriting from the billing class and rewriting the whole calculation.',
       },
     ],
     explanation: {
-      es: 'OCP busca que el comportamiento se extienda agregando código nuevo, no editando el existente; el punto de extensión suele ser polimorfismo (Strategy) más registro de implementaciones. Tocar el switch funciona pero reabre una clase estable en cada cambio, y heredar para reemplazar el cálculo entero duplica lógica y acopla la subclase a los internos de la base.',
-      en: 'OCP aims for behaviour to be extended by adding new code rather than editing existing code; the extension point is usually polymorphism (Strategy) plus a registry of implementations. Editing the switch works but reopens a stable class on every change, and subclassing to replace the whole calculation duplicates logic and couples the subclass to base internals.',
+      es: 'El switch funciona, pero cada descuento nuevo vuelve a editar una clase estable. El punto de extensión suele ser una estrategia.',
+      en: 'The switch works, but every new discount edits a stable class again. The extension point is usually a strategy.',
     },
   },
   {
     id: 'th-oop-05',
     topic: 'SOLID',
     prompt: {
-      es: '¿Cómo define Robert C. Martin la "única responsabilidad" del SRP?',
-      en: 'How does Robert C. Martin define the "single responsibility" in SRP?',
+      es: '¿Qué significa una sola responsabilidad en el SRP?',
+      en: 'What does a single responsibility mean in the SRP?',
     },
     answer: {
-      es: 'Una sola razón para cambiar, determinada por un único actor o grupo de interesados.',
-      en: 'A single reason to change, determined by one actor or group of stakeholders.',
+      es: 'Una sola razón para cambiar, normalmente un solo actor de negocio que pide cambios sobre esa clase.',
+      en: 'One reason to change, usually one business actor who asks for changes to that class.',
     },
     distractors: [
       {
-        es: 'Una sola tarea funcional, por lo que la clase no debería exponer más de un método público.',
-        en: 'A single functional task, so the class should not expose more than one public method.',
+        es: 'Un solo método público, para que la clase haga una sola tarea.',
+        en: 'One public method, so the class does a single task.',
       },
       {
-        es: 'Un solo nivel de abstracción, por lo que la clase no debería tener más de una dependencia inyectada.',
-        en: 'A single abstraction level, so the class should not have more than one injected dependency.',
+        es: 'Una sola dependencia inyectada.',
+        en: 'A single injected dependency.',
       },
     ],
     explanation: {
-      es: 'La formulación moderna es "un módulo debe tener una sola razón para cambiar" y esa razón se rastrea hasta un actor: si Finanzas y Operaciones pueden pedir cambios sobre la misma clase, hay dos responsabilidades. Contar métodos públicos o dependencias es una heurística de olor a código, no la definición.',
-      en: 'The modern formulation is "a module should have one reason to change", and that reason traces back to an actor: if Finance and Operations can both request changes to the same class, there are two responsibilities. Counting public methods or dependencies is a code-smell heuristic, not the definition.',
+      es: 'Contar métodos no define el principio. Si finanzas y marketing cambian la misma clase, hay dos responsabilidades.',
+      en: 'Counting methods does not define the principle. If finance and marketing both change the same class, there are two responsibilities.',
     },
   },
   {
     id: 'th-oop-06',
     topic: 'POO',
     prompt: {
-      es: '¿Por qué se recomienda preferir composición sobre herencia?',
-      en: 'Why is composition generally preferred over inheritance?',
+      es: '¿Por qué se suele preferir composición a herencia?',
+      en: 'Why is composition usually preferred over inheritance?',
     },
     answer: {
-      es: 'Porque la herencia acopla la subclase a los detalles internos de la base y rompe el encapsulamiento (clase base frágil).',
-      en: 'Because inheritance couples the subclass to base internals and breaks encapsulation (fragile base class).',
+      es: 'Porque la herencia ata la subclase a los detalles de la base y un cambio interno puede romperla. La composición deja cambiar el colaborador.',
+      en: 'Because inheritance ties the subclass to base details and an internal change can break it. Composition lets you swap the collaborator.',
     },
     distractors: [
       {
-        es: 'Porque la herencia añade una indirección de vtable que degrada el rendimiento en llamadas calientes.',
-        en: 'Because inheritance adds a vtable indirection that degrades performance in hot call paths.',
+        es: 'Porque la herencia es más lenta por el despacho virtual.',
+        en: 'Because inheritance is slower due to virtual dispatch.',
       },
       {
-        es: 'Porque la composición permite herencia múltiple de estado, algo que Java prohíbe entre clases.',
-        en: 'Because composition allows multiple inheritance of state, which Java forbids between classes.',
+        es: 'Porque la composición permite heredar estado de varias clases.',
+        en: 'Because composition lets you inherit state from several classes.',
       },
     ],
     explanation: {
-      es: 'El argumento es de diseño: la subclase depende de cómo la base llama a sus propios métodos, así que un cambio interno aparentemente inocuo puede romperla, y la relación se fija en tiempo de compilación. La composición permite cambiar el colaborador en ejecución. El costo de despacho virtual es despreciable y la herencia múltiple de estado no es el motivo del consejo.',
-      en: 'The argument is about design: a subclass depends on how the base calls its own methods, so an apparently harmless internal change can break it, and the relationship is fixed at compile time. Composition lets you swap the collaborator at runtime. Virtual dispatch cost is negligible, and multiple inheritance of state is not the reason behind the advice.',
+      es: 'El problema se llama clase base frágil: la subclase depende de cómo la base se llama a sí misma.',
+      en: 'The problem is called the fragile base class: the subclass depends on how the base calls itself.',
     },
   },
   {
@@ -165,100 +165,100 @@ export const THEORIC_OOP_SOLID_QUESTIONS: QuestDevQuestion[] = [
       en: 'What is the difference between abstraction and encapsulation?',
     },
     answer: {
-      es: 'La abstracción define qué expone un tipo; el encapsulamiento protege cómo lo implementa.',
-      en: 'Abstraction defines what a type exposes; encapsulation protects how it is implemented.',
+      es: 'La abstracción es el contrato que el cliente ve. El encapsulamiento esconde cómo se guarda y se calcula ese comportamiento.',
+      en: 'Abstraction is the contract the client sees. Encapsulation hides how that behaviour is stored and computed.',
     },
     distractors: [
       {
-        es: 'La abstracción se consigue con interfaces y el encapsulamiento con clases abstractas.',
-        en: 'Abstraction is achieved with interfaces and encapsulation with abstract classes.',
+        es: 'La abstracción se hace con interfaces y el encapsulamiento con clases abstractas.',
+        en: 'Abstraction is done with interfaces and encapsulation with abstract classes.',
       },
       {
-        es: 'El encapsulamiento oculta la clase completa al cliente y la abstracción oculta solo sus atributos.',
-        en: 'Encapsulation hides the whole class from the client and abstraction hides only its attributes.',
+        es: 'El encapsulamiento oculta la clase entera y la abstracción solo oculta los campos.',
+        en: 'Encapsulation hides the whole class and abstraction only hides the fields.',
       },
     ],
     explanation: {
-      es: 'Son ejes complementarios: la abstracción es el modelo relevante que se ofrece al cliente (el contrato) y el encapsulamiento es el mecanismo que impide acceder al estado y a los detalles internos. Ambas se logran con múltiples herramientas del lenguaje; asociarlas a una construcción concreta confunde el fin con el medio.',
-      en: 'They are complementary axes: abstraction is the relevant model offered to the client (the contract), while encapsulation is the mechanism that prevents access to internal state and details. Both are achieved with several language tools; tying them to one construct confuses the goal with the means.',
+      es: 'Son ideas distintas: una dice qué ofreces y la otra impide tocar los detalles internos.',
+      en: 'They are different ideas: one says what you offer and the other stops callers from touching internal details.',
     },
   },
   {
     id: 'th-oop-08',
     topic: 'Polimorfismo',
     prompt: {
-      es: 'En Java, ¿qué se resuelve en tiempo de compilación y qué en tiempo de ejecución?',
-      en: 'In Java, what is resolved at compile time and what at runtime?',
+      es: '¿Qué se decide al compilar y qué en ejecución: la sobrecarga o la sobrescritura?',
+      en: 'What is decided at compile time and what at runtime: overloading or overriding?',
     },
     answer: {
-      es: 'La sobrecarga se resuelve por el tipo estático de los argumentos; la sobrescritura, por el tipo real del objeto.',
-      en: 'Overloading is resolved by the static type of the arguments; overriding by the actual type of the object.',
+      es: 'La sobrecarga se elige por los tipos declarados de los argumentos. La sobrescritura usa el tipo real del objeto.',
+      en: 'Overloading is chosen from the declared types of the arguments. Overriding uses the real type of the object.',
     },
     distractors: [
       {
-        es: 'Ambas se resuelven en ejecución, porque la JVM conoce los tipos reales de los argumentos y del receptor.',
-        en: 'Both are resolved at runtime, because the JVM knows the actual types of the arguments and the receiver.',
+        es: 'Las dos se resuelven en ejecución, porque la máquina virtual conoce los tipos reales.',
+        en: 'Both are resolved at runtime, because the virtual machine knows the real types.',
       },
       {
-        es: 'La sobrecarga se resuelve en ejecución por los tipos reales y la sobrescritura en compilación por la jerarquía declarada.',
-        en: 'Overloading is resolved at runtime by actual types and overriding at compile time by the declared hierarchy.',
+        es: 'La sobrecarga usa el tipo real y la sobrescritura el tipo declarado.',
+        en: 'Overloading uses the real type and overriding the declared type.',
       },
     ],
     explanation: {
-      es: 'El compilador elige la firma del método sobrecargado mirando los tipos declarados, por eso pasar una referencia Object que contiene un String invoca la sobrecarga de Object. La sobrescritura usa despacho dinámico: la JVM busca la implementación en la clase concreta de la instancia.',
-      en: 'The compiler picks the overloaded signature by looking at declared types, which is why passing an Object reference holding a String invokes the Object overload. Overriding uses dynamic dispatch: the JVM looks up the implementation in the instance concrete class.',
+      es: 'Por eso un objeto String guardado en una variable Object llama a la sobrecarga de Object, no a la de String.',
+      en: 'That is why a String stored in an Object variable calls the Object overload, not the String one.',
     },
   },
   {
     id: 'th-oop-09',
     topic: 'Acoplamiento',
     prompt: {
-      es: '¿Qué establece la Ley de Demeter?',
-      en: 'What does the Law of Demeter state?',
+      es: '¿Qué dice la ley de Demeter en una frase práctica?',
+      en: 'What does the Law of Demeter say in one practical sentence?',
     },
     answer: {
-      es: 'Un método solo debería usar sus propios campos, sus parámetros, los objetos que crea y a sí mismo.',
-      en: 'A method should only use its own fields, its parameters, the objects it creates and itself.',
+      es: 'Un método solo debería hablar con sus propios datos, sus parámetros, los objetos que crea y consigo mismo.',
+      en: 'A method should only talk to its own data, its parameters, the objects it creates and itself.',
     },
     distractors: [
       {
-        es: 'Prohíbe encadenar llamadas, por eso las APIs fluidas tipo builder la violan por definición.',
-        en: 'It forbids chained calls, which is why fluent builder-style APIs violate it by definition.',
+        es: 'Prohíbe encadenar llamadas, así que un builder que devuelve this la rompe.',
+        en: 'It forbids chained calls, so a builder that returns this breaks it.',
       },
       {
-        es: 'Exige que ninguna jerarquía tenga más de dos niveles de herencia para limitar el acoplamiento.',
-        en: 'It requires no hierarchy to have more than two inheritance levels in order to limit coupling.',
+        es: 'Limita la herencia a dos niveles.',
+        en: 'It limits inheritance to two levels.',
       },
     ],
     explanation: {
-      es: 'Es el "principio del menor conocimiento": hablar solo con amigos inmediatos. Lo que se evita es el tren de choques tipo pedido.getCliente().getDireccion().getCiudad(), porque expone la estructura interna. Un builder que retorna this no la viola: siempre se conversa con el mismo objeto.',
-      en: 'It is the "principle of least knowledge": only talk to immediate friends. What it avoids is train wrecks like order.getCustomer().getAddress().getCity(), because they expose internal structure. A builder returning this does not violate it: you keep talking to the same object.',
+      es: 'Lo que se evita es el tren de getters que revela la estructura interna de otros objetos.',
+      en: 'What you avoid is the train of getters that reveals the internal structure of other objects.',
     },
   },
   {
     id: 'th-oop-10',
-    topic: 'Métricas de diseño',
+    topic: 'Diseño',
     prompt: {
-      es: 'Un paquete tiene acoplamiento aferente alto (muchos dependen de él) y eferente bajo. ¿Qué implica según las métricas de estabilidad?',
-      en: 'A package has high afferent coupling (many depend on it) and low efferent coupling. What does that imply per stability metrics?',
+      es: '¿Qué conviene hacer con un paquete que usan muchos módulos y que casi no depende de nadie?',
+      en: 'Many modules use a package and it depends on almost nobody. What should you do with it?',
     },
     answer: {
-      es: 'Es un paquete estable, así que debería ser abstracto para poder extenderse sin modificarse.',
-      en: 'It is a stable package, so it should be abstract in order to be extended without being modified.',
+      es: 'Tratarlo como estable y dejarlo abstracto, para poder extender el sistema sin modificarlo.',
+      en: 'Treat it as stable and keep it abstract, so the system can be extended without modifying it.',
     },
     distractors: [
       {
-        es: 'Es un paquete inestable, así que conviene refactorizarlo para que dependa de más abstracciones externas.',
-        en: 'It is an unstable package, so it should be refactored to depend on more external abstractions.',
+        es: 'Es inestable, así que hay que hacer que dependa de más módulos.',
+        en: 'It is unstable, so it should be made to depend on more modules.',
       },
       {
-        es: 'Es un paquete aislado y candidato a eliminarse, porque no colabora con otros módulos del sistema.',
-        en: 'It is an isolated package and a removal candidate, because it does not collaborate with other modules.',
+        es: 'Está aislado y es candidato a borrarse.',
+        en: 'It is isolated and a candidate for deletion.',
       },
     ],
     explanation: {
-      es: 'La inestabilidad se calcula como I = Ce / (Ca + Ce): con Ca alto y Ce bajo, I tiende a 0, es decir máxima estabilidad porque cambiarlo afecta a muchos. El Principio de Abstracciones Estables dice que esos paquetes deben ser abstractos (interfaces, contratos) para que el sistema evolucione sin modificarlos.',
-      en: 'Instability is computed as I = Ce / (Ca + Ce): with high Ca and low Ce, I tends to 0, meaning maximum stability because changing it affects many modules. The Stable Abstractions Principle says such packages should be abstract (interfaces, contracts) so the system can evolve without modifying them.',
+      es: 'Si muchos dependen de él, cambiarlo es caro. Las interfaces y los contratos encajan mejor ahí que las clases concretas.',
+      en: 'If many modules depend on it, changing it is expensive. Interfaces and contracts fit there better than concrete classes.',
     },
   },
 ];

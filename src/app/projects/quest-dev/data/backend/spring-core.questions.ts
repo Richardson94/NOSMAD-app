@@ -3,236 +3,236 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const BACKEND_SPRING_CORE_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'be-spring-01',
-    topic: 'Inyección de dependencias',
+    topic: 'Inyección',
     prompt: {
-      es: '¿Por qué se recomienda la inyección por constructor sobre la inyección por campo con @Autowired?',
-      en: 'Why is constructor injection recommended over field injection with @Autowired?',
+      es: '¿Por qué se prefiere inyectar por constructor y no por campo con @Autowired?',
+      en: 'Why is constructor injection preferred over field injection with @Autowired?',
     },
     answer: {
-      es: 'Permite campos final, deja explícitas las dependencias y facilita instanciar la clase en pruebas sin el contenedor.',
-      en: 'It allows final fields, makes dependencies explicit and lets you instantiate the class in tests without the container.',
+      es: 'Porque las dependencias quedan en el constructor, pueden ser final y la clase se instancia en un test sin levantar Spring.',
+      en: 'Because the dependencies are visible on the constructor, they can be final and the class can be created in a test without starting Spring.',
     },
     distractors: [
       {
-        es: 'Evita las dependencias circulares, porque Spring las resuelve creando un proxy perezoso del colaborador.',
-        en: 'It avoids circular dependencies, because Spring resolves them by creating a lazy proxy of the collaborator.',
+        es: 'Porque evita los ciclos. Spring crea un proxy perezoso y el campo no puede hacerlo.',
+        en: 'Because it avoids cycles. Spring creates a lazy proxy and a field cannot do that.',
       },
       {
-        es: 'Mejora el arranque, ya que Spring puede instanciar los beans en paralelo al conocer el grafo completo.',
-        en: 'It improves startup, since Spring can instantiate beans in parallel once it knows the whole graph.',
+        es: 'Porque Spring arranca más rápido al conocer el grafo y crear los beans en paralelo.',
+        en: 'Because Spring starts faster once it knows the graph and creates the beans in parallel.',
       },
     ],
     explanation: {
-      es: 'El beneficio es de diseño y testabilidad: un constructor con ocho parámetros grita que la clase hace demasiado, algo que la inyección por campo oculta. Respecto a los ciclos ocurre lo contrario: con constructor Spring falla al arrancar en lugar de tolerarlos, lo que es deseable pero no una ventaja de conveniencia.',
-      en: 'The benefit is design and testability: a constructor with eight parameters screams that the class does too much, something field injection hides. Regarding cycles it is the opposite: with constructor injection Spring fails at startup instead of tolerating them, which is desirable but not a convenience advantage.',
+      es: 'Un constructor con muchos parámetros avisa de que la clase hace demasiado. Con constructor, un ciclo falla al arrancar en lugar de esconderse.',
+      en: 'A constructor with many parameters warns you that the class does too much. With a constructor, a cycle fails at startup instead of hiding.',
     },
   },
   {
     id: 'be-spring-02',
     topic: 'Transacciones',
     prompt: {
-      es: 'Un método público llama a otro método @Transactional de la misma clase. ¿Qué ocurre con la transacción?',
-      en: 'A public method calls another @Transactional method of the same class. What happens to the transaction?',
+      es: '¿Qué pasa si un método llama a otro @Transactional de la misma clase?',
+      en: 'What happens if a method calls another @Transactional method of the same class?',
     },
     answer: {
-      es: 'No se abre, porque la llamada interna no pasa por el proxy que implementa el aspecto.',
-      en: 'It is not opened, because the internal call does not go through the proxy implementing the aspect.',
+      es: 'La anotación no se aplica. La llamada interna no pasa por el proxy de Spring, que es quien abre la transacción.',
+      en: 'The annotation is not applied. The internal call does not go through the Spring proxy, which is what opens the transaction.',
     },
     distractors: [
       {
-        es: 'Se abre y se une a la transacción del método llamador si existe, según la propagación REQUIRED.',
-        en: 'It is opened and joins the caller transaction if one exists, following REQUIRED propagation.',
+        es: 'Se une a la transacción del llamador, porque la propagación por defecto es unirse.',
+        en: 'It joins the caller transaction, because the default propagation is to join.',
       },
       {
-        es: 'Se abre una transacción nueva e independiente, porque la anotación se evalúa en cada invocación del método.',
-        en: 'A new independent transaction is opened, because the annotation is evaluated on every method invocation.',
+        es: 'Se abre una transacción nueva, porque Spring lee la anotación en cada llamada.',
+        en: 'A new transaction is opened, because Spring reads the annotation on every call.',
       },
     ],
     explanation: {
-      es: 'El AOP de Spring por defecto es un proxy que envuelve al bean: una llamada con this va directa al método real y la anotación se ignora silenciosamente, uno de los errores más frecuentes en entrevistas. Se resuelve extrayendo el método a otro bean, autoinyectándose o usando AspectJ.',
-      en: 'Spring AOP by default is a proxy wrapping the bean: a this call goes straight to the real method and the annotation is silently ignored, one of the most frequent interview pitfalls. It is fixed by extracting the method to another bean, self-injecting or using AspectJ.',
+      es: 'Mueve el método a otro bean. this.metodo() salta el aspecto, igual que con @Async.',
+      en: 'Move the method to another bean. this.method() skips the aspect, the same as with @Async.',
     },
   },
   {
     id: 'be-spring-03',
     topic: 'Transacciones',
     prompt: {
-      es: 'Por defecto, ¿ante qué excepciones hace rollback @Transactional?',
-      en: 'By default, which exceptions cause @Transactional to roll back?',
+      es: '¿Ante qué excepciones hace rollback @Transactional por defecto?',
+      en: 'Which exceptions make @Transactional roll back by default?',
     },
     answer: {
-      es: 'Solo ante RuntimeException y Error; las excepciones comprobadas confirman la transacción.',
-      en: 'Only RuntimeException and Error; checked exceptions commit the transaction.',
+      es: 'Ante RuntimeException y Error. Una excepción checked confirma la transacción, salvo que indiques rollbackFor.',
+      en: 'On RuntimeException and Error. A checked exception commits the transaction, unless you set rollbackFor.',
     },
     distractors: [
       {
-        es: 'Ante cualquier excepción que salga del método, comprobada o no, salvo que se indique noRollbackFor.',
-        en: 'On any exception leaving the method, checked or not, unless noRollbackFor is specified.',
+        es: 'Ante cualquier excepción que salga del método, checked o no.',
+        en: 'On any exception that leaves the method, checked or not.',
       },
       {
-        es: 'Solo ante las excepciones de la jerarquía DataAccessException, porque son las que indican fallo de persistencia.',
-        en: 'Only on exceptions from the DataAccessException hierarchy, since those signal persistence failures.',
+        es: 'Solo ante fallos de base de datos. Una RuntimeException de negocio hace commit.',
+        en: 'Only on database failures. A business RuntimeException commits.',
       },
     ],
     explanation: {
-      es: 'Es un comportamiento contraintuitivo: lanzar una IOException comprobada deja los cambios confirmados a menos que se declare rollbackFor. La razón histórica es que las comprobadas se consideran parte del contrato del método, no fallos inesperados.',
-      en: 'This is counterintuitive behaviour: throwing a checked IOException leaves the changes committed unless rollbackFor is declared. The historical reason is that checked exceptions are considered part of the method contract rather than unexpected failures.',
+      es: 'Una IOException checked deja los cambios guardados si no pones rollbackFor. Es el olvido típico.',
+      en: 'A checked IOException leaves the changes saved if you do not set rollbackFor. It is the typical miss.',
     },
   },
   {
     id: 'be-spring-04',
     topic: 'Ámbitos',
     prompt: {
-      es: '¿Qué problema aparece al inyectar un bean de ámbito prototype en un singleton?',
-      en: 'What problem arises when injecting a prototype-scoped bean into a singleton?',
+      es: '¿Qué problema hay al inyectar un bean prototype dentro de un singleton?',
+      en: 'What problem appears when you inject a prototype bean into a singleton?',
     },
     answer: {
-      es: 'Se inyecta una sola instancia al crear el singleton, así que en la práctica deja de ser prototype.',
-      en: 'A single instance is injected when the singleton is created, so in practice it stops behaving as a prototype.',
+      es: 'Spring inyecta una sola instancia al crear el singleton. A partir de ahí ya no es un objeto nuevo en cada uso.',
+      en: 'Spring injects one instance when it creates the singleton. From then on it is no longer a new object on each use.',
     },
     distractors: [
       {
-        es: 'Spring lanza un error de configuración al arrancar, porque los ámbitos son incompatibles entre sí.',
-        en: 'Spring throws a configuration error at startup, because the scopes are incompatible with each other.',
+        es: 'Spring no arranca, porque esos dos ámbitos no se pueden mezclar.',
+        en: 'Spring does not start, because those two scopes cannot be mixed.',
       },
       {
-        es: 'Se crea una instancia nueva en cada llamada, lo que degrada el rendimiento del singleton contenedor.',
-        en: 'A new instance is created on every call, which degrades the performance of the containing singleton.',
+        es: 'Se crea un prototype nuevo en cada llamada al método del singleton.',
+        en: 'A new prototype is created on every call to the singleton method.',
       },
     ],
     explanation: {
-      es: 'La inyección ocurre una única vez, durante la construcción del singleton, y esa referencia se conserva para siempre: el bug es silencioso y suele descubrirse cuando el estado se comparte entre peticiones. Para obtener una instancia nueva por uso se recurre a ObjectProvider, un lookup method o un proxy de ámbito.',
-      en: 'Injection happens only once, while building the singleton, and that reference is kept forever: the bug is silent and usually surfaces when state leaks between requests. To get a fresh instance per use you rely on ObjectProvider, a lookup method or a scoped proxy.',
+      es: 'El fallo es silencioso: el estado se comparte entre peticiones. Pide una instancia con ObjectProvider cuando de verdad la necesites.',
+      en: 'The failure is silent: the state is shared across requests. Ask ObjectProvider for an instance when you really need one.',
     },
   },
   {
     id: 'be-spring-05',
     topic: 'Configuración',
     prompt: {
-      es: '¿Qué hace la anotación @SpringBootApplication?',
-      en: 'What does the @SpringBootApplication annotation do?',
+      es: '¿Qué hace @SpringBootApplication?',
+      en: 'What does @SpringBootApplication do?',
     },
     answer: {
-      es: 'Combina @Configuration, @EnableAutoConfiguration y @ComponentScan en una sola anotación.',
-      en: 'It combines @Configuration, @EnableAutoConfiguration and @ComponentScan into a single annotation.',
+      es: 'Marca la clase de arranque: es configuración, activa la autoconfiguración y escanea componentes desde su paquete.',
+      en: 'It marks the startup class: it is configuration, it turns on auto-configuration and it scans components from its package.',
     },
     distractors: [
       {
-        es: 'Arranca el contexto e inicia el servidor embebido, sustituyendo la llamada a SpringApplication.run.',
-        en: 'It starts the context and the embedded server, replacing the SpringApplication.run call.',
+        es: 'Sustituye a SpringApplication.run y levanta el servidor por sí sola.',
+        en: 'It replaces SpringApplication.run and starts the server by itself.',
       },
       {
-        es: 'Registra los beans de la aplicación y expone los endpoints de Actuator para monitoreo.',
-        en: 'It registers the application beans and exposes the Actuator endpoints for monitoring.',
+        es: 'Registra Actuator y abre los endpoints de salud sin más dependencias.',
+        en: 'It registers Actuator and opens the health endpoints with no extra dependencies.',
       },
     ],
     explanation: {
-      es: 'Es una anotación de conveniencia que solo configura: el escaneo arranca en su paquete (de ahí la importancia de ubicarla en la raíz) y habilita la autoconfiguración por classpath. Arrancar el contexto sigue siendo trabajo de SpringApplication.run, y Actuator requiere su propia dependencia.',
-      en: 'It is a convenience annotation that only configures: scanning starts at its package (hence the importance of placing it at the root) and it enables classpath-based auto-configuration. Starting the context is still SpringApplication.run job, and Actuator requires its own dependency.',
+      es: 'Ponla en el paquete raíz. Si está en un subpaquete, el escaneo no ve el resto de la aplicación.',
+      en: 'Put it in the root package. If it sits in a subpackage, the scan does not see the rest of the application.',
     },
   },
   {
     id: 'be-spring-06',
-    topic: 'Perfiles y propiedades',
+    topic: 'Configuración',
     prompt: {
-      es: '¿Qué ventaja tiene @ConfigurationProperties frente a varios @Value?',
-      en: 'What advantage does @ConfigurationProperties have over multiple @Value annotations?',
+      es: '¿Qué ventaja tiene @ConfigurationProperties frente a muchos @Value?',
+      en: 'What advantage does @ConfigurationProperties have over many @Value annotations?',
     },
     answer: {
-      es: 'Agrupa y valida la configuración con tipado fuerte y soporta estructuras anidadas y listas.',
-      en: 'It groups and validates configuration with strong typing and supports nested structures and lists.',
+      es: 'Agrupa la configuración en un objeto con tipo, listas y campos anidados, y se puede validar. Varios @Value dejan los datos sueltos.',
+      en: 'It groups configuration in a typed object, with lists and nested fields, and it can be validated. Several @Value annotations leave the data scattered.',
     },
     distractors: [
       {
-        es: 'Permite recargar los valores en caliente cuando cambia el archivo de propiedades, sin reiniciar la aplicación.',
-        en: 'It allows hot reloading of values when the properties file changes, without restarting the application.',
+        es: 'Recarga el archivo en caliente sin reiniciar. @Value no puede hacerlo.',
+        en: 'It reloads the file on the fly without a restart. @Value cannot do that.',
       },
       {
-        es: 'Resuelve expresiones SpEL, algo que @Value no admite al leer propiedades del entorno.',
-        en: 'It resolves SpEL expressions, which @Value does not support when reading environment properties.',
+        es: 'Resuelve expresiones. @Value solo lee texto literal del archivo.',
+        en: 'It evaluates expressions. @Value only reads literal text from the file.',
       },
     ],
     explanation: {
-      es: 'Su valor está en tratar la configuración como un objeto de dominio: un POJO con prefijo, validable con @Validated y fácil de inyectar completo. La recarga en caliente necesita @RefreshScope de Spring Cloud, y el soporte de SpEL es justamente una característica de @Value.',
-      en: 'Its value is treating configuration as a domain object: a POJO with a prefix, validatable with @Validated and easy to inject as a whole. Hot reloading needs Spring Cloud @RefreshScope, and SpEL support is precisely a @Value feature.',
+      es: 'La recarga en caliente es otra pieza. Las expresiones son justo una capacidad de @Value, no de este objeto de propiedades.',
+      en: 'Hot reload is a different piece. Expressions are a capability of @Value, not of this properties object.',
     },
   },
   {
     id: 'be-spring-07',
     topic: 'AOP',
     prompt: {
-      es: '¿Cómo implementa Spring AOP los aspectos sobre un bean?',
-      en: 'How does Spring AOP implement aspects on a bean?',
+      es: '¿Cómo aplica Spring un aspecto como @Transactional?',
+      en: 'How does Spring apply an aspect such as @Transactional?',
     },
     answer: {
-      es: 'Creando un proxy dinámico (por interfaz o con CGLIB) que envuelve al bean y aplica los interceptores.',
-      en: 'By creating a dynamic proxy (interface-based or CGLIB) that wraps the bean and applies the interceptors.',
+      es: 'Con un proxy alrededor del bean. La llamada tiene que entrar por ese proxy. Un método private, final o una llamada interna no pasa por el aspecto.',
+      en: 'With a proxy around the bean. The call has to enter through that proxy. A private or final method, or an internal call, does not go through the aspect.',
     },
     distractors: [
       {
-        es: 'Modificando el bytecode de la clase durante la compilación mediante el tejedor de AspectJ.',
-        en: 'By modifying the class bytecode at compile time through the AspectJ weaver.',
+        es: 'Reescribiendo el bytecode de la clase al compilar, siempre, sin proxy.',
+        en: 'By rewriting the class bytecode at compile time, always, with no proxy.',
       },
       {
-        es: 'Registrando un listener en el contexto que intercepta las invocaciones a los métodos anotados.',
-        en: 'By registering a context listener that intercepts invocations of the annotated methods.',
+        es: 'Con un listener que intercepta cualquier método anotado, también los privados.',
+        en: 'With a listener that intercepts every annotated method, including private ones.',
       },
     ],
     explanation: {
-      es: 'El proxy explica de golpe varias reglas prácticas: los métodos privados o final no se pueden interceptar y las llamadas internas con this omiten el aspecto. El tejido de bytecode es AspectJ, una alternativa que sí resuelve esos límites pero requiere configuración adicional.',
-      en: 'The proxy explains several practical rules at once: private or final methods cannot be intercepted and internal this calls bypass the aspect. Bytecode weaving is AspectJ, an alternative that does solve those limits but requires extra setup.',
+      es: 'El proxy explica las reglas prácticas de @Transactional y de @Async. El tejido de bytecode existe, pero no es el camino por defecto.',
+      en: 'The proxy explains the practical rules of @Transactional and of @Async. Bytecode weaving exists, but it is not the default path.',
     },
   },
   {
     id: 'be-spring-08',
     topic: 'Beans',
     prompt: {
-      es: '¿Cuál es la diferencia entre @Component y @Bean?',
-      en: 'What is the difference between @Component and @Bean?',
+      es: '¿Qué es un bean de Spring y en qué se diferencian @Component y @Bean?',
+      en: 'What is a Spring bean, and how do @Component and @Bean differ?',
     },
     answer: {
-      es: '@Component marca una clase propia para que el escaneo la registre; @Bean registra el objeto que devuelve un método de configuración.',
-      en: '@Component marks your own class for component scanning; @Bean registers the object returned by a configuration method.',
+      es: 'Un bean es un objeto que Spring crea y conecta. @Component marca una clase tuya para el escaneo. @Bean es un método de configuración que devuelve el objeto, útil para clases de terceros.',
+      en: 'A bean is an object Spring creates and wires. @Component marks your own class for scanning. @Bean is a configuration method that returns the object, useful for third-party classes.',
     },
     distractors: [
       {
-        es: '@Component crea un singleton y @Bean crea una instancia nueva en cada inyección del método productor.',
-        en: '@Component creates a singleton while @Bean creates a new instance on every injection of the producer method.',
+        es: '@Component es un singleton y @Bean crea una instancia nueva en cada inyección.',
+        en: '@Component is a singleton and @Bean creates a new instance on every injection.',
       },
       {
-        es: '@Component se resuelve en tiempo de compilación y @Bean se resuelve de forma perezosa al primer uso.',
-        en: '@Component is resolved at compile time and @Bean is resolved lazily on first use.',
+        es: 'Son alias. Los dos solo funcionan si la clase tiene un constructor vacío.',
+        en: 'They are aliases. Both work only if the class has an empty constructor.',
       },
     ],
     explanation: {
-      es: 'La diferencia es quién construye el objeto: con @Bean el desarrollador controla la creación, lo que es imprescindible para clases de terceros que no se pueden anotar. Ambos son singleton por defecto (Spring intercepta el método @Bean para no duplicar instancias) y ambos se registran al arrancar el contexto.',
-      en: 'The difference is who builds the object: with @Bean the developer controls creation, which is essential for third-party classes you cannot annotate. Both are singletons by default (Spring intercepts the @Bean method to avoid duplicate instances) and both are registered when the context starts.',
+      es: 'Por defecto hay una instancia. @Autowired pide a Spring que te pase ese bean. En un único constructor la anotación ni hace falta.',
+      en: 'By default there is one instance. @Autowired asks Spring to pass you that bean. On a single constructor the annotation is not even required.',
     },
   },
   {
     id: 'be-spring-09',
-    topic: 'Programación asíncrona',
+    topic: 'Async',
     prompt: {
-      es: '¿Qué condición debe cumplirse para que un método @Async se ejecute realmente en otro hilo?',
-      en: 'What condition must be met for an @Async method to actually run on another thread?',
+      es: '¿Qué hace falta para que @Async corra de verdad en otro hilo?',
+      en: 'What is required for @Async to actually run on another thread?',
     },
     answer: {
-      es: 'Que se habilite con @EnableAsync y que la llamada venga de otro bean, atravesando el proxy.',
-      en: 'That it is enabled with @EnableAsync and that the call comes from another bean, going through the proxy.',
+      es: 'Activarlo con @EnableAsync y llamar al método desde otro bean, para que la llamada pase por el proxy.',
+      en: 'Turn it on with @EnableAsync and call the method from another bean, so the call goes through the proxy.',
     },
     distractors: [
       {
-        es: 'Que el método devuelva CompletableFuture o Future, porque void no puede ejecutarse de forma asíncrona.',
-        en: 'That the method returns CompletableFuture or Future, because void cannot be executed asynchronously.',
+        es: 'Que el método devuelva un Future. Un método void no puede ser async.',
+        en: 'That the method returns a Future. A void method cannot be async.',
       },
       {
-        es: 'Que se configure un TaskExecutor propio, ya que sin él Spring ejecuta el método de forma sincrónica.',
-        en: 'That a custom TaskExecutor is configured, since without one Spring runs the method synchronously.',
+        es: 'Un executor propio. Sin él, Spring ejecuta el método en el hilo de la llamada.',
+        en: 'A custom executor. Without it, Spring runs the method on the calling thread.',
       },
     ],
     explanation: {
-      es: 'Comparte el talón de Aquiles de @Transactional: sin @EnableAsync o con una llamada interna, la anotación no hace nada. Un método void es válido (solo que no se puede observar el resultado ni la excepción) y sin executor propio Spring usa uno por defecto, pero sigue siendo asíncrono.',
-      en: 'It shares the Achilles heel of @Transactional: without @EnableAsync or with an internal call, the annotation does nothing. A void method is valid (you just cannot observe the result or the exception) and without a custom executor Spring uses a default one, still asynchronously.',
+      es: 'Sin @EnableAsync o con una llamada interna, la anotación no hace nada. Un void es válido: solo que no ves el error con facilidad.',
+      en: 'Without @EnableAsync or with an internal call, the annotation does nothing. A void method is valid: you just do not see the error easily.',
     },
   },
 ];

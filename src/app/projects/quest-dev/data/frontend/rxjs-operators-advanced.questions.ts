@@ -3,522 +3,522 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const FRONTEND_RXJS_OPERATORS_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'fe-rxop-01',
-    topic: 'Operadores RxJS',
+    topic: 'exhaustMap',
     prompt: {
-      es: 'Un botón Guardar recibe dobles clics y no quieres enviar una segunda petición mientras la primera sigue en vuelo. ¿Qué operador de aplanado corresponde?',
-      en: 'A Save button receives double clicks and you do not want to send a second request while the first one is still in flight. Which flattening operator fits?',
+      es: '¿Qué operador usas si un boton Guardar no debe lanzar otra peticion mientras la primera sigue en curso?',
+      en: 'Which operator do you use if a Save button must not fire another request while the first one is still running?',
     },
     answer: {
-      es: 'exhaustMap, porque ignora las emisiones nuevas hasta que el observable interno en curso completa.',
-      en: 'exhaustMap, because it ignores new emissions until the current inner observable completes.',
+      es: 'exhaustMap. Ignora los clics nuevos hasta que la peticion actual termina.',
+      en: 'exhaustMap. It ignores new clicks until the current request finishes.',
     },
     distractors: [
       {
-        es: 'switchMap, porque cancela la petición anterior y garantiza que solo el último clic llegue al servidor.',
-        en: 'switchMap, because it cancels the previous request and guarantees that only the last click reaches the server.',
+        es: 'switchMap, porque cancela el guardado anterior y envia solo el ultimo clic.',
+        en: 'switchMap, because it cancels the previous save and sends only the last click.',
       },
       {
-        es: 'throttleTime, porque bloquea los clics siguientes durante una ventana de tiempo fija tras el primero.',
-        en: 'throttleTime, because it blocks the following clicks during a fixed time window after the first one.',
+        es: 'debounceTime, porque espera un segundo fijo y eso equivale a esperar al servidor.',
+        en: 'debounceTime, because it waits a fixed second and that is the same as waiting for the server.',
       },
     ],
     explanation: {
-      es: 'exhaustMap es el único que se apoya en la duración real de la petición: mientras el interno vive, los clics se descartan. switchMap cancelaría una escritura ya enviada al backend, lo peor posible en un guardado, y throttleTime adivina un tiempo fijo que no tiene relación con lo que tarde el servidor.',
-      en: 'exhaustMap is the only one that relies on the real duration of the request: while the inner observable is alive, clicks are dropped. switchMap would cancel a write already sent to the backend, the worst possible outcome for a save, and throttleTime guesses a fixed time unrelated to how long the server takes.',
+      es: 'Cancelar un guardado ya enviado es peor. exhaustMap se apoya en lo que tarde de verdad la peticion.',
+      en: 'Cancelling a save that already left is worse. exhaustMap follows how long the request really takes.',
     },
   },
   {
     id: 'fe-rxop-02',
-    topic: 'Operadores RxJS',
+    topic: 'concatMap',
     prompt: {
-      es: 'Debes enviar al servidor una cola de ediciones que tienen que aplicarse en el mismo orden en que el usuario las hizo. ¿Qué operador de aplanado usas?',
-      en: 'You must send the server a queue of edits that have to be applied in the same order the user made them. Which flattening operator do you use?',
+      es: '¿Cómo envias ediciones al servidor en el mismo orden en que las hizo el usuario?',
+      en: 'How do you send edits to the server in the same order the user made them?',
     },
     answer: {
-      es: 'concatMap, porque se suscribe al siguiente observable interno solo cuando el anterior ha completado.',
-      en: 'concatMap, because it subscribes to the next inner observable only once the previous one has completed.',
+      es: 'Con concatMap. No se suscribe a la siguiente peticion hasta que la anterior completa.',
+      en: 'With concatMap. It does not subscribe to the next request until the previous one completes.',
     },
     distractors: [
       {
-        es: 'mergeMap, porque se suscribe a los internos en el orden de llegada y por eso las respuestas llegan en ese mismo orden.',
-        en: 'mergeMap, because it subscribes to the inner observables in arrival order and therefore the responses arrive in that same order.',
+        es: 'Con mergeMap, porque al suscribirse en orden las respuestas vuelven en ese mismo orden.',
+        en: 'With mergeMap, because subscribing in order makes the responses come back in that same order.',
       },
       {
-        es: 'forkJoin, porque agrupa todas las ediciones y las resuelve respetando el orden del arreglo de entrada.',
-        en: 'forkJoin, because it groups all the edits and resolves them respecting the order of the input array.',
+        es: 'Con forkJoin, porque agrupa el arreglo y el servidor aplica las ediciones en serie.',
+        en: 'With forkJoin, because it groups the array and the server applies the edits in series.',
       },
     ],
     explanation: {
-      es: 'concatMap serializa de verdad: hay como máximo un interno activo y el resto espera en cola, equivalente a mergeMap con concurrencia 1. mergeMap suscribe en orden pero las respuestas vuelven cuando el servidor quiera, así que la segunda edición puede aplicarse antes que la primera, y forkJoin lanza todo en paralelo y solo ordena el resultado final, además de exigir que todas completen.',
-      en: 'concatMap truly serializes: at most one inner observable is active and the rest waits in a queue, equivalent to mergeMap with concurrency 1. mergeMap subscribes in order but responses come back whenever the server decides, so the second edit may be applied before the first, and forkJoin fires everything in parallel and only orders the final result, while also requiring all of them to complete.',
+      es: 'mergeMap lanza en paralelo y la segunda respuesta puede llegar antes. concatMap deja como mucho una en vuelo.',
+      en: 'mergeMap fires in parallel and the second response can arrive first. concatMap keeps at most one in flight.',
     },
   },
   {
     id: 'fe-rxop-03',
-    topic: 'Operadores RxJS',
+    topic: 'mergeMap',
     prompt: {
-      es: '¿Qué significa el segundo parámetro de mergeMap, como en mergeMap(fn, 2)?',
-      en: 'What does the second parameter of mergeMap mean, as in mergeMap(fn, 2)?',
+      es: '¿Qué hace mergeMap y que significa el numero en mergeMap(fn, 2)?',
+      en: 'What does mergeMap do and what does the number in mergeMap(fn, 2) mean?',
     },
     answer: {
-      es: 'Limita a 2 los observables internos activos al mismo tiempo y encola las emisiones restantes hasta que uno complete.',
-      en: 'It limits active inner observables to 2 at the same time and queues the remaining emissions until one of them completes.',
+      es: 'Se suscribe a cada Observable interno sin cancelar los anteriores. El 2 limita a dos tareas activas y el resto espera.',
+      en: 'It subscribes to each inner Observable without cancelling the previous ones. The 2 limits active tasks to two and the rest wait.',
     },
     distractors: [
       {
-        es: 'Reintenta hasta 2 veces cada observable interno antes de propagar el error al stream externo.',
-        en: 'It retries each inner observable up to 2 times before propagating the error to the outer stream.',
+        es: 'Reintenta cada peticion dos veces antes de propagar el error.',
+        en: 'It retries each request twice before passing the error on.',
       },
       {
-        es: 'Agrupa las emisiones en lotes de 2 antes de pasarlas a la función de proyección.',
-        en: 'It groups emissions into batches of 2 before handing them to the projection function.',
+        es: 'Agrupa las emisiones de dos en dos y luego llama a la funcion.',
+        en: 'It groups emissions two by two and then calls the function.',
       },
     ],
     explanation: {
-      es: 'Ese parámetro es la concurrencia, ideal para no saturar un backend con cientos de subidas simultáneas; de hecho mergeMap(fn, 1) es exactamente concatMap. Los reintentos son competencia de retry, que en RxJS 7 acepta un objeto con count y delay, y agrupar por cantidad es bufferCount.',
-      en: 'That parameter is the concurrency limit, ideal to avoid flooding a backend with hundreds of simultaneous uploads; in fact mergeMap(fn, 1) is exactly concatMap. Retries belong to retry, which in RxJS 7 accepts an object with count and delay, and grouping by amount is bufferCount.',
+      es: 'Sirve para no saturar un API. mergeMap con limite 1 se comporta como concatMap.',
+      en: 'It is useful so you do not flood an API. mergeMap with a limit of 1 behaves like concatMap.',
     },
   },
   {
     id: 'fe-rxop-04',
-    topic: 'Operadores RxJS',
+    topic: 'switchMap',
     prompt: {
-      es: 'Al pulsar Enviar quieres adjuntar el valor actual de un stream de configuración, sin que un cambio en esa configuración dispare un envío. ¿Qué operador corresponde?',
-      en: 'When Submit is pressed you want to attach the current value of a configuration stream, without a change in that configuration triggering a submit. Which operator fits?',
+      es: '¿Por qué un buscador suele usar switchMap para la peticion?',
+      en: 'Why does a search box usually use switchMap for the request?',
     },
     answer: {
-      es: 'withLatestFrom, porque solo emite cuando emite la fuente principal y adjunta el último valor de las secundarias.',
-      en: 'withLatestFrom, because it emits only when the primary source emits and attaches the latest value of the secondary ones.',
+      es: 'Porque al llegar un texto nuevo cancela la peticion anterior y solo pinta el resultado de la ultima busqueda.',
+      en: 'Because a new text cancels the previous request and only the latest search result is shown.',
     },
     distractors: [
       {
-        es: 'combineLatest, porque toma el último valor de cada fuente y la fuente principal manda sobre las secundarias.',
-        en: 'combineLatest, because it takes the latest value of each source and the primary source takes precedence over the secondary ones.',
+        es: 'Porque encola todas las busquedas y las muestra en el orden en que se escribieron.',
+        en: 'Because it queues every search and shows them in the order they were typed.',
       },
       {
-        es: 'sample, porque toma el valor más reciente de la configuración cada vez que el formulario emite.',
-        en: 'sample, because it takes the most recent configuration value every time the form emits.',
+        es: 'Porque ignora las teclas nuevas hasta que la peticion actual responde.',
+        en: 'Because it ignores new keys until the current request responds.',
       },
     ],
     explanation: {
-      es: 'withLatestFrom es asimétrico: la fuente principal es la única que dispara y las demás solo aportan contexto. combineLatest es simétrico y reemitiría con cada cambio de configuración, justo lo que quieres evitar, y sample invierte los papeles porque emite el valor de la configuración y descarta el del disparador. Recuerda que withLatestFrom no emite nada mientras la fuente secundaria no haya emitido al menos una vez.',
-      en: 'withLatestFrom is asymmetric: the primary source is the only trigger and the others just provide context. combineLatest is symmetric and would re-emit on every configuration change, exactly what you want to avoid, and sample inverts the roles because it emits the configuration value and discards the trigger value. Remember that withLatestFrom emits nothing while the secondary source has not emitted at least once.',
+      es: 'Si usaras mergeMap, una respuesta lenta de un texto viejo podria pisar la busqueda actual.',
+      en: 'If you used mergeMap, a slow response for old text could overwrite the current search.',
     },
   },
   {
     id: 'fe-rxop-05',
-    topic: 'Operadores RxJS',
+    topic: 'map y aplanado',
+    prompt: {
+      es: '¿Qué pasa si usas map para devolver un http.get en lugar de switchMap?',
+      en: 'What happens if you use map to return an http.get instead of switchMap?',
+    },
+    answer: {
+      es: 'El stream emite Observables, no los datos de la respuesta. Nadie se suscribe a esa peticion interna.',
+      en: 'The stream emits Observables, not the response data. Nobody subscribes to that inner request.',
+    },
+    distractors: [
+      {
+        es: 'map detecta el Observable y lo aplana solo, igual que switchMap.',
+        en: 'map detects the Observable and flattens it on its own, the same as switchMap.',
+      },
+      {
+        es: 'La peticion sale, pero el error de HTTP se traga y el stream sigue en silencio.',
+        en: 'The request goes out, but the HTTP error is swallowed and the stream stays silent.',
+      },
+    ],
+    explanation: {
+      es: 'Los operadores que se suscriben al interno son switchMap, mergeMap, concatMap y exhaustMap.',
+      en: 'The operators that subscribe to the inner Observable are switchMap, mergeMap, concatMap and exhaustMap.',
+    },
+  },
+  {
+    id: 'fe-rxop-06',
+    topic: 'Tiempo',
+    prompt: {
+      es: '¿Cuál es la diferencia entre debounceTime y throttleTime?',
+      en: 'What is the difference between debounceTime and throttleTime?',
+    },
+    answer: {
+      es: 'debounceTime espera a que haya silencio y emite el ultimo valor. throttleTime emite uno y luego ignora el resto durante la ventana.',
+      en: 'debounceTime waits for silence and emits the latest value. throttleTime emits one and then ignores the rest during the window.',
+    },
+    distractors: [
+      {
+        es: 'debounceTime encola los valores y throttleTime los descarta todos, incluido el primero.',
+        en: 'debounceTime queues the values and throttleTime drops all of them, including the first.',
+      },
+      {
+        es: 'Son iguales: ambos retrasan cada valor un tiempo fijo, como delay.',
+        en: 'They are the same: both delay every value by a fixed time, like delay.',
+      },
+    ],
+    explanation: {
+      es: 'debounceTime encaja al escribir. throttleTime encaja en scroll o en clics repetidos.',
+      en: 'debounceTime fits typing. throttleTime fits scroll or repeated clicks.',
+    },
+  },
+  {
+    id: 'fe-rxop-07',
+    topic: 'withLatestFrom',
+    prompt: {
+      es: '¿Cómo adjuntas el valor actual de un stream de opciones al pulsar Enviar, sin que un cambio de opciones dispare el envio?',
+      en: 'How do you attach the current value of an options stream when Submit is pressed, without an options change firing the submit?',
+    },
+    answer: {
+      es: 'Con withLatestFrom. Solo emite cuando emite la fuente principal y anade el ultimo valor de la otra.',
+      en: 'With withLatestFrom. It emits only when the main source emits and adds the latest value from the other one.',
+    },
+    distractors: [
+      {
+        es: 'Con combineLatest, porque la fuente del boton manda y la de opciones no puede disparar.',
+        en: 'With combineLatest, because the button source is in charge and the options source cannot fire.',
+      },
+      {
+        es: 'Con forkJoin, porque espera a las dos y emite una sola vez al pulsar.',
+        en: 'With forkJoin, because it waits for both and emits once when you press.',
+      },
+    ],
+    explanation: {
+      es: 'combineLatest tambien emite cuando cambian las opciones. withLatestFrom no lo hace.',
+      en: 'combineLatest also emits when the options change. withLatestFrom does not.',
+    },
+  },
+  {
+    id: 'fe-rxop-08',
+    topic: 'scan y reduce',
     prompt: {
       es: '¿Cuál es la diferencia entre scan y reduce?',
       en: 'What is the difference between scan and reduce?',
     },
     answer: {
-      es: 'scan emite el acumulado en cada emisión de la fuente; reduce emite un único valor y solo cuando la fuente completa.',
-      en: 'scan emits the accumulated value on every source emission; reduce emits a single value and only when the source completes.',
+      es: 'scan emite el acumulado en cada paso. reduce emite un solo valor y solo cuando la fuente termina.',
+      en: 'scan emits the running total on every step. reduce emits one value and only when the source completes.',
     },
     distractors: [
       {
-        es: 'scan exige semilla obligatoria y reduce la infiere de la primera emisión, pero ambos emiten en cada paso.',
-        en: 'scan requires a mandatory seed while reduce infers it from the first emission, but both emit on every step.',
+        es: 'reduce emite en cada paso y scan solo al completar, igual que en los arrays.',
+        en: 'reduce emits on every step and scan only on completion, the same as with arrays.',
       },
       {
-        es: 'reduce emite el acumulado en cada paso y scan solo al completar, igual que sus equivalentes en arreglos.',
-        en: 'reduce emits the accumulated value on every step and scan only on completion, just like their array equivalents.',
+        es: 'scan solo suma numeros y reduce sirve para cualquier tipo de estado.',
+        en: 'scan only adds numbers and reduce works for any kind of state.',
       },
     ],
     explanation: {
-      es: 'scan es el operador de estado incremental, por eso sirve para llevar un contador o un carrito que se refleja en la vista al instante. Si aplicas reduce a un stream infinito, como un Subject de eventos, nunca emitirá nada porque espera el complete; y la semilla es opcional en ambos, no es la diferencia. La opción que invierte los papeles es el malentendido más habitual.',
-      en: 'scan is the incremental state operator, which is why it fits a counter or a cart that must be reflected in the view immediately. If you apply reduce to an infinite stream, such as an event Subject, it will never emit anything because it waits for completion; and the seed is optional in both, so that is not the difference. The option that swaps their roles is the most common misunderstanding.',
-    },
-  },
-  {
-    id: 'fe-rxop-06',
-    topic: 'Operadores RxJS',
-    prompt: {
-      es: 'Un combineLatest no emite porque el stream de filtros todavía no ha producido ningún valor. ¿Cuál es el arreglo idiomático?',
-      en: 'A combineLatest does not emit because the filters stream has not produced any value yet. What is the idiomatic fix?',
-    },
-    answer: {
-      es: 'Añadir startWith con el filtro por defecto a ese stream, para que emita de inmediato y la combinación arranque.',
-      en: 'Add startWith with the default filter to that stream, so it emits immediately and the combination starts.',
-    },
-    distractors: [
-      {
-        es: 'Añadir defaultIfEmpty con el filtro por defecto a ese stream, para que siempre haya un valor disponible.',
-        en: 'Add defaultIfEmpty with the default filter to that stream, so a value is always available.',
-      },
-      {
-        es: 'Aplicar shareReplay(1) a ese stream, para que combineLatest reciba de inmediato el valor almacenado en el búfer.',
-        en: 'Apply shareReplay(1) to that stream, so combineLatest immediately receives the value stored in the buffer.',
-      },
-    ],
-    explanation: {
-      es: 'startWith emite su valor de forma sincrónica en el momento de la suscripción, antes que cualquier emisión de la fuente, que es lo que desbloquea a combineLatest. defaultIfEmpty solo actúa si la fuente completa sin haber emitido nunca, y un stream de filtros que sigue vivo no completa; shareReplay únicamente repite valores ya emitidos, así que si no hubo ninguno no hay nada que repetir.',
-      en: 'startWith emits its value synchronously at subscription time, before any source emission, which is what unblocks combineLatest. defaultIfEmpty only acts if the source completes without ever emitting, and a live filters stream does not complete; shareReplay only replays values already emitted, so if there were none there is nothing to replay.',
-    },
-  },
-  {
-    id: 'fe-rxop-07',
-    topic: 'Operadores RxJS',
-    prompt: {
-      es: 'Un stream emite un objeto de usuario nuevo en cada tick con los mismos datos y distinctUntilChanged no filtra nada. ¿Por qué y cómo se corrige?',
-      en: 'A stream emits a new user object on every tick with the same data and distinctUntilChanged filters nothing out. Why, and how do you fix it?',
-    },
-    answer: {
-      es: 'Porque compara por identidad de referencia; hay que pasarle un comparador propio o usar distinctUntilKeyChanged con el campo id.',
-      en: 'Because it compares by reference identity; you must pass your own comparator or use distinctUntilKeyChanged with the id field.',
-    },
-    distractors: [
-      {
-        es: 'Porque solo sirve para primitivos; hay que usar distinct, que compara contra los valores anteriores y detecta el contenido repetido.',
-        en: 'Because it only works for primitives; you must use distinct, which compares against previous values and detects the repeated content.',
-      },
-      {
-        es: 'Porque el orden de los operadores es incorrecto: debe ir antes del map que crea el objeto, ya que no acepta comparadores personalizados.',
-        en: 'Because the operator order is wrong: it must go before the map that creates the object, since it does not accept custom comparators.',
-      },
-    ],
-    explanation: {
-      es: 'Por defecto distinctUntilChanged usa una comparación estricta de referencias, así que dos objetos con el mismo contenido son distintos; su segundo argumento es precisamente un comparador, y existe distinctUntilKeyChanged para el caso de una clave. distinct no resuelve nada porque también compara por identidad y además guarda en memoria todos los valores vistos, lo que en un stream largo es una fuga; y la idea de que no acepta comparadores es falsa.',
-      en: 'By default distinctUntilChanged uses strict reference comparison, so two objects with the same content are different; its second argument is precisely a comparator, and distinctUntilKeyChanged exists for the single key case. distinct solves nothing because it also compares by identity and on top of that keeps every seen value in memory, which is a leak in a long lived stream; and the claim that it does not accept comparators is false.',
-    },
-  },
-  {
-    id: 'fe-rxop-08',
-    topic: 'Operadores RxJS',
-    prompt: {
-      es: '¿Qué emite pairwise y para qué caso de uso se utiliza?',
-      en: 'What does pairwise emit and what use case is it for?',
-    },
-    answer: {
-      es: 'Emite un arreglo con el valor anterior y el actual, útil para deducir la dirección del scroll o la variación entre dos lecturas.',
-      en: 'It emits an array with the previous and the current value, useful to infer the scroll direction or the change between two readings.',
-    },
-    distractors: [
-      {
-        es: 'Emite los valores en parejas no solapadas, es decir, uno de cada dos, útil para reducir la frecuencia del stream.',
-        en: 'It emits values in non overlapping pairs, that is one out of every two, useful to reduce the stream frequency.',
-      },
-      {
-        es: 'Emite un arreglo con el primer valor y el actual, útil para medir la variación acumulada desde el inicio.',
-        en: 'It emits an array with the first value and the current one, useful to measure the accumulated change since the start.',
-      },
-    ],
-    explanation: {
-      es: 'pairwise emite ventanas solapadas de dos elementos, por eso no produce nada en la primera emisión y a partir de la segunda entrega [anterior, actual]. Las parejas no solapadas son bufferCount(2), y conservar el primer valor exigiría un scan; de hecho pairwise se puede reimplementar con scan si necesitas un historial mayor.',
-      en: 'pairwise emits overlapping windows of two items, which is why it produces nothing on the first emission and from the second one delivers [previous, current]. Non overlapping pairs are bufferCount(2), and keeping the first value would require a scan; in fact pairwise can be reimplemented with scan when you need a longer history.',
+      es: 'Para un carrito que la vista debe ver al momento usa scan. reduce en un stream que no termina no emite nunca.',
+      en: 'For a cart the view must see immediately, use scan. reduce on a stream that never completes never emits.',
     },
   },
   {
     id: 'fe-rxop-09',
-    topic: 'Operadores RxJS',
+    topic: 'distinctUntilChanged',
     prompt: {
-      es: 'Quieres agrupar pulsaciones de teclado y enviarlas al servidor en lotes cada 500 ms. ¿Qué operador usas y qué ocurre en una ventana sin eventos?',
-      en: 'You want to group keystrokes and send them to the server in batches every 500 ms. Which operator do you use and what happens in a window with no events?',
+      es: '¿Qué hace distinctUntilChanged y por que a veces no filtra objetos iguales?',
+      en: 'What does distinctUntilChanged do and why does it sometimes fail to filter equal objects?',
     },
     answer: {
-      es: 'bufferTime(500), que emite un arreglo por ventana, incluido un arreglo vacío cuando no hubo emisiones.',
-      en: 'bufferTime(500), which emits one array per window, including an empty array when there were no emissions.',
+      es: 'Deja pasar un valor solo si es distinto del anterior. Con objetos compara la referencia, asi que dos objetos con los mismos datos cuentan como distintos.',
+      en: 'It lets a value through only when it differs from the previous one. For objects it compares the reference, so two objects with the same data count as different.',
     },
     distractors: [
       {
-        es: 'bufferCount(500), que acumula hasta 500 ms de eventos y emite solo cuando el lote tiene contenido.',
-        en: 'bufferCount(500), which accumulates up to 500 ms of events and emits only when the batch has content.',
+        es: 'Compara el contenido del objeto campo a campo, asi que los datos iguales siempre se filtran.',
+        en: 'It compares the object contents field by field, so equal data is always filtered.',
       },
       {
-        es: 'bufferTime(500), que emite un arreglo por ventana pero se salta las ventanas en las que no hubo emisiones.',
-        en: 'bufferTime(500), which emits one array per window but skips the windows where there were no emissions.',
+        es: 'Solo funciona con strings. Con objetos hay que usar filter a mano y no acepta comparador.',
+        en: 'It only works with strings. For objects you must use filter by hand and it does not accept a comparator.',
       },
     ],
     explanation: {
-      es: 'bufferTime cierra por tiempo y emite siempre, así que hay que encadenar filter(lote => lote.length > 0) si no quieres peticiones vacías; ese detalle es el que más sorprende en producción. bufferCount cuenta emisiones, no milisegundos, y cuando la fuente completa emite el búfer parcial que tenga pendiente.',
-      en: 'bufferTime closes by time and always emits, so you need to chain filter(batch => batch.length > 0) if you do not want empty requests; that detail is the one that surprises most in production. bufferCount counts emissions, not milliseconds, and when the source completes it emits whatever partial buffer it still holds.',
+      es: 'Pasa un comparador propio o usa distinctUntilKeyChanged con el id.',
+      en: 'Pass your own comparator or use distinctUntilKeyChanged with the id.',
     },
   },
   {
     id: 'fe-rxop-10',
-    topic: 'Operadores RxJS',
+    topic: 'catchError',
     prompt: {
-      es: '¿En qué se diferencia windowTime de bufferTime?',
-      en: 'How does windowTime differ from bufferTime?',
+      es: '¿Dónde pones catchError en un buscador con switchMap para que un fallo no mate el stream?',
+      en: 'In a search box with switchMap, where do you put catchError so a failure does not kill the stream?',
     },
     answer: {
-      es: 'windowTime emite un observable por cada ventana y sus valores fluyen en vivo; bufferTime emite un arreglo ya materializado al cerrarse la ventana.',
-      en: 'windowTime emits one observable per window and its values flow live; bufferTime emits an already materialized array when the window closes.',
+      es: 'Dentro del switchMap, sobre la peticion. Asi el error se queda en esa llamada y el stream de teclas sigue vivo.',
+      en: 'Inside the switchMap, on the request. The error stays on that call and the key stream stays alive.',
     },
     distractors: [
       {
-        es: 'windowTime emite un arreglo con una copia inmutable de la ventana y bufferTime emite el mismo arreglo mutado en cada cierre.',
-        en: 'windowTime emits an array with an immutable copy of the window and bufferTime emits the same mutated array on every close.',
+        es: 'Da igual el sitio: catchError siempre reanuda la fuente externa despues del fallo.',
+        en: 'The place does not matter: catchError always resumes the outer source after the failure.',
       },
       {
-        es: 'windowTime abre una ventana nueva solo cuando llega una emisión y bufferTime la abre siempre por tiempo.',
-        en: 'windowTime opens a new window only when an emission arrives while bufferTime always opens it by time.',
+        es: 'Fuera es mas seguro, porque captura el error interno y vuelve a suscribir el buscador.',
+        en: 'Outside is safer, because it catches the inner error and subscribes to the search box again.',
       },
     ],
     explanation: {
-      es: 'window devuelve un observable de orden superior, por lo que normalmente se combina con mergeMap o mergeAll, y su ventaja es poder aplicar operadores dentro de cada ventana, como un count o un reduce por tramo. Si no te suscribes a la ventana interna, sus valores se pierden; buffer en cambio te obliga a esperar el cierre para ver algo, y ninguno de los dos reutiliza el arreglo anterior.',
-      en: 'window returns a higher order observable, so it is usually combined with mergeMap or mergeAll, and its advantage is being able to apply operators inside each window, such as a count or a reduce per slice. If you do not subscribe to the inner window its values are lost; buffer instead forces you to wait for the close to see anything, and neither of them reuses the previous array.',
+      es: 'Un error fuera del switchMap termina toda la cadena. catchError debe devolver otro Observable, por ejemplo of([]) o EMPTY.',
+      en: 'An error outside the switchMap ends the whole chain. catchError must return another Observable, for example of([]) or EMPTY.',
     },
   },
   {
     id: 'fe-rxop-11',
-    topic: 'Operadores RxJS',
+    topic: 'finalize',
     prompt: {
-      es: '¿Qué emite groupBy y qué hay que tener en cuenta con los observables agrupados?',
-      en: 'What does groupBy emit and what do you need to keep in mind about the grouped observables?',
+      es: '¿Cuándo se ejecuta la funcion que pasas a finalize?',
+      en: 'When does the function you pass to finalize run?',
     },
     answer: {
-      es: 'Emite un GroupedObservable por cada clave nueva, y hay que suscribirse a cada grupo porque si no sus valores se descartan.',
-      en: 'It emits one GroupedObservable per new key, and you must subscribe to each group because otherwise its values are dropped.',
+      es: 'Al completar, al fallar y tambien al desuscribirte. Sirve para apagar un spinner en cualquiera de esos finales.',
+      en: 'On complete, on error and also when you unsubscribe. It is used to hide a spinner on any of those endings.',
     },
     distractors: [
       {
-        es: 'Emite un arreglo con todos los grupos cada vez que aparece una clave nueva, listo para recorrer en la vista.',
-        en: 'It emits an array with all the groups every time a new key appears, ready to iterate in the view.',
+        es: 'Solo al completar. Un error hay que atenderlo en catchError y la desuscripcion no llega a finalize.',
+        en: 'Only on complete. An error must be handled in catchError and an unsubscribe never reaches finalize.',
       },
       {
-        es: 'Emite un objeto tipo diccionario con la clave y los valores ya acumulados, igual que un group by de SQL.',
-        en: 'It emits a dictionary like object with the key and the values already accumulated, just like a SQL group by.',
+        es: 'En cada next, igual que tap, y ademas transforma el valor.',
+        en: 'On every next, the same as tap, and it also transforms the value.',
       },
     ],
     explanation: {
-      es: 'groupBy es un operador de orden superior: cada emisión es un observable con una propiedad key, y el patrón habitual es groupBy(...) seguido de mergeMap para procesar cada grupo por separado. Nada se acumula en arreglos ni diccionarios, y conviene recordar que sin selector de duración los grupos viven hasta que la fuente completa, así que una clave con alta cardinalidad retiene memoria.',
-      en: 'groupBy is a higher order operator: every emission is an observable with a key property, and the usual pattern is groupBy(...) followed by mergeMap to process each group separately. Nothing is accumulated into arrays or dictionaries, and it is worth remembering that without a duration selector the groups live until the source completes, so a high cardinality key retains memory.',
+      es: 'tap con complete o error no corre si te desuscribes antes. finalize si cubre esa cancelacion.',
+      en: 'tap on complete or error does not run if you unsubscribe first. finalize does cover that cancellation.',
     },
   },
   {
     id: 'fe-rxop-12',
-    topic: 'Operadores RxJS',
+    topic: 'forkJoin',
     prompt: {
-      es: '¿Qué distingue a auditTime de sampleTime y de throttleTime?',
-      en: 'What sets auditTime apart from sampleTime and throttleTime?',
+      es: '¿Cuándo usas forkJoin?',
+      en: 'When do you use forkJoin?',
     },
     answer: {
-      es: 'auditTime abre la ventana con la primera emisión y entrega el último valor al cerrarla; throttleTime entrega el primero de la ventana y sampleTime emite según su propio reloj.',
-      en: 'auditTime opens the window with the first emission and delivers the latest value when it closes; throttleTime delivers the first one of the window and sampleTime emits on its own clock.',
+      es: 'Cuando lanzas varias peticiones a la vez y quieres seguir solo cuando todas hayan terminado, con el ultimo valor de cada una.',
+      en: 'When you fire several requests at once and want to continue only when all of them have finished, with the last value of each.',
     },
     distractors: [
       {
-        es: 'auditTime entrega el primer valor de la ventana y throttleTime el último, mientras sampleTime se salta las ventanas sin emisiones.',
-        en: 'auditTime delivers the first value of the window and throttleTime the last one, while sampleTime skips windows with no emissions.',
+        es: 'Cuando quieres un valor nuevo cada vez que cualquiera de las fuentes emite.',
+        en: 'When you want a new value every time any of the sources emits.',
       },
       {
-        es: 'auditTime reinicia su temporizador con cada emisión nueva, por lo que equivale a debounceTime pero conservando el último valor.',
-        en: 'auditTime resets its timer on every new emission, so it is equivalent to debounceTime but keeping the last value.',
+        es: 'Cuando las peticiones deben ir en serie y cada una espera a la anterior.',
+        en: 'When the requests must run in series and each one waits for the previous one.',
       },
     ],
     explanation: {
-      es: 'auditTime es un throttle por el flanco de salida, de hecho equivale a throttleTime(ms, undefined, { leading: false, trailing: true }), y por eso siempre da el dato más fresco de la ventana. sampleTime sí ignora sus intervalos cuando no llegó ningún valor nuevo, pero eso no lo distingue de auditTime, y confundir audit con debounce es el error clásico: audit no reinicia el temporizador, así que en una ráfaga continua sigue emitiendo con cadencia fija mientras debounce no emitiría nunca.',
-      en: 'auditTime is a trailing edge throttle, in fact it is equivalent to throttleTime(ms, undefined, { leading: false, trailing: true }), which is why it always yields the freshest value of the window. sampleTime does skip its intervals when no new value arrived, but that is not what distinguishes it from auditTime, and confusing audit with debounce is the classic mistake: audit does not reset the timer, so during a continuous burst it keeps emitting at a fixed cadence while debounce would never emit.',
+      es: 'Es el parecido de Promise.all para Observables que completan, como HTTP. Si una falla, forkJoin falla.',
+      en: 'It is the Observable cousin of Promise.all for streams that complete, such as HTTP. If one fails, forkJoin fails.',
     },
   },
   {
     id: 'fe-rxop-13',
-    topic: 'Operadores RxJS',
+    topic: 'combineLatest',
     prompt: {
-      es: '¿Cuándo hay que usar delayWhen en lugar de delay?',
-      en: 'When should you use delayWhen instead of delay?',
+      es: '¿Cómo funciona combineLatest?',
+      en: 'How does combineLatest work?',
     },
     answer: {
-      es: 'Cuando el retraso depende del propio valor, porque delayWhen recibe una función que devuelve un observable de duración por cada emisión.',
-      en: 'When the delay depends on the value itself, because delayWhen receives a function returning a duration observable for each emission.',
+      es: 'No emite hasta que cada fuente haya emitido al menos una vez. Despues emite de nuevo cada vez que cualquiera cambia, con el ultimo valor de todas.',
+      en: 'It does not emit until every source has emitted at least once. After that it emits again whenever any of them changes, with the latest value of all of them.',
     },
     distractors: [
       {
-        es: 'Cuando quieres retrasar solo la primera emisión, porque delay retrasa todas y delayWhen únicamente la inicial.',
-        en: 'When you want to delay only the first emission, because delay delays all of them and delayWhen only the initial one.',
+        es: 'Emite enseguida y pone undefined en la fuente que todavia no tiene valor.',
+        en: 'It emits right away and puts undefined in the source that has no value yet.',
       },
       {
-        es: 'Cuando quieres retrasar la suscripción a la fuente en lugar de las emisiones, porque delay solo desplaza la notificación de complete.',
-        en: 'When you want to delay the subscription to the source instead of the emissions, because delay only shifts the complete notification.',
+        es: 'Espera a que todas completen y emite un unico resultado, como forkJoin.',
+        en: 'It waits until all of them complete and emits a single result, like forkJoin.',
       },
     ],
     explanation: {
-      es: 'delay acepta un número de milisegundos o una fecha y lo aplica igual a todo, mientras delayWhen calcula la espera por valor, lo que permite retrocesos crecientes o esperar un evento externo. Cuidado con el parámetro subscriptionDelay de delayWhen: está deprecado en RxJS 7. Y un detalle que se pregunta mucho: delay desplaza next y complete, pero las notificaciones de error se propagan de inmediato sin esperar.',
-      en: 'delay accepts a number of milliseconds or a date and applies it uniformly, while delayWhen computes the wait per value, which enables growing backoffs or waiting for an external event. Watch out for the subscriptionDelay parameter of delayWhen: it is deprecated in RxJS 7. And one detail that gets asked a lot: delay shifts next and complete, but error notifications propagate immediately without waiting.',
+      es: 'Si una fuente no emite nunca, la combinacion se queda muda. Un startWith con el valor inicial la desbloquea.',
+      en: 'If one source never emits, the combination stays silent. A startWith with the initial value unblocks it.',
     },
   },
   {
     id: 'fe-rxop-14',
-    topic: 'Operadores RxJS',
+    topic: 'startWith',
     prompt: {
-      es: '¿Qué hace el operador timeout cuando se agota el plazo sin recibir emisiones?',
-      en: 'What does the timeout operator do when the deadline expires without receiving emissions?',
+      es: '¿Para qué sirve startWith?',
+      en: 'What is startWith for?',
     },
     answer: {
-      es: 'Lanza un error TimeoutError por el canal de error, salvo que le pases la opción with para sustituirlo por otro observable.',
-      en: 'It throws a TimeoutError through the error channel, unless you pass the with option to replace it with another observable.',
+      es: 'Emite un valor al suscribirte, antes de lo que produzca la fuente. Sirve para tener un estado inicial en la vista.',
+      en: 'It emits a value when you subscribe, before whatever the source produces. It is used to give the view an initial state.',
     },
     distractors: [
       {
-        es: 'Completa el stream de forma silenciosa, así que el suscriptor recibe complete sin ningún valor.',
-        en: 'It completes the stream silently, so the subscriber receives complete without any value.',
+        es: 'Sustituye el valor solo si la fuente termina sin haber emitido nada.',
+        en: 'It replaces the value only if the source completes without ever emitting.',
       },
       {
-        es: 'Emite el último valor recibido y luego completa, para que la vista conserve los datos que ya tenía.',
-        en: 'It emits the last received value and then completes, so the view keeps the data it already had.',
+        es: 'Retrasa la primera emision hasta que pasa el tiempo que le indiques.',
+        en: 'It delays the first emission until the time you pass has gone by.',
       },
     ],
     explanation: {
-      es: 'timeout es un operador que falla: sin configuración adicional emite un TimeoutError que hay que capturar con catchError, y con timeout({ each: 3000, with: () => of(cache) }) puedes degradar a un valor de reserva. También distingue first, el plazo para la primera emisión, de each, el plazo entre emisiones consecutivas. Nunca completa ni reemite lo anterior por su cuenta, y timeoutWith quedó deprecado en RxJS 7 a favor de esta configuración.',
-      en: 'timeout is a failing operator: with no extra configuration it emits a TimeoutError that you must catch with catchError, and with timeout({ each: 3000, with: () => of(cache) }) you can degrade to a fallback value. It also distinguishes first, the deadline for the first emission, from each, the deadline between consecutive emissions. It never completes or re-emits the previous value on its own, and timeoutWith was deprecated in RxJS 7 in favor of this configuration.',
+      es: 'No es defaultIfEmpty. Ese solo actua si la fuente completa vacia. startWith sale ya, aunque la fuente siga viva.',
+      en: 'It is not defaultIfEmpty. That one acts only if the source completes empty. startWith fires immediately, even if the source stays alive.',
     },
   },
   {
     id: 'fe-rxop-15',
-    topic: 'Operadores RxJS',
+    topic: 'retry',
     prompt: {
-      es: 'Quieres reintentar una petición hasta tres veces esperando un segundo entre intentos en RxJS 7. ¿Cuál es la forma recomendada?',
-      en: 'You want to retry a request up to three times waiting one second between attempts in RxJS 7. What is the recommended way?',
+      es: '¿Cómo se usa retry cuando una peticion falla?',
+      en: 'How do you use retry when a request fails?',
     },
     answer: {
-      es: 'retry({ count: 3, delay: 1000 }), porque retry acepta un objeto de configuración y retryWhen quedó deprecado.',
-      en: 'retry({ count: 3, delay: 1000 }), because retry accepts a configuration object and retryWhen was deprecated.',
+      es: 'retry se vuelve a suscribir a la fuente cuando hay un error. Con retry(3) lo intenta hasta tres veces mas.',
+      en: 'retry subscribes to the source again when there is an error. With retry(3) it tries up to three more times.',
     },
     distractors: [
       {
-        es: 'retryWhen con un delay de 1000 sobre el observable de notificaciones, porque es la única manera de espaciar los intentos.',
-        en: 'retryWhen with a delay of 1000 over the notifier observable, because it is the only way to space out the attempts.',
+        es: 'retry se suscribe de nuevo cuando la peticion completa bien, para refrescar los datos.',
+        en: 'retry subscribes again when the request completes successfully, in order to refresh the data.',
       },
       {
-        es: 'retry(3) junto con delay(1000) en el mismo pipe, porque delay introduce la espera antes de cada reintento.',
-        en: 'retry(3) together with delay(1000) in the same pipe, because delay introduces the wait before each retry.',
+        es: 'Poner delay delante de retry espera entre intentos. retry solo no puede espaciarlos.',
+        en: 'Putting delay before retry waits between attempts. retry alone cannot space them out.',
       },
     ],
     explanation: {
-      es: 'Desde RxJS 7.x retry admite { count, delay, resetOnSuccess }, donde delay puede ser un número o una función que devuelve un observable de notificación, lo que cubre también el retroceso exponencial. retryWhen está deprecado en RxJS 7 y desapareció en la versión 8, así que no es la respuesta actual, y combinar delay con retry no funciona: delay solo desplaza las emisiones, no la resuscripción que hace retry.',
-      en: 'Since RxJS 7.x retry accepts { count, delay, resetOnSuccess }, where delay can be a number or a function returning a notifier observable, which also covers exponential backoff. retryWhen is deprecated in RxJS 7 and was removed in version 8, so it is not the current answer, and combining delay with retry does not work: delay only shifts emissions, not the resubscription performed by retry.',
+      es: 'Repetir tras un complete es repeat, no retry. Para esperar entre fallos, retry acepta un delay en su configuracion.',
+      en: 'Repeating after a complete is repeat, not retry. To wait between failures, retry accepts a delay in its config.',
     },
   },
   {
     id: 'fe-rxop-16',
-    topic: 'Operadores RxJS',
+    topic: 'filter',
     prompt: {
-      es: 'En un buscador con switchMap, ¿qué diferencia hay entre colocar catchError dentro del switchMap o fuera de él?',
-      en: 'In a search box built with switchMap, what is the difference between placing catchError inside the switchMap or outside of it?',
+      es: '¿Qué hace filter y en que se diferencia de map?',
+      en: 'What does filter do and how is it different from map?',
     },
     answer: {
-      es: 'Dentro protege solo a la petición y el stream de eventos sigue vivo; fuera el error termina también la fuente y el buscador deja de responder.',
-      en: 'Inside it protects only the request and the event stream stays alive; outside the error also terminates the source and the search box stops responding.',
+      es: 'filter deja pasar solo los valores que cumplen la condicion y no los transforma. map cambia cada valor y no descarta emisiones.',
+      en: 'filter lets through only the values that match the condition and does not transform them. map changes every value and does not drop emissions.',
     },
     distractors: [
       {
-        es: 'Es indiferente: catchError siempre reemplaza al observable interno y la fuente externa continúa emitiendo eventos.',
-        en: 'It makes no difference: catchError always replaces the inner observable and the outer source keeps emitting events.',
+        es: 'filter transforma el valor a boolean y map decide si el stream debe completar.',
+        en: 'filter transforms the value to a boolean and map decides whether the stream should complete.',
       },
       {
-        es: 'Fuera es más seguro porque captura también los errores del interno y después reanuda la fuente de eventos.',
-        en: 'Outside is safer because it also catches the inner errors and afterwards resumes the event stream.',
+        es: 'filter cierra el stream en el primer valor que no cumple. map lo deja abierto.',
+        en: 'filter closes the stream on the first value that does not match. map leaves it open.',
       },
     ],
     explanation: {
-      es: 'El error viaja del interno al externo, así que capturarlo fuera salva la emisión pero mata la cadena completa, y catchError no reanuda nada: sustituye el stream fallido por el observable que devuelvas. La posición importa y también lo que devuelves: EMPTY completa el interno sin emitir, útil para ignorar el fallo pero deja la vista con los datos anteriores, mientras of(valorPorDefecto) emite un reemplazo visible antes de completar.',
-      en: 'The error travels from the inner observable to the outer one, so catching it outside saves the emission but kills the whole chain, and catchError resumes nothing: it replaces the failed stream with the observable you return. Position matters and so does what you return: EMPTY completes the inner observable without emitting, which is useful to ignore the failure but leaves the view with the previous data, while of(defaultValue) emits a visible replacement before completing.',
+      es: 'Cerrar al dejar de cumplirse la condicion es takeWhile, no filter. filter sigue escuchando.',
+      en: 'Closing when the condition stops matching is takeWhile, not filter. filter keeps listening.',
     },
   },
   {
     id: 'fe-rxop-17',
-    topic: 'Operadores RxJS',
+    topic: 'tap',
     prompt: {
-      es: '¿En qué momentos se ejecuta la función que recibe finalize?',
-      en: 'At which moments does the function passed to finalize run?',
+      es: '¿Para qué se usa tap?',
+      en: 'What is tap used for?',
     },
     answer: {
-      es: 'Al completar, al errar y también al desuscribirse, sea por unsubscribe manual o por un takeUntil.',
-      en: 'On complete, on error and also on unsubscribe, whether through a manual unsubscribe or a takeUntil.',
+      es: 'Para un efecto secundario, como un log, sin cambiar el valor que sigue por el pipe.',
+      en: 'For a side effect, such as a log, without changing the value that continues down the pipe.',
     },
     distractors: [
       {
-        es: 'Solo al completar o al errar, porque una desuscripción corta el pipe antes de que finalize pueda ejecutarse.',
-        en: 'Only on complete or on error, because an unsubscribe cuts the pipe before finalize can run.',
+        es: 'Para transformar el valor y devolver un Observable nuevo, igual que map.',
+        en: 'To transform the value and return a new Observable, the same as map.',
       },
       {
-        es: 'Solo al completar, porque un error se considera una salida anormal y se atiende únicamente en catchError.',
-        en: 'Only on complete, because an error is considered an abnormal exit and is handled only in catchError.',
+        es: 'Para compartir la ejecucion entre varios suscriptores, igual que share.',
+        en: 'To share the execution among several subscribers, the same as share.',
       },
     ],
     explanation: {
-      es: 'finalize se engancha a la lógica de limpieza de la suscripción, por eso es el sitio correcto para apagar un spinner: cubre los tres finales posibles, incluida la cancelación. Esa es justo la ventaja frente a tap, cuyos callbacks de complete y error no corren cuando alguien se desuscribe. Ten en cuenta que su posición en el pipe determina el orden de ejecución respecto a otros finalize.',
-      en: 'finalize hooks into the subscription teardown, which is why it is the right place to hide a spinner: it covers the three possible endings, cancellation included. That is precisely its advantage over tap, whose complete and error callbacks do not run when somebody unsubscribes. Keep in mind that its position in the pipe determines the execution order relative to other finalize calls.',
+      es: 'Si tap devuelve algo, ese retorno se ignora. El valor que circula es el mismo que entro.',
+      en: 'If tap returns something, that return is ignored. The value that flows on is the same one that came in.',
     },
   },
   {
     id: 'fe-rxop-18',
-    topic: 'Operadores RxJS',
+    topic: 'takeUntil',
     prompt: {
-      es: '¿Qué hace takeWhile(predicado, true) y en qué se diferencia de filter?',
-      en: 'What does takeWhile(predicate, true) do and how is it different from filter?',
+      es: '¿Cómo se usa takeUntil para dejar de escuchar?',
+      en: 'How do you use takeUntil to stop listening?',
     },
     answer: {
-      es: 'Emite también el primer valor que incumple el predicado y luego completa; filter solo descarta lo que no cumple y nunca termina el stream por ello.',
-      en: 'It also emits the first value that fails the predicate and then completes; filter merely discards what does not match and never terminates the stream because of it.',
+      es: 'El stream principal se completa y se desuscribe cuando el Observable notificador emite. En Angular, takeUntilDestroyed hace ese papel al destruir el componente.',
+      en: 'The main stream completes and unsubscribes when the notifier Observable emits. In Angular, takeUntilDestroyed plays that role when the component is destroyed.',
     },
     distractors: [
       {
-        es: 'Incluye todos los valores que no cumplen el predicado además de los que sí, como un filter invertido que no descarta nada.',
-        en: 'It includes every value that fails the predicate on top of the ones that pass, like an inverted filter that discards nothing.',
+        es: 'takeUntil pausa el stream y lo reanuda cuando el notificador completa.',
+        en: 'takeUntil pauses the stream and resumes it when the notifier completes.',
       },
       {
-        es: 'Emite mientras el predicado sea verdadero y deja el stream activo, igual que filter, en lugar de completarlo.',
-        en: 'It emits while the predicate is true and leaves the stream active, just like filter, instead of completing it.',
+        es: 'Basta con poner takeUntil(this.destroy$) despues de destruir la vista. El orden en el pipe no importa.',
+        en: 'It is enough to put takeUntil(this.destroy$) after the view is destroyed. The order in the pipe does not matter.',
       },
     ],
     explanation: {
-      es: 'takeWhile es un operador terminal: en cuanto el predicado falla, completa y se desuscribe de la fuente, y el segundo argumento inclusive solo decide si ese valor límite se emite antes de cerrar. filter no tiene efecto terminal, así que el stream sigue procesando emisiones posteriores aunque una no pase el filtro. Si lo que quieres es descartar al principio y seguir después, el operador es skipWhile.',
-      en: 'takeWhile is a terminal operator: as soon as the predicate fails it completes and unsubscribes from the source, and the second inclusive argument only decides whether that boundary value is emitted before closing. filter has no terminal effect, so the stream keeps processing later emissions even if one does not pass the filter. If what you want is to discard at the beginning and continue afterwards, the operator is skipWhile.',
+      es: 'Colocalo al final del pipe, salvo que quieras que un operador posterior siga vivo. Si el notificador no emite, no corta nada.',
+      en: 'Put it at the end of the pipe, unless you want a later operator to stay alive. If the notifier never emits, nothing is cut.',
     },
   },
   {
     id: 'fe-rxop-19',
-    topic: 'Operadores RxJS',
+    topic: 'shareReplay',
     prompt: {
-      es: 'La fuente completa sin emitir ningún valor. ¿Qué hacen first(), take(1) y single() en ese escenario?',
-      en: 'The source completes without emitting any value. What do first(), take(1) and single() do in that scenario?',
+      es: '¿Para qué sirve shareReplay en una peticion HTTP?',
+      en: 'What is shareReplay for on an HTTP request?',
     },
     answer: {
-      es: 'first() lanza EmptyError, take(1) completa sin emitir nada y single() también lanza EmptyError.',
-      en: 'first() throws EmptyError, take(1) completes without emitting anything and single() also throws EmptyError.',
+      es: 'Varios suscriptores comparten una sola ejecucion y el que llega tarde recibe el ultimo valor guardado.',
+      en: 'Several subscribers share a single execution and a late one receives the last stored value.',
     },
     distractors: [
       {
-        es: 'Los tres completan sin emitir, porque ninguno puede producir un valor que la fuente nunca entregó.',
-        en: 'All three complete without emitting, because none of them can produce a value the source never delivered.',
+        es: 'Convierte la peticion en fria, de modo que cada componente dispara su propio GET.',
+        en: 'It turns the request cold, so each component fires its own GET.',
       },
       {
-        es: 'first() completa sin emitir y take(1) lanza EmptyError, porque take exige recibir la cantidad de valores pedida.',
-        en: 'first() completes without emitting and take(1) throws EmptyError, because take requires receiving the requested amount of values.',
+        es: 'Reintenta la peticion si falla y guarda solo las respuestas con error.',
+        en: 'It retries the request if it fails and stores only the error responses.',
       },
     ],
     explanation: {
-      es: 'first() garantiza un valor, así que si la fuente se vacía falla con EmptyError, salvo que le des un valor por defecto como first(undefined, fallback). take(1) no garantiza nada: simplemente deja pasar como máximo una emisión y completa, por eso es el seguro para flujos que pueden estar vacíos. single() es el más estricto: lanza EmptyError si no hay valores y SequenceError si hay más de uno.',
-      en: 'first() guarantees a value, so if the source is empty it fails with EmptyError, unless you give it a default such as first(undefined, fallback). take(1) guarantees nothing: it simply lets at most one emission through and completes, which is why it is the safe choice for streams that may be empty. single() is the strictest: it throws EmptyError when there are no values and SequenceError when there is more than one.',
+      es: 'Sin share ni shareReplay, cada subscribe de un Observable frio repite el trabajo.',
+      en: 'Without share or shareReplay, each subscribe of a cold Observable repeats the work.',
     },
   },
   {
     id: 'fe-rxop-20',
-    topic: 'Operadores RxJS',
+    topic: 'delay',
     prompt: {
-      es: '¿Qué aportan defaultIfEmpty y throwIfEmpty a un stream?',
-      en: 'What do defaultIfEmpty and throwIfEmpty add to a stream?',
+      es: '¿Qué hace delay y que no hace?',
+      en: 'What does delay do and what does it not do?',
     },
     answer: {
-      es: 'defaultIfEmpty emite un valor de reemplazo si la fuente completa sin haber emitido nunca; throwIfEmpty lanza un error en ese mismo caso.',
-      en: 'defaultIfEmpty emits a replacement value if the source completes without ever having emitted; throwIfEmpty throws an error in that same case.',
+      es: 'Retrasa cada emision un tiempo. No reintenta errores ni cancela la peticion anterior.',
+      en: 'It postpones each emission by a time. It does not retry errors or cancel the previous request.',
     },
     distractors: [
       {
-        es: 'defaultIfEmpty emite su valor mientras la fuente todavía no haya emitido y throwIfEmpty falla si la fuente tarda demasiado.',
-        en: 'defaultIfEmpty emits its value while the source has not emitted yet and throwIfEmpty fails if the source takes too long.',
+        es: 'Espera silencio como debounceTime y luego emite solo el ultimo valor.',
+        en: 'It waits for silence like debounceTime and then emits only the latest value.',
       },
       {
-        es: 'defaultIfEmpty sustituye cada valor null o undefined del stream y throwIfEmpty rechaza las emisiones con arreglos vacíos.',
-        en: 'defaultIfEmpty replaces every null or undefined value of the stream and throwIfEmpty rejects emissions carrying empty arrays.',
+        es: 'Retrasa tambien el error, asi que catchError no lo ve hasta que pasa el tiempo.',
+        en: 'It also delays the error, so catchError does not see it until the time has passed.',
       },
     ],
     explanation: {
-      es: 'Los dos actúan únicamente en la notificación de complete y solo si no hubo ni una emisión, así que son ideales tras un filter que pudo descartar todo. Emitir un valor antes de la fuente es startWith, no defaultIfEmpty, y fallar por tardanza es timeout. Como dato extra, throwIfEmpty lanza EmptyError por defecto pero acepta una fábrica de error propia, y ninguno inspecciona el contenido de los valores emitidos.',
-      en: 'Both act only on the complete notification and only if there was not a single emission, so they fit well after a filter that may have discarded everything. Emitting a value before the source is startWith, not defaultIfEmpty, and failing because of slowness is timeout. As an extra detail, throwIfEmpty throws EmptyError by default but accepts your own error factory, and neither of them inspects the content of the emitted values.',
+      es: 'Para un buscador quieres debounceTime, no delay. El error de delay se propaga al momento, sin esperar.',
+      en: 'For a search box you want debounceTime, not delay. An error from delay is passed on at once, without waiting.',
     },
   },
 ];

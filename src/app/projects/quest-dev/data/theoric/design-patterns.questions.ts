@@ -3,210 +3,210 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const THEORIC_DESIGN_PATTERNS_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'th-pat-01',
-    topic: 'Patrones creacionales',
+    topic: 'Patrones',
     prompt: {
       es: '¿Cuál es la diferencia entre Factory Method y Abstract Factory?',
       en: 'What is the difference between Factory Method and Abstract Factory?',
     },
     answer: {
-      es: 'Factory Method delega la creación de un producto a subclases; Abstract Factory crea familias de productos relacionados.',
-      en: 'Factory Method defers creating one product to subclasses; Abstract Factory creates families of related products.',
+      es: 'Factory Method deja que una subclase cree un producto. Abstract Factory crea una familia de productos que deben ir juntos.',
+      en: 'Factory Method lets a subclass create one product. Abstract Factory creates a family of products that must go together.',
     },
     distractors: [
       {
-        es: 'Factory Method devuelve siempre la misma instancia y Abstract Factory devuelve una nueva en cada llamada.',
-        en: 'Factory Method always returns the same instance and Abstract Factory returns a new one on every call.',
+        es: 'Factory Method devuelve siempre la misma instancia y Abstract Factory una nueva.',
+        en: 'Factory Method always returns the same instance and Abstract Factory a new one.',
       },
       {
-        es: 'Factory Method usa métodos estáticos y Abstract Factory requiere que la fábrica se instancie e inyecte.',
-        en: 'Factory Method uses static methods while Abstract Factory requires the factory to be instantiated and injected.',
+        es: 'Factory Method es un método estático y Abstract Factory hay que inyectarla.',
+        en: 'Factory Method is a static method and Abstract Factory must be injected.',
       },
     ],
     explanation: {
-      es: 'Factory Method es un método polimórfico que decide qué instancia devolver, típicamente sobrescrito por subclases del creador. Abstract Factory es un objeto con varios métodos de creación que garantizan que los productos devueltos sean compatibles entre sí. El "static factory method" es otro idiom distinto del patrón GoF, y ninguno de los dos habla de reutilizar instancias.',
-      en: 'Factory Method is a polymorphic method that decides which instance to return, typically overridden by subclasses of the creator. Abstract Factory is an object with several creation methods guaranteeing the returned products are compatible with each other. The "static factory method" is a different idiom from the GoF pattern, and neither pattern is about reusing instances.',
+      es: 'Un método factoría estático es otro recurso, no el patrón. Ninguno de los dos trata de reutilizar la misma instancia.',
+      en: 'A static factory method is a different tool, not the pattern. Neither one is about reusing the same instance.',
     },
   },
   {
     id: 'th-pat-02',
-    topic: 'Patrones de comportamiento',
+    topic: 'Patrones',
     prompt: {
-      es: 'Necesitas elegir en ejecución entre varios algoritmos de cálculo de comisión intercambiables. ¿Qué patrón aplica?',
-      en: 'You need to choose at runtime between several interchangeable commission algorithms. Which pattern applies?',
+      es: '¿Qué patrón usarías si necesitas cambiar en ejecución el algoritmo que calcula una comisión?',
+      en: 'You need to swap at runtime the algorithm that calculates a commission. Which pattern would you use?',
     },
     answer: {
-      es: 'Strategy, porque encapsula cada algoritmo detrás de una misma interfaz y permite cambiarlo en ejecución.',
-      en: 'Strategy, because it encapsulates each algorithm behind one interface and lets you swap it at runtime.',
+      es: 'Strategy. Cada algoritmo vive detrás de la misma interfaz y el cliente elige cuál usar.',
+      en: 'Strategy. Each algorithm lives behind the same interface and the client chooses which one to use.',
     },
     distractors: [
       {
-        es: 'Template Method, porque define el esqueleto del cálculo y deja los pasos variables a las subclases.',
-        en: 'Template Method, because it defines the calculation skeleton and leaves variable steps to subclasses.',
+        es: 'Template Method, porque deja los pasos variables en subclases.',
+        en: 'Template Method, because it leaves the variable steps in subclasses.',
       },
       {
-        es: 'State, porque el objeto cambia de comportamiento según el algoritmo que tenga configurado.',
-        en: 'State, because the object changes behaviour depending on the algorithm it has configured.',
+        es: 'State, porque el objeto cambia de comportamiento según el algoritmo.',
+        en: 'State, because the object changes behaviour according to the algorithm.',
       },
     ],
     explanation: {
-      es: 'Los tres varían comportamiento, pero Strategy es el único donde el cliente elige e intercambia el algoritmo libremente en ejecución. Template Method fija la variación en tiempo de compilación mediante herencia, y State modela transiciones internas gobernadas por el propio objeto, no una elección del cliente.',
-      en: 'All three vary behaviour, but Strategy is the only one where the client freely picks and swaps the algorithm at runtime. Template Method fixes the variation at compile time through inheritance, and State models internal transitions driven by the object itself, not a client choice.',
+      es: 'Template Method fija la variación en la herencia. State cambia solo cuando el propio objeto transiciona, no porque el cliente elija un algoritmo.',
+      en: 'Template Method fixes the variation in inheritance. State changes only when the object itself transitions, not because the client picks an algorithm.',
     },
   },
   {
     id: 'th-pat-03',
-    topic: 'Patrones estructurales',
+    topic: 'Patrones',
     prompt: {
-      es: '¿Cuál es la intención del patrón Decorator frente a Proxy?',
-      en: 'What is the intent of the Decorator pattern compared to Proxy?',
+      es: '¿Cuál es la diferencia entre Decorator y Proxy?',
+      en: 'What is the difference between Decorator and Proxy?',
     },
     answer: {
-      es: 'Decorator agrega responsabilidades al objeto envuelto; Proxy controla el acceso a él.',
-      en: 'Decorator adds responsibilities to the wrapped object; Proxy controls access to it.',
+      es: 'Decorator añade comportamiento al objeto envuelto. Proxy controla el acceso a ese objeto.',
+      en: 'Decorator adds behaviour to the wrapped object. Proxy controls access to that object.',
     },
     distractors: [
       {
-        es: 'Decorator envuelve una interfaz distinta para hacerla compatible; Proxy conserva la misma interfaz.',
-        en: 'Decorator wraps a different interface to make it compatible; Proxy keeps the same interface.',
+        es: 'Decorator cambia la interfaz para hacerla compatible y Proxy la conserva.',
+        en: 'Decorator changes the interface to make it compatible and Proxy keeps it.',
       },
       {
-        es: 'Decorator se aplica en tiempo de compilación mediante herencia; Proxy se genera siempre en ejecución.',
-        en: 'Decorator is applied at compile time through inheritance; Proxy is always generated at runtime.',
+        es: 'Decorator se aplica por herencia y Proxy siempre se genera en ejecución.',
+        en: 'Decorator is applied through inheritance and Proxy is always generated at runtime.',
       },
     ],
     explanation: {
-      es: 'Ambos comparten la interfaz del objeto envuelto y se ven casi idénticos en código; lo que los distingue es la intención. Decorator suma comportamiento (por ejemplo compresión o cifrado en un stream) y se apila; Proxy media el acceso (lazy loading, caché, permisos, llamada remota). Adaptar interfaces incompatibles es Adapter.',
-      en: 'Both share the wrapped object interface and look nearly identical in code; intent is what separates them. Decorator adds behaviour (for example compression or encryption on a stream) and can be stacked; Proxy mediates access (lazy loading, caching, permissions, remote calls). Adapting incompatible interfaces is Adapter.',
+      es: 'En código se parecen porque ambos comparten la interfaz. La intención los separa: sumar responsabilidades o mediar el acceso.',
+      en: 'In code they look alike because both share the interface. Intent separates them: adding responsibilities or mediating access.',
     },
   },
   {
     id: 'th-pat-04',
-    topic: 'Singleton',
+    topic: 'Patrones',
     prompt: {
-      es: '¿Por qué el Singleton se considera un antipatrón en muchos contextos?',
-      en: 'Why is Singleton considered an anti-pattern in many contexts?',
+      es: '¿Por qué el Singleton se considera un problema en muchos diseños?',
+      en: 'Why is Singleton considered a problem in many designs?',
     },
     answer: {
-      es: 'Porque introduce estado global y una dependencia oculta que dificulta las pruebas y el reemplazo.',
-      en: 'Because it introduces global state and a hidden dependency that makes testing and substitution harder.',
+      es: 'Porque es estado global y una dependencia oculta. Las pruebas no pueden sustituirlo con facilidad.',
+      en: 'Because it is global state and a hidden dependency. Tests cannot substitute it easily.',
     },
     distractors: [
       {
-        es: 'Porque una única instancia se convierte en cuello de botella y no puede usarse en entornos concurrentes.',
-        en: 'Because a single instance becomes a bottleneck and cannot be used in concurrent environments.',
+        es: 'Porque una sola instancia no puede usarse con varios hilos.',
+        en: 'Because a single instance cannot be used with several threads.',
       },
       {
-        es: 'Porque impide la recolección de basura del objeto y por tanto siempre provoca una fuga de memoria.',
-        en: 'Because it prevents the object from being garbage collected and therefore always causes a memory leak.',
+        es: 'Porque impide que el recolector libere el objeto y siempre hay una fuga.',
+        en: 'Because it stops the collector from freeing the object and there is always a leak.',
       },
     ],
     explanation: {
-      es: 'La crítica principal es de diseño: el acceso estático esconde la dependencia y la comparte entre pruebas, generando acoplamiento y resultados dependientes del orden. Un singleton sin estado mutable es perfectamente concurrente, y vivir toda la aplicación no es una fuga, sino su ciclo de vida esperado. Por eso se prefiere una única instancia gestionada por el contenedor de inyección.',
-      en: 'The main criticism is about design: static access hides the dependency and shares it across tests, creating coupling and order-dependent results. A stateless singleton is perfectly concurrent, and living for the whole application is not a leak but its expected lifecycle. That is why a single instance managed by the DI container is preferred.',
+      es: 'Una instancia única gestionada por el contenedor de inyección suele ser la alternativa: sigue habiendo una, pero la dependencia es visible.',
+      en: 'A single instance managed by the injection container is usually the alternative: there is still one, but the dependency is visible.',
     },
   },
   {
     id: 'th-pat-05',
-    topic: 'Patrones de comportamiento',
+    topic: 'Patrones',
     prompt: {
-      es: 'Un objeto debe notificar cambios a varios interesados sin conocer sus tipos concretos. ¿Qué patrón describe esa relación?',
-      en: 'An object must notify changes to several interested parties without knowing their concrete types. Which pattern describes that relationship?',
+      es: '¿Qué patrón usas si un objeto debe avisar a varios interesados sin conocer sus clases concretas?',
+      en: 'An object must notify several interested parties without knowing their concrete classes. Which pattern is that?',
     },
     answer: {
-      es: 'Observer, que define una dependencia uno-a-muchos donde el sujeto avisa a suscriptores registrados.',
-      en: 'Observer, which defines a one-to-many dependency where the subject notifies registered subscribers.',
+      es: 'Observer. El sujeto guarda suscriptores y les notifica cuando cambia.',
+      en: 'Observer. The subject keeps subscribers and notifies them when it changes.',
     },
     distractors: [
       {
-        es: 'Mediator, que centraliza la comunicación para que los objetos no se referencien entre sí.',
-        en: 'Mediator, which centralises communication so objects do not reference each other.',
+        es: 'Mediator, porque centraliza la comunicación.',
+        en: 'Mediator, because it centralises communication.',
       },
       {
-        es: 'Chain of Responsibility, que pasa la notificación por una cadena hasta que alguien la atiende.',
-        en: 'Chain of Responsibility, which passes the notification along a chain until someone handles it.',
+        es: 'Chain of Responsibility, porque pasa el aviso hasta que alguien lo atiende.',
+        en: 'Chain of Responsibility, because it passes the notice until someone handles it.',
       },
     ],
     explanation: {
-      es: 'Observer es difusión: todos los suscriptores reciben el evento y el sujeto solo conoce la interfaz de observador. Mediator resuelve comunicación muchos-a-muchos concentrando la lógica de coordinación en un tercero, y Chain of Responsibility entrega el mensaje a un único manejador capaz de procesarlo, no a todos.',
-      en: 'Observer is broadcast: every subscriber receives the event and the subject only knows the observer interface. Mediator solves many-to-many communication by concentrating coordination logic in a third party, and Chain of Responsibility delivers the message to a single handler able to process it, not to everyone.',
+      es: 'Observer avisa a todos. La cadena entrega el mensaje a un solo manejador. El mediador coordina a varios colegas entre sí.',
+      en: 'Observer notifies everyone. The chain delivers the message to a single handler. A mediator coordinates several colleagues with each other.',
     },
   },
   {
     id: 'th-pat-06',
-    topic: 'Inmutabilidad',
+    topic: 'Patrones',
     prompt: {
-      es: '¿Qué garantiza realmente que una clase en Java sea inmutable?',
-      en: 'What actually guarantees that a Java class is immutable?',
+      es: '¿Qué hace falta para que una clase en Java sea de verdad inmutable?',
+      en: 'What does it take for a Java class to be truly immutable?',
     },
     answer: {
-      es: 'Campos finales, sin setters, copias defensivas de los mutables y ninguna fuga de referencias internas.',
-      en: 'Final fields, no setters, defensive copies of mutable members and no leaking of internal references.',
+      es: 'Campos finales, sin setters, y copias defensivas de lo mutable para no filtrar referencias internas.',
+      en: 'Final fields, no setters, and defensive copies of mutable members so internal references do not leak.',
     },
     distractors: [
       {
-        es: 'Declarar todos los campos privados y final es suficiente, porque el compilador impide cualquier modificación.',
-        en: 'Declaring every field private and final is enough, because the compiler prevents any modification.',
+        es: 'Basta con que todos los campos sean privados y final.',
+        en: 'It is enough that every field is private and final.',
       },
       {
-        es: 'Marcar la clase como final y sincronizar los getters, para que ningún hilo observe estado a medio construir.',
-        en: 'Marking the class final and synchronising getters, so no thread observes half-built state.',
+        es: 'Marcar la clase final y sincronizar los getters.',
+        en: 'Mark the class final and synchronise the getters.',
       },
     ],
     explanation: {
-      es: 'final sobre un campo impide reasignar la referencia, no mutar el objeto apuntado: si el campo es una List y se devuelve tal cual, el cliente puede modificarla. Por eso hace falta copiar al entrar y al salir, o exponer vistas inmutables. Sincronizar getters no aporta nada si el estado nunca cambia.',
-      en: 'final on a field prevents reassigning the reference, not mutating the referenced object: if the field is a List returned as-is, the client can modify it. That is why you must copy on the way in and on the way out, or expose immutable views. Synchronising getters adds nothing when state never changes.',
+      es: 'final impide reasignar la referencia, no impide que el cliente modifique la lista que le devolviste.',
+      en: 'final stops you from reassigning the reference. It does not stop the client from modifying the list you returned.',
     },
   },
   {
     id: 'th-pat-07',
-    topic: 'Patrones de persistencia',
+    topic: 'Patrones',
     prompt: {
-      es: '¿Cuál es la responsabilidad del patrón Repository en una arquitectura de dominio?',
-      en: 'What is the responsibility of the Repository pattern in a domain architecture?',
+      es: '¿Qué responsabilidad tiene un Repository?',
+      en: 'What responsibility does a Repository have?',
     },
     answer: {
-      es: 'Exponer una colección de agregados en términos del dominio, ocultando el mecanismo de persistencia.',
-      en: 'Expose a collection of aggregates in domain terms, hiding the persistence mechanism.',
+      es: 'Parecer una colección de objetos del dominio y ocultar cómo se persisten.',
+      en: 'Look like a collection of domain objects and hide how they are persisted.',
     },
     distractors: [
       {
-        es: 'Encapsular una única tabla con operaciones CRUD y traducir filas a objetos de transferencia.',
-        en: 'Encapsulate a single table with CRUD operations and translate rows into transfer objects.',
+        es: 'Encapsular una tabla con operaciones CRUD y devolver objetos de transferencia.',
+        en: 'Encapsulate one table with CRUD operations and return transfer objects.',
       },
       {
-        es: 'Coordinar la transacción y el orden de escritura de las entidades modificadas durante un caso de uso.',
-        en: 'Coordinate the transaction and the write order of entities modified during a use case.',
+        es: 'Abrir la transacción y decidir el orden de escritura del caso de uso.',
+        en: 'Open the transaction and decide the write order of the use case.',
       },
     ],
     explanation: {
-      es: 'Un Repository trabaja a nivel de agregado y habla el lenguaje del dominio, por lo que puede abarcar varias tablas y devuelve entidades, no DTOs; el mapeo tabla a tabla corresponde a un DAO. Gestionar el orden de escritura y la transacción es tarea de Unit of Work (lo que hace el EntityManager de JPA).',
-      en: 'A Repository works at aggregate level and speaks the domain language, so it may span several tables and returns entities rather than DTOs; table-per-class mapping is a DAO. Managing write ordering and the transaction is the Unit of Work role (what the JPA EntityManager does).',
+      es: 'El mapeo tabla a tabla es más propio de un DAO. Coordinar la transacción es trabajo de la unidad de trabajo o del caso de uso.',
+      en: 'Table to table mapping is closer to a DAO. Coordinating the transaction is the job of the unit of work or the use case.',
     },
   },
   {
     id: 'th-pat-08',
     topic: 'Refactorización',
     prompt: {
-      es: '¿Qué indica el olor a código "envidia de características" (feature envy)?',
-      en: 'What does the "feature envy" code smell indicate?',
+      es: '¿Qué indica el olor envidia de características?',
+      en: 'What does the feature envy smell indicate?',
     },
     answer: {
-      es: 'Un método usa más los datos de otra clase que los propios, así que debería moverse allí.',
-      en: 'A method uses another class data more than its own, so it should be moved there.',
+      es: 'Que un método usa más los datos de otra clase que los suyos. Ese comportamiento debería mudarse allí.',
+      en: 'That a method uses another class data more than its own. That behaviour should move there.',
     },
     distractors: [
       {
-        es: 'Una clase concentra demasiadas responsabilidades y conviene extraer parte de su comportamiento.',
-        en: 'A class concentrates too many responsibilities and part of its behaviour should be extracted.',
+        es: 'Que la clase tiene demasiadas responsabilidades y hay que partirla.',
+        en: 'That the class has too many responsibilities and should be split.',
       },
       {
-        es: 'Dos clases dependen mutuamente y hay que introducir una interfaz para romper el ciclo.',
-        en: 'Two classes depend on each other and an interface is needed to break the cycle.',
+        es: 'Que dos clases dependen una de la otra y hay que romper el ciclo.',
+        en: 'That two classes depend on each other and the cycle must be broken.',
       },
     ],
     explanation: {
-      es: 'Feature envy es un diagnóstico muy concreto: un método que encadena getters de otro objeto para calcular algo delata que el comportamiento está en el lugar equivocado, y la cura es "mover método". Demasiadas responsabilidades es una clase grande (large class) y la dependencia mutua es un ciclo de dependencias.',
-      en: 'Feature envy is a very concrete diagnosis: a method chaining getters from another object to compute something reveals that the behaviour lives in the wrong place, and the cure is "move method". Too many responsibilities is the large class smell, and mutual dependency is a dependency cycle.',
+      es: 'El síntoma típico es un método que encadena getters de otro objeto para calcular algo que ese objeto debería saber hacer.',
+      en: 'The typical symptom is a method that chains getters from another object to compute something that object should know how to do.',
     },
   },
 ];

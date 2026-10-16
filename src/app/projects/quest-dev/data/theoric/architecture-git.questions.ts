@@ -3,184 +3,184 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const THEORIC_ARCHITECTURE_GIT_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'th-arch-01',
-    topic: 'Arquitectura hexagonal',
+    topic: 'Arquitectura',
     prompt: {
-      es: 'En una arquitectura hexagonal, ¿dónde debe vivir la interfaz que el caso de uso necesita para persistir datos?',
-      en: 'In a hexagonal architecture, where should the interface a use case needs to persist data live?',
+      es: '¿Dónde vive, en arquitectura hexagonal, la interfaz que el caso de uso usa para guardar datos?',
+      en: 'In hexagonal architecture, where does the interface the use case uses to save data live?',
     },
     answer: {
-      es: 'En la capa de dominio o aplicación, como puerto que el adaptador de infraestructura implementa.',
-      en: 'In the domain or application layer, as a port implemented by the infrastructure adapter.',
+      es: 'Dentro, junto al caso de uso. El adaptador de base de datos la implementa desde fuera.',
+      en: 'Inside, next to the use case. The database adapter implements it from the outside.',
     },
     distractors: [
       {
-        es: 'En la capa de infraestructura junto a su implementación, para que el dominio la importe cuando la necesite.',
-        en: 'In the infrastructure layer next to its implementation, so the domain imports it when needed.',
+        es: 'En infraestructura, junto a la implementación, para que el dominio la importe.',
+        en: 'In infrastructure, next to the implementation, so the domain imports it.',
       },
       {
-        es: 'En un módulo compartido de contratos del que dependan por igual el dominio y la infraestructura.',
-        en: 'In a shared contracts module that both domain and infrastructure depend on equally.',
+        es: 'En un módulo compartido del que dependen por igual dominio e infraestructura.',
+        en: 'In a shared module that domain and infrastructure depend on equally.',
       },
     ],
     explanation: {
-      es: 'La regla de dependencia apunta hacia dentro: el dominio no puede importar infraestructura, ni siquiera sus interfaces, porque eso reintroduce el acoplamiento que el puerto pretende eliminar. Un módulo compartido neutral es una alternativa aceptable en algunos diseños, pero el planteamiento canónico es que el puerto pertenece al lado que lo consume.',
-      en: 'The dependency rule points inward: the domain cannot import infrastructure, not even its interfaces, because that reintroduces the very coupling the port removes. A neutral shared module is an acceptable alternative in some designs, but the canonical approach is that the port belongs to the side that consumes it.',
+      es: 'Si el dominio importa infraestructura, aunque sea una interfaz, el acoplamiento que el puerto debía quitar sigue ahí.',
+      en: 'If the domain imports infrastructure, even an interface, the coupling the port was meant to remove is still there.',
     },
   },
   {
     id: 'th-arch-02',
-    topic: 'CQRS',
+    topic: 'Arquitectura',
     prompt: {
       es: '¿Qué problema resuelve CQRS?',
       en: 'What problem does CQRS solve?',
     },
     answer: {
-      es: 'Separar el modelo de escritura del de lectura para optimizar cada uno de forma independiente.',
-      en: 'Separate the write model from the read model so each one can be optimised independently.',
+      es: 'Separa el modelo de escritura del de lectura para poder optimizar cada uno por su lado.',
+      en: 'It separates the write model from the read model so each one can be optimised on its own.',
     },
     distractors: [
       {
-        es: 'Garantizar consistencia eventual entre servicios mediante un registro de eventos como fuente de verdad.',
-        en: 'Guarantee eventual consistency between services using an event log as the source of truth.',
+        es: 'Garantiza consistencia entre servicios usando un log de eventos como fuente de verdad.',
+        en: 'It guarantees consistency between services by using an event log as the source of truth.',
       },
       {
-        es: 'Escalar la base de datos dividiendo la escritura en el nodo primario y la lectura en las réplicas.',
-        en: 'Scale the database by splitting writes on the primary node and reads on the replicas.',
+        es: 'Escala la base poniendo escrituras en el primario y lecturas en las réplicas.',
+        en: 'It scales the database by putting writes on the primary and reads on the replicas.',
       },
     ],
     explanation: {
-      es: 'CQRS es un patrón de modelado: comandos que cambian estado y consultas que proyectan vistas, cada uno con su propio modelo. Las réplicas de lectura son una técnica de infraestructura que puede existir sin CQRS, y el registro de eventos como fuente de verdad es Event Sourcing, que suele acompañar a CQRS pero es un patrón distinto.',
-      en: 'CQRS is a modelling pattern: commands that change state and queries that project views, each with its own model. Read replicas are an infrastructure technique that can exist without CQRS, and using an event log as the source of truth is Event Sourcing, which often accompanies CQRS but is a different pattern.',
+      es: 'Las réplicas de lectura pueden existir sin CQRS. Guardar el estado como eventos es event sourcing, un patrón distinto que a menudo se combina.',
+      en: 'Read replicas can exist without CQRS. Storing state as events is event sourcing, a different pattern that is often combined with it.',
     },
   },
   {
     id: 'th-arch-03',
-    topic: 'Microservicios',
+    topic: 'Arquitectura',
     prompt: {
       es: '¿Qué criterio define mejor el límite de un microservicio?',
       en: 'Which criterion best defines a microservice boundary?',
     },
     answer: {
-      es: 'Una capacidad de negocio cohesiva con sus datos propios, que puede desplegarse de forma independiente.',
-      en: 'A cohesive business capability owning its data, which can be deployed independently.',
+      es: 'Una capacidad de negocio con sus propios datos, que se pueda desplegar sola.',
+      en: 'A business capability with its own data, which can be deployed on its own.',
     },
     distractors: [
       {
-        es: 'Una capa técnica del sistema, de modo que cada servicio concentre una responsabilidad tecnológica clara.',
-        en: 'A technical layer of the system, so each service concentrates a clear technological responsibility.',
+        es: 'Una capa técnica, para que cada servicio tenga una responsabilidad tecnológica clara.',
+        en: 'A technical layer, so each service has a clear technological responsibility.',
       },
       {
-        es: 'Un tamaño de código acotado, de forma que un equipo pequeño pueda reescribir el servicio completo.',
-        en: 'A bounded code size, so a small team can rewrite the whole service.',
+        es: 'Un tamaño de código pequeño, para que un equipo pueda reescribirlo.',
+        en: 'A small code size, so a team can rewrite it.',
       },
     ],
     explanation: {
-      es: 'El corte se hace por contexto delimitado del negocio y propiedad de datos; si dos servicios comparten tablas, dejan de ser independientes. Partir por capas técnicas produce servicios que deben desplegarse juntos en cada cambio funcional, y el número de líneas es una consecuencia, no un criterio de diseño.',
-      en: 'The split follows business bounded contexts and data ownership; if two services share tables, they stop being independent. Splitting by technical layers produces services that must be deployed together on every functional change, and line count is a consequence rather than a design criterion.',
+      es: 'Si dos servicios comparten tablas, dejan de ser independientes. Partir por capas obliga a desplegarlos juntos en cada cambio de negocio.',
+      en: 'If two services share tables, they stop being independent. Splitting by layers forces you to deploy them together on every business change.',
     },
   },
   {
     id: 'th-arch-04',
-    topic: 'Sistemas distribuidos',
+    topic: 'Arquitectura',
     prompt: {
-      es: 'Según el teorema CAP, ¿qué decisión enfrenta un sistema distribuido cuando ocurre una partición de red?',
-      en: 'According to the CAP theorem, which decision does a distributed system face when a network partition occurs?',
+      es: '¿Qué dice CAP en palabras llanas cuando la red se parte?',
+      en: 'What does CAP say in plain words when the network splits?',
     },
     answer: {
-      es: 'Elegir entre responder con datos posiblemente desactualizados o rechazar la petición para no violar la consistencia.',
-      en: 'Choose between answering with possibly stale data or rejecting the request to avoid violating consistency.',
+      es: 'O respondes con datos que pueden estar viejos, o rechazas la petición para no contradecir lo que otros nodos tienen.',
+      en: 'Either you answer with data that may be stale, or you reject the request so you do not contradict what other nodes have.',
     },
     distractors: [
       {
-        es: 'Elegir dos de las tres propiedades al diseñar el sistema, porque nunca se pueden tener las tres a la vez.',
-        en: 'Choose two of the three properties when designing the system, because you can never have all three.',
+        es: 'Al diseñar eliges dos de las tres propiedades, porque las tres juntas son imposibles siempre.',
+        en: 'When you design you pick two of the three properties, because all three together are always impossible.',
       },
       {
-        es: 'Elegir entre consistencia y latencia, ya que la tolerancia a particiones se garantiza replicando los nodos.',
-        en: 'Choose between consistency and latency, since partition tolerance is guaranteed by replicating nodes.',
+        es: 'Eliges entre consistencia y latencia, porque replicar nodos ya da tolerancia a particiones.',
+        en: 'You choose between consistency and latency, because replicating nodes already gives partition tolerance.',
       },
     ],
     explanation: {
-      es: 'La lectura precisa del teorema es condicional: la partición no se elige, se sufre, y solo durante la partición hay que sacrificar consistencia o disponibilidad. El eslogan "elige dos de tres" es la simplificación popular que induce a creer que se puede renunciar a P. La disyuntiva consistencia-latencia en ausencia de particiones es el aporte de PACELC.',
-      en: 'The precise reading of the theorem is conditional: you do not choose a partition, you suffer it, and only during the partition must you sacrifice consistency or availability. The "pick two of three" slogan is the popular simplification that suggests you can give up P. The consistency-versus-latency trade-off without partitions is what PACELC adds.',
+      es: 'La partición no se elige, ocurre. Solo mientras dura hay que sacrificar responder o estar de acuerdo. Renunciar a tolerar la red no es una opción real.',
+      en: 'You do not choose the partition, it happens. Only while it lasts must you give up answering or agreeing. Giving up network tolerance is not a real option.',
     },
   },
   {
     id: 'th-arch-05',
     topic: 'Git',
     prompt: {
-      es: '¿Cuál es la diferencia entre git merge y git rebase al integrar una rama de feature?',
-      en: 'What is the difference between git merge and git rebase when integrating a feature branch?',
+      es: '¿Cuál es la diferencia entre git merge y git rebase?',
+      en: 'What is the difference between git merge and git rebase?',
     },
     answer: {
-      es: 'Merge crea un commit de unión y preserva el historial; rebase reescribe los commits sobre la punta de la base.',
-      en: 'Merge creates a merge commit and preserves history; rebase rewrites the commits onto the tip of the base.',
+      es: 'Merge crea un commit que une las dos historias y las conserva. Rebase vuelve a aplicar tus commits encima de la punta de la otra rama.',
+      en: 'Merge creates a commit that joins the two histories and keeps them. Rebase reapplies your commits on top of the tip of the other branch.',
     },
     distractors: [
       {
-        es: 'Merge conserva los commits originales y rebase los fusiona en uno solo sobre la rama destino.',
-        en: 'Merge keeps the original commits while rebase squashes them into a single one on the target branch.',
+        es: 'Merge conserva los commits y rebase los aplasta en uno solo.',
+        en: 'Merge keeps the commits and rebase squashes them into a single one.',
       },
       {
-        es: 'Merge resuelve conflictos una sola vez y rebase no puede aplicarse si existen conflictos pendientes.',
-        en: 'Merge resolves conflicts only once while rebase cannot be applied if there are pending conflicts.',
+        es: 'Merge resuelve conflictos una vez y rebase no puede usarse si hay conflictos.',
+        en: 'Merge resolves conflicts once and rebase cannot be used if there are conflicts.',
       },
     ],
     explanation: {
-      es: 'Rebase reaplica cada commit generando nuevos hashes, lo que produce un historial lineal pero obliga a forzar el push si la rama era compartida; aplastar commits es squash, una opción aparte. En rebase los conflictos pueden aparecer commit por commit, así que sí se resuelven, solo que potencialmente varias veces.',
-      en: 'Rebase reapplies each commit producing new hashes, which yields a linear history but forces a push --force if the branch was shared; collapsing commits is squash, a separate option. During a rebase conflicts can appear commit by commit, so they are resolved, just potentially several times.',
+      es: 'Rebase reescribe hashes. En una rama ya compartida eso obliga a un push forzado. Aplastar commits es squash, otra opción.',
+      en: 'Rebase rewrites hashes. On a branch already shared that forces a force push. Squashing commits is squash, a different option.',
     },
   },
   {
     id: 'th-arch-06',
     topic: 'Git',
     prompt: {
-      es: 'Subiste un commit a la rama compartida con una credencial en el código. ¿Cuál es la acción correcta?',
-      en: 'You pushed a commit to the shared branch containing a credential in the code. What is the correct action?',
+      es: '¿Qué haces primero si subiste un commit con una credencial a una rama compartida?',
+      en: 'You pushed a commit with a credential to a shared branch. What do you do first?',
     },
     answer: {
-      es: 'Rotar la credencial de inmediato y luego limpiar el historial, porque ya debe considerarse comprometida.',
-      en: 'Rotate the credential immediately and then clean the history, because it must already be considered compromised.',
+      es: 'Invalidar esa credencial ya. Hay que darla por comprometida y después limpiar el historial.',
+      en: 'Invalidate that credential now. Treat it as compromised and clean the history afterwards.',
     },
     distractors: [
       {
-        es: 'Hacer git revert del commit y añadir el archivo al .gitignore para que no vuelva a subirse.',
-        en: 'Run git revert on the commit and add the file to .gitignore so it is not pushed again.',
+        es: 'Hacer revert del commit y añadir el archivo al gitignore.',
+        en: 'Revert the commit and add the file to gitignore.',
       },
       {
-        es: 'Reescribir el historial con filter-repo y forzar el push, avisando al equipo para que vuelva a clonar.',
-        en: 'Rewrite history with filter-repo and force-push, notifying the team so they re-clone.',
+        es: 'Reescribir el historial y forzar el push, y con eso basta.',
+        en: 'Rewrite the history and force push, and that is enough.',
       },
     ],
     explanation: {
-      es: 'La prioridad es invalidar el secreto: cualquiera pudo clonar o ver el commit, y los objetos pueden seguir accesibles en reflogs, forks y cachés del servidor. Revert deja el valor en el historial, y limpiarlo con filter-repo es un paso complementario que por sí solo no protege nada si la credencial sigue activa.',
-      en: 'The priority is invalidating the secret: anyone could have cloned or seen the commit, and objects may remain reachable through reflogs, forks and server caches. Revert leaves the value in history, and cleaning it with filter-repo is a complementary step that on its own protects nothing while the credential stays active.',
+      es: 'Revert deja el secreto en el historial. Limpiar los commits no protege si la clave sigue activa, porque alguien pudo clonarla.',
+      en: 'Revert leaves the secret in history. Cleaning the commits does not protect you if the key is still active, because someone may have cloned it.',
     },
   },
   {
     id: 'th-arch-07',
     topic: 'CI/CD',
     prompt: {
-      es: '¿Qué distingue a la entrega continua (continuous delivery) del despliegue continuo (continuous deployment)?',
-      en: 'What distinguishes continuous delivery from continuous deployment?',
+      es: '¿Qué diferencia hay entre entrega continua y despliegue continuo?',
+      en: 'What is the difference between continuous delivery and continuous deployment?',
     },
     answer: {
-      es: 'En la entrega continua cada cambio queda listo para producción pero el paso final es manual; en el despliegue continuo es automático.',
-      en: 'In continuous delivery every change is production-ready but the final step is manual; in continuous deployment it is automatic.',
+      es: 'En la entrega continua cada cambio queda listo para producción y una persona pulsa el último paso. En el despliegue continuo ese paso es automático.',
+      en: 'In continuous delivery every change is ready for production and a person presses the last step. In continuous deployment that step is automatic.',
     },
     distractors: [
       {
-        es: 'La entrega continua automatiza la construcción y las pruebas, mientras el despliegue continuo añade el empaquetado.',
-        en: 'Continuous delivery automates build and tests, while continuous deployment adds packaging.',
+        es: 'La entrega automatiza build y pruebas, y el despliegue añade el empaquetado.',
+        en: 'Delivery automates build and tests, and deployment adds packaging.',
       },
       {
-        es: 'La entrega continua despliega en entornos de prueba y el despliegue continuo solo opera sobre producción.',
-        en: 'Continuous delivery deploys to test environments and continuous deployment only operates on production.',
+        es: 'La entrega va a entornos de prueba y el despliegue solo a producción.',
+        en: 'Delivery goes to test environments and deployment only to production.',
       },
     ],
     explanation: {
-      es: 'La diferencia está en quién aprieta el botón final hacia producción: ambas automatizan todo el pipeline previo, incluido empaquetado y despliegue a entornos intermedios. La entrega continua mantiene una decisión de negocio manual; el despliegue continuo publica cada commit que pase el pipeline.',
-      en: 'The difference is who presses the final button to production: both automate the whole upstream pipeline, packaging and intermediate environments included. Continuous delivery keeps a manual business decision; continuous deployment releases every commit that passes the pipeline.',
+      es: 'Las dos automatizan el pipeline de antes. La diferencia es quién decide publicar en producción.',
+      en: 'Both automate the pipeline before that. The difference is who decides to publish to production.',
     },
   },
 ];

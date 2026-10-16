@@ -3,210 +3,210 @@ import type { QuestDevQuestion } from '../../models/quest-dev.models';
 export const THEORIC_DATA_STRUCTURES_QUESTIONS: QuestDevQuestion[] = [
   {
     id: 'th-ds-01',
-    topic: 'Complejidad',
+    topic: 'Estructuras',
     prompt: {
-      es: '¿Qué significa que insertar al final de un ArrayList sea O(1) amortizado?',
-      en: 'What does it mean that appending to an ArrayList is amortised O(1)?',
+      es: '¿Cuándo se pone lento añadir al final de un ArrayList, si normalmente es rápido?',
+      en: 'Appending to an ArrayList is usually fast. When does it get slow?',
     },
     answer: {
-      es: 'Algunas inserciones cuestan O(n) por el redimensionado, pero el costo promedio por operación sigue siendo constante.',
-      en: 'Some insertions cost O(n) due to resizing, but the average cost per operation stays constant.',
+      es: 'Cuando el arreglo interno se llena y hay que copiarlo a uno más grande. La mayoría de los adds siguen siendo baratos.',
+      en: 'When the internal array is full and it must be copied into a larger one. Most adds stay cheap.',
     },
     distractors: [
       {
-        es: 'Que en el caso promedio es O(1) y en el peor caso es O(log n) según la política de crecimiento.',
-        en: 'That the average case is O(1) and the worst case is O(log n) depending on the growth policy.',
+        es: 'Siempre es log n, porque crece duplicando la capacidad.',
+        en: 'It is always log n, because it grows by doubling capacity.',
       },
       {
-        es: 'Que es O(1) siempre que la lista se haya creado con capacidad inicial suficiente.',
-        en: 'That it is O(1) as long as the list was created with enough initial capacity.',
+        es: 'Es constante solo si creaste la lista con capacidad inicial suficiente. Si no, cada add es lineal.',
+        en: 'It is constant only if you created the list with enough initial capacity. Otherwise every add is linear.',
       },
     ],
     explanation: {
-      es: 'Amortizado se refiere al costo total de una secuencia de operaciones repartido entre ellas: al duplicar la capacidad, las copias ocurren cada vez menos seguido y la suma de n inserciones es O(n). No es lo mismo que caso promedio (que habla de distribución de entradas) ni depende de preasignar, aunque preasignar evita las copias intermedias.',
-      en: 'Amortised refers to the total cost of a sequence of operations spread across them: by doubling capacity, copies happen less and less often and the sum of n insertions is O(n). It is not the same as average case (which is about input distribution) nor does it depend on pre-sizing, although pre-sizing avoids the intermediate copies.',
+      es: 'Las copias ocurren cada vez menos seguido. Reservar capacidad evita esas copias, pero no cambia que un add normal sea directo al final.',
+      en: 'Copies happen less and less often. Reserving capacity avoids those copies, but a normal add is still a direct write at the end.',
     },
   },
   {
     id: 'th-ds-02',
-    topic: 'Tablas hash',
+    topic: 'Estructuras',
     prompt: {
-      es: 'En Java, ¿qué ocurre si dos objetos iguales según equals devuelven hashCode distinto y se usan como clave de un HashMap?',
-      en: 'In Java, what happens if two objects equal per equals return different hashCode values and are used as HashMap keys?',
+      es: '¿Qué pasa si usas como clave dos objetos iguales según equals pero con hashCode distinto?',
+      en: 'Two objects are equal according to equals but their hashCode differs. What happens if you use them as keys?',
     },
     answer: {
-      es: 'Pueden caer en buckets distintos y el mapa guardará entradas duplicadas que no se podrán recuperar.',
-      en: 'They may land in different buckets and the map will store duplicate entries that cannot be retrieved.',
+      es: 'Pueden caer en cubos distintos. El mapa guarda las dos entradas y luego no encuentra la que buscas.',
+      en: 'They can land in different buckets. The map stores both entries and later cannot find the one you look up.',
     },
     distractors: [
       {
-        es: 'El mapa detecta la igualdad al recorrer el bucket y sobrescribe la entrada existente.',
-        en: 'The map detects equality while scanning the bucket and overwrites the existing entry.',
+        es: 'El mapa detecta la igualdad y sobrescribe la entrada.',
+        en: 'The map detects the equality and overwrites the entry.',
       },
       {
-        es: 'La búsqueda degrada a O(n) porque el mapa debe comparar con equals contra todas las claves.',
-        en: 'Lookups degrade to O(n) because the map has to compare with equals against every key.',
+        es: 'La búsqueda se vuelve lineal porque compara todas las claves con equals.',
+        en: 'The lookup becomes linear because it compares every key with equals.',
       },
     ],
     explanation: {
-      es: 'El contrato exige que objetos iguales tengan el mismo hashCode. Si se rompe, el mapa busca en el bucket derivado del hash y nunca llega al bucket donde quedó la otra entrada, así que get devuelve null y el "duplicado" permanece. La degradación a O(n) es el síntoma del caso contrario: un hashCode constante que apila todo en un bucket.',
-      en: 'The contract requires equal objects to share the same hashCode. If it is broken, the map searches the bucket derived from the hash and never reaches the bucket holding the other entry, so get returns null and the "duplicate" stays. Degrading to O(n) is the symptom of the opposite case: a constant hashCode piling everything into one bucket.',
+      es: 'Objetos iguales deben tener el mismo hash. Un hash constante es el caso contrario: todo cae en un cubo y la búsqueda se degrada.',
+      en: 'Equal objects must share the same hash. A constant hash is the opposite case: everything lands in one bucket and lookup degrades.',
     },
   },
   {
     id: 'th-ds-03',
-    topic: 'Estructuras de datos',
+    topic: 'Estructuras',
     prompt: {
-      es: '¿Cuándo conviene una LinkedList sobre un ArrayList en Java?',
-      en: 'When is a LinkedList preferable to an ArrayList in Java?',
+      es: '¿Cuándo conviene una LinkedList frente a un ArrayList?',
+      en: 'When is a LinkedList a better fit than an ArrayList?',
     },
     answer: {
-      es: 'Casi nunca; solo cuando se inserta o elimina de forma intensiva por los extremos, usándola como cola o deque.',
-      en: 'Almost never; only for intensive insertion or removal at the ends, using it as a queue or deque.',
+      es: 'Casi nunca. Tiene sentido si insertas y quitas mucho por los extremos y la usas como cola.',
+      en: 'Almost never. It makes sense if you insert and remove a lot at the ends and you use it as a queue.',
     },
     distractors: [
       {
-        es: 'Cuando hay muchas inserciones y borrados en posiciones intermedias, porque no requiere desplazar elementos.',
-        en: 'When there are many insertions and deletions at middle positions, because it does not shift elements.',
+        es: 'Cuando hay muchas inserciones en el medio, porque no desplaza elementos.',
+        en: 'When there are many insertions in the middle, because it does not shift elements.',
       },
       {
-        es: 'Cuando la colección crece mucho, porque evita el costo de redimensionar el arreglo interno.',
-        en: 'When the collection grows a lot, because it avoids the cost of resizing the internal array.',
+        es: 'Cuando la colección crece mucho, porque evita redimensionar el arreglo.',
+        en: 'When the collection grows a lot, because it avoids resizing the array.',
       },
     ],
     explanation: {
-      es: 'Insertar en el medio de una LinkedList requiere primero recorrerla hasta la posición, así que sigue siendo O(n) y con muchísima peor localidad de caché que desplazar memoria contigua con System.arraycopy. El sobrecosto de un nodo por elemento suele pesar más que el redimensionado, que además es amortizado.',
-      en: 'Inserting in the middle of a LinkedList first requires walking to the position, so it is still O(n) and with far worse cache locality than shifting contiguous memory via System.arraycopy. The per-node overhead usually costs more than resizing, which is amortised anyway.',
+      es: 'Llegar al medio de una lista enlazada ya es un recorrido. El arreglo tiene mejor localidad de memoria en casi todos los casos.',
+      en: 'Reaching the middle of a linked list is already a walk. The array has better memory locality in almost every case.',
     },
   },
   {
     id: 'th-ds-04',
-    topic: 'Complejidad',
+    topic: 'Estructuras',
     prompt: {
-      es: 'Un algoritmo recorre una lista de n elementos y, para cada uno, hace una búsqueda binaria en otra lista ordenada de m elementos. ¿Cuál es su complejidad?',
-      en: 'An algorithm iterates a list of n elements and, for each one, runs a binary search on another sorted list of m elements. What is its complexity?',
+      es: '¿Cuál es el costo si recorres n elementos y, por cada uno, buscas en una lista ordenada de m?',
+      en: 'You walk n elements and, for each one, you search a sorted list of m. What is the cost?',
     },
     answer: {
-      es: 'O(n log m)',
-      en: 'O(n log m)',
+      es: 'O(n log m). La búsqueda binaria va dentro del bucle, así que los costos se multiplican.',
+      en: 'O(n log m). The binary search sits inside the loop, so the costs multiply.',
     },
     distractors: [
       {
-        es: 'O(n log n)',
-        en: 'O(n log n)',
+        es: 'O(n log n), porque toda búsqueda binaria es log del tamaño total.',
+        en: 'O(n log n), because every binary search is log of the total size.',
       },
       {
-        es: 'O(n + log m)',
-        en: 'O(n + log m)',
+        es: 'O(n + log m), porque se suman el recorrido y la búsqueda.',
+        en: 'O(n + log m), because the walk and the search are added.',
       },
     ],
     explanation: {
-      es: 'El trabajo se multiplica porque la búsqueda ocurre dentro del bucle: n iteraciones por log m comparaciones cada una. Escribir log n confunde los tamaños de las dos colecciones, y sumar en lugar de multiplicar correspondería a hacer una sola búsqueda fuera del recorrido.',
-      en: 'The work multiplies because the search happens inside the loop: n iterations times log m comparisons each. Writing log n confuses the sizes of the two collections, and adding instead of multiplying would correspond to a single search performed outside the loop.',
+      es: 'Sumar correspondería a una sola búsqueda fuera del bucle. Aquí hay una búsqueda por cada elemento.',
+      en: 'Adding would match a single search outside the loop. Here there is one search per element.',
     },
   },
   {
     id: 'th-ds-05',
-    topic: 'Estructuras de datos',
+    topic: 'Estructuras',
     prompt: {
-      es: 'Necesitas obtener siempre el elemento de mayor prioridad de una colección que cambia constantemente. ¿Qué estructura es la adecuada?',
-      en: 'You need to always retrieve the highest-priority element from a constantly changing collection. Which structure fits?',
+      es: '¿Qué estructura usas si siempre necesitas el elemento de mayor prioridad y la colección cambia todo el tiempo?',
+      en: 'You always need the highest priority element and the collection keeps changing. Which structure do you use?',
     },
     answer: {
-      es: 'Un heap binario, con inserción y extracción del máximo en O(log n).',
-      en: 'A binary heap, with insertion and max extraction in O(log n).',
+      es: 'Un heap, o una cola de prioridad. Insertar y sacar el máximo es log n.',
+      en: 'A heap, or a priority queue. Inserting and taking the maximum is log n.',
     },
     distractors: [
       {
-        es: 'Un árbol binario de búsqueda balanceado, porque mantiene todos los elementos ordenados en O(1).',
-        en: 'A balanced binary search tree, because it keeps every element sorted in O(1).',
+        es: 'Un árbol balanceado, porque mantiene todo ordenado en tiempo constante.',
+        en: 'A balanced tree, because it keeps everything sorted in constant time.',
       },
       {
-        es: 'Una lista ordenada por prioridad, porque la extracción del primero es O(1).',
-        en: 'A priority-sorted list, because extracting the first element is O(1).',
+        es: 'Una lista ordenada, porque sacar el primero es constante.',
+        en: 'A sorted list, because taking the first element is constant.',
       },
     ],
     explanation: {
-      es: 'El heap solo mantiene el invariante necesario (la raíz es el máximo), por eso inserta y extrae en O(log n) con memoria contigua. Un árbol balanceado también resuelve el problema en O(log n), pero mantener el orden total no es gratis ni O(1). La lista ordenada extrae rápido pero cada inserción cuesta O(n).',
-      en: 'A heap only maintains the invariant it needs (the root is the maximum), which is why it inserts and extracts in O(log n) with contiguous memory. A balanced tree also solves it in O(log n), but keeping a total order is neither free nor O(1). The sorted list extracts fast, yet every insertion costs O(n).',
+      es: 'La lista saca rápido, pero cada inserción recorre. El heap solo garantiza que la raíz es el máximo, y con eso basta.',
+      en: 'The list takes the top fast, but every insertion walks. The heap only guarantees that the root is the maximum, and that is enough.',
     },
   },
   {
     id: 'th-ds-06',
-    topic: 'Concurrencia',
+    topic: 'Estructuras',
     prompt: {
-      es: '¿Qué diferencia a ConcurrentHashMap de un HashMap envuelto con Collections.synchronizedMap?',
-      en: 'What differentiates ConcurrentHashMap from a HashMap wrapped with Collections.synchronizedMap?',
+      es: '¿Qué diferencia hay entre ConcurrentHashMap y un HashMap sincronizado entero?',
+      en: 'What is the difference between ConcurrentHashMap and a fully synchronized HashMap?',
     },
     answer: {
-      es: 'ConcurrentHashMap bloquea por segmento o nodo, así que permite lecturas y escrituras concurrentes sin serializar todo el mapa.',
-      en: 'ConcurrentHashMap locks per segment or node, allowing concurrent reads and writes without serialising the whole map.',
+      es: 'ConcurrentHashMap permite lecturas y escrituras concurrentes con bloqueo fino. El mapa sincronizado usa un solo cerrojo para todo.',
+      en: 'ConcurrentHashMap allows concurrent reads and writes with fine grained locking. The synchronized map uses one lock for everything.',
     },
     distractors: [
       {
-        es: 'ConcurrentHashMap hace que cada operación sea atómica y además garantiza que iterar sobre él sea atómico.',
-        en: 'ConcurrentHashMap makes every operation atomic and also guarantees that iterating over it is atomic.',
+        es: 'ConcurrentHashMap hace que recorrer el mapa sea una foto atómica.',
+        en: 'ConcurrentHashMap makes walking the map an atomic snapshot.',
       },
       {
-        es: 'ConcurrentHashMap acepta claves nulas y el mapa sincronizado no, porque necesita comparar con equals.',
-        en: 'ConcurrentHashMap accepts null keys while the synchronized map does not, because it must compare with equals.',
+        es: 'ConcurrentHashMap acepta claves nulas y el sincronizado no.',
+        en: 'ConcurrentHashMap accepts null keys and the synchronized one does not.',
       },
     ],
     explanation: {
-      es: 'El envoltorio sincronizado usa un único cerrojo para todo, convirtiendo el mapa en un cuello de botella. ConcurrentHashMap usa granularidad fina y sus iteradores son débilmente consistentes, es decir que no son atómicos ni lanzan ConcurrentModificationException. Además es al revés con los nulos: ConcurrentHashMap los prohíbe.',
-      en: 'The synchronized wrapper uses a single lock for everything, turning the map into a bottleneck. ConcurrentHashMap uses fine-grained locking and its iterators are weakly consistent, meaning they are not atomic and do not throw ConcurrentModificationException. Nulls are also the other way around: ConcurrentHashMap forbids them.',
+      es: 'El cerrojo único convierte el mapa en un cuello de botella. ConcurrentHashMap no admite null y su iterador no es una foto consistente.',
+      en: 'A single lock turns the map into a bottleneck. ConcurrentHashMap does not allow null and its iterator is not a consistent snapshot.',
     },
   },
   {
     id: 'th-ds-07',
-    topic: 'Algoritmos',
+    topic: 'Estructuras',
     prompt: {
-      es: '¿Por qué QuickSort suele superar a MergeSort en la práctica pese a tener peor caso O(n²)?',
-      en: 'Why does QuickSort usually beat MergeSort in practice despite its O(n²) worst case?',
+      es: '¿Por qué QuickSort suele ir más rápido que MergeSort en la práctica?',
+      en: 'Why does QuickSort usually run faster than MergeSort in practice?',
     },
     answer: {
-      es: 'Porque ordena en el lugar con excelente localidad de caché y su peor caso es improbable con buena elección de pivote.',
-      en: 'Because it sorts in place with excellent cache locality and its worst case is unlikely with good pivot selection.',
+      es: 'Porque ordena en el mismo arreglo y aprovecha la caché. Con un buen pivote el peor caso cuadrático casi no aparece.',
+      en: 'Because it sorts in the same array and uses the cache well. With a good pivot the quadratic worst case almost never shows up.',
     },
     distractors: [
       {
-        es: 'Porque su complejidad promedio es O(n) mientras MergeSort siempre necesita O(n log n) comparaciones.',
-        en: 'Because its average complexity is O(n) while MergeSort always needs O(n log n) comparisons.',
+        es: 'Porque en promedio es lineal y MergeSort siempre es n log n.',
+        en: 'Because on average it is linear and MergeSort is always n log n.',
       },
       {
-        es: 'Porque es estable y por eso evita mover elementos equivalentes, ahorrando escrituras en memoria.',
-        en: 'Because it is stable and therefore avoids moving equivalent elements, saving memory writes.',
+        es: 'Porque es estable y no mueve elementos iguales.',
+        en: 'Because it is stable and does not move equal elements.',
       },
     ],
     explanation: {
-      es: 'Ambos son O(n log n) en promedio; la ventaja de QuickSort es constante: no necesita el arreglo auxiliar O(n) de MergeSort y trabaja sobre memoria contigua. Ningún algoritmo de ordenamiento por comparación baja de O(n log n), y la estabilidad es justamente una propiedad de MergeSort, no de QuickSort.',
-      en: 'Both are O(n log n) on average; QuickSort advantage is in the constants: it does not need MergeSort O(n) auxiliary array and works on contiguous memory. No comparison sort goes below O(n log n), and stability is precisely a MergeSort property, not a QuickSort one.',
+      es: 'Los dos son n log n en el caso habitual. MergeSort necesita un arreglo extra y es el que conserva el orden de los iguales.',
+      en: 'Both are n log n in the usual case. MergeSort needs an extra array and it is the one that keeps the order of equal elements.',
     },
   },
   {
     id: 'th-ds-08',
-    topic: 'Complejidad espacial',
+    topic: 'Estructuras',
     prompt: {
-      es: '¿Qué complejidad espacial tiene una función recursiva que procesa un árbol binario balanceado de n nodos visitando ambos hijos?',
-      en: 'What space complexity does a recursive function have when it processes a balanced binary tree of n nodes visiting both children?',
+      es: '¿Cuánta pila usa una función recursiva que recorre un árbol binario balanceado?',
+      en: 'A recursive function walks a balanced binary tree. How much stack does it use?',
     },
     answer: {
-      es: 'O(log n), por la profundidad de la pila de llamadas.',
-      en: 'O(log n), because of the call stack depth.',
+      es: 'Del orden de log n, porque solo están vivos los marcos de la rama actual y la altura es logarítmica.',
+      en: 'On the order of log n, because only the frames of the current branch are alive and the height is logarithmic.',
     },
     distractors: [
       {
-        es: 'O(n), porque cada nodo genera un marco de pila durante el recorrido.',
-        en: 'O(n), because every node creates a stack frame during the traversal.',
+        es: 'O(n), porque cada nodo crea un marco.',
+        en: 'O(n), because every node creates a frame.',
       },
       {
-        es: 'O(1), porque la recursión no reserva memoria adicional en el heap.',
-        en: 'O(1), because recursion does not allocate additional heap memory.',
+        es: 'O(1), porque la recursión no reserva memoria en el heap.',
+        en: 'O(1), because recursion does not allocate memory on the heap.',
       },
     ],
     explanation: {
-      es: 'Solo los marcos de la rama en curso coexisten en la pila, y en un árbol balanceado esa profundidad es log n; los marcos se liberan al regresar. Sería O(n) si el árbol estuviera degenerado en lista. Y aunque no se use el heap, la pila sí es memoria adicional que cuenta en el análisis.',
-      en: 'Only the frames of the current branch coexist on the stack, and in a balanced tree that depth is log n; frames are released on return. It would be O(n) if the tree degenerated into a list. And even though the heap is untouched, the stack is still additional memory that counts in the analysis.',
+      es: 'Los marcos se liberan al volver. Si el árbol está degenerado en una lista, la pila sí llega a n.',
+      en: 'Frames are released on return. If the tree has degenerated into a list, the stack does reach n.',
     },
   },
 ];
